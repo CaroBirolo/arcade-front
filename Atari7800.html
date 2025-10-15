@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RetroVerse</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+
+  <body>
+  <header>
+    <h1>
+      <a href="index.html">
+        <img
+          src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\LOGOS\logo-sin-fonfo.png"
+          alt="Logo RetroVerse"
+        />
+      </a>
+    </h1>
+
+    <nav>
+      <ul class="menu">
+        <li><a href="Arcade.html">Arcade</a></li>
+
+        <li>
+          <a href="#">Atari</a>
+          <ul class="submenu">
+            <li><a href="Atari7800.html">Atari 7800</a></li>
+            <li><a href="AtariLynx.html">Atari Lynx</a></li>
+            <li><a href="AtariJaguar.html">Atari Jaguar</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">Flash</a></li>
+
+        <li>
+          <a href="#">Nintendo</a>
+          <ul class="submenu">
+            <li><a href="#">NES</a></li>
+            <li><a href="#">SNES</a></li>
+            <li><a href="#">FDS</a></li>
+            <li><a href="#">GB</a></li>
+            <li><a href="#">GBC</a></li>
+            <li><a href="#">GBA</a></li>
+            <li><a href="#">N64</a></li>
+            <li><a href="#">NDS</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#">PlayStation</a></li>
+
+        <li>
+          <a href="#">Sega</a>
+          <ul class="submenu">
+            <li><a href="#">Master System</a></li>
+            <li><a href="#">Game Gear</a></li>
+            <li><a href="#">Genesis</a></li>
+            <li><a href="#">Sega CD</a></li>
+            <li><a href="#">32X</a></li>
+          </ul>
+        </li>
+
+        <li class="buscar">
+          <button id="btn-buscar">Buscar</button>
+          <div class="campo-busqueda">
+            <input type="text" placeholder="Escriba su búsqueda..." />
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="games-section">
+      <div class="cards-column">
+        <h2>-- A R C A D E - G A M E S --</h2>
+        <div class="cards-container">
+
+          <div class="card">
+            <img
+              src="imagenes/juegos/msdos_Donkey_Kong_1983.jpg"
+              alt="Donkey Kong"
+            />
+            <h3>Donkey Kong</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\msdos_Ms._Pac-Man_1983"
+              alt="Ms. Pac-Man"
+            />
+            <h3>Ms. Pac-Man</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="imagenes/juegos/msdos_Double_Dragon_1988.jpg"
+              alt="Double Dragon"
+            />
+            <h3>Double Dragon</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="imagenes/juegos/msdos_Winter_Games_1986.jpg"
+              alt="Winter Games"
+            />
+            <h3>Winter Games</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="imagenes/juegos/msdos_Donkey_Kong_1983.jpg"
+              alt="Donkey Kong"
+            />
+            <h3>Donkey Kong</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\msdos_Ms._Pac-Man_1983"
+              alt="Ms. Pac-Man"
+            />
+            <h3>Ms. Pac-Man</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="imagenes/juegos/msdos_Double_Dragon_1988.jpg"
+              alt="Double Dragon"
+            />
+            <h3>Double Dragon</h3>
+          </div>
+
+          <div class="card">
+            <img
+              src="imagenes/juegos/msdos_Winter_Games_1986.jpg"
+              alt="Winter Games"
+            />
+            <h3>Winter Games</h3>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Columna de publicidad -->
+      <div class="ads-column">
+        <h2>Publicidad</h2>
+        <div class="ad-space">
+          <img src="imagenes/publicidad.png" alt="Publicidad" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>©
+
+</html>
+
+<script>
+  const btnBuscar = document.getElementById("btn-buscar");
+  const campoBusqueda = document.querySelector(".campo-busqueda");
+
+  btnBuscar.addEventListener("click", () => {
+    campoBusqueda.classList.toggle("activo");
+  });
+
+  // Cerrar si se hace click fuera
+  document.addEventListener("click", (e) => {
+    if (!btnBuscar.contains(e.target) && !campoBusqueda.contains(e.target)) {
+      campoBusqueda.classList.remove("activo");
+    }
+  });
+</script>
