@@ -1,170 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>RetroVerse</title>
-    
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">  
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Estilos externos -->
+    <link rel="stylesheet" href="estilos.css" />
   </head>
-  
-<body>
-  <header>
-    <h1>
-      <a href="index.html">
-        <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\LOGOS\logo-sin-fonfo.png" alt="Logo RetroVerse">
-      </a>
-    </h1>
 
-    <nav>
-      <ul class="menu">
-        <li><a href="Arcade.html">Arcade</a></li>
+  <body>
+    <header>
+      <h1>
+        <a href="index.html">
+          <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+        </a>
+      </h1>
 
-        <li>
-          <a href="#">Atari</a>
-          <ul class="submenu">
-            <li><a href="Atari7800.html">Atari 7800</a></li>
-            <li><a href="AtariLynx.html">Atari Lynx</a></li>
-            <li><a href="AtariJaguar.html">Atari Jaguar</a></li>
-          </ul>
-        </li>
+      <button class="hamburger" id="hamburger">
+        &#9776;
+        <!-- ícono de hamburguesa -->
+      </button>
 
-        <li><a href="#">Flash</a></li>
+      <nav id="nav-menu">
+        <ul class="menu" id="menu-principal">
+          <li class="buscar">
+            <button id="btn-buscar">Buscar</button>
+            <div class="campo-busqueda">
+              <input type="text" placeholder="Escriba su búsqueda..." />
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
 
-        <li>
-          <a href="#">Nintendo</a>
-          <ul class="submenu">
-            <li><a href="#">NES</a></li>
-            <li><a href="#">SNES</a></li>
-            <li><a href="#">FDS</a></li>
-            <li><a href="#">GB</a></li>
-            <li><a href="#">GBC</a></li>
-            <li><a href="#">GBA</a></li>
-            <li><a href="#">N64</a></li>
-            <li><a href="#">NDS</a></li>
-          </ul>
-        </li>
-
-        <li><a href="#">PlayStation</a></li>
-
-        <li>
-          <a href="#">Sega</a>
-          <ul class="submenu">
-            <li><a href="#">Master System</a></li>
-            <li><a href="#">Game Gear</a></li>
-            <li><a href="#">Genesis</a></li>
-            <li><a href="#">Sega CD</a></li>
-            <li><a href="#">32X</a></li>
-          </ul>
-        </li>
-
-        <li class="buscar">
-          <button id="btn-buscar">Buscar</button>
-          <div class="campo-busqueda">
-            <input type="text" placeholder="Escriba su búsqueda...">
-          </div>
-        </li>
-        
-
-      </ul>
-    </nav>
-    
-  </header>
-
-  <main>
-    <section class="games-section">
-      <div class="cards-column">
-        <h2>-- P o p u l a r    -      G a m e s --</h2>
-        <div class="cards-container">
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 1">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 2">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 3">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 1">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 2">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 3">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 1">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 2">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 3">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 1">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 2">
-            <h3>Tekken 3 - PS1</h3>
-          </div>
-          <div class="card">
-            <img src="C:\Users\carol\OneDrive\Desktop\proyectoRetro\imagenes\juegos\Tekken_3.jpg" alt="Juego 3">
-            <h3>Tekken 3 - PS1</h3>
+    <main>
+      <section class="games-section">
+        <div class="cards-column">
+          <h2>-- P o p u l a r - G a m e s --</h2>
+          <div class="cards-container" id="cards-container">
+            <!-- Los juegos se cargarán aquí desde el backend -->
           </div>
         </div>
-      </div>
-  
-      <!-- Columna de publicidad -->
-      <div class="ads-column">
-        <h2>Publicidad</h2>
-        <div class="ad-space">
-          <!-- Aquí podés poner banners, imágenes o anuncios -->
-          <img src="ruta/a/tu/publicidad.png" alt="Publicidad">
-        </div>
-      </div>
-    </section>
-  </main>
-  
-  
 
-  <footer>
-    <p>© 2025 — RetroVerse</p>
-  </footer>
-</body>
+        <div class="ads-column">
+          <h2>Publicidad</h2>
+          <div class="ad-space">
+            <img src="ruta/a/tu/publicidad.png" alt="Publicidad" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Tu JS separado -->
+    <script src="script.js"></script>
+
+    <footer>
+      <p>© 2025 — RetroVerse</p>
+    </footer>
+  </body>
 </html>
-
-
-
-<script>
-  const btnBuscar = document.getElementById('btn-buscar');
-  const campoBusqueda = document.querySelector('.campo-busqueda');
-  
-  btnBuscar.addEventListener('click', () => {
-    campoBusqueda.classList.toggle('activo');
-  });
-  
-  // Cerrar si se hace click fuera
-  document.addEventListener('click', (e) => {
-    if (!btnBuscar.contains(e.target) && !campoBusqueda.contains(e.target)) {
-      campoBusqueda.classList.remove('activo');
-    }
-  });
-  </script>
-  

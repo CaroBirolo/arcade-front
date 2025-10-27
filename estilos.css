@@ -18,6 +18,8 @@ header {
     padding: 8px 25px;
     border-bottom: 2px solid #f207fe;
     box-shadow: 0 0 10px #f207fe;
+    position: relative;
+    z-index: 100;
 }
 
 /* Logo y título */
@@ -104,7 +106,7 @@ nav ul.submenu {
     overflow-y: auto;
 }
 
-/* Mostrar submenú */
+/* Mostrar submenú en desktop */
 nav ul.menu li:hover > ul.submenu {
     opacity: 1;
     visibility: visible;
@@ -130,7 +132,7 @@ nav ul.submenu li a:hover {
     transform: scale(1.05);
 }
 
-/* ---------- BOTÓN BUSCAR ARCADE ---------- */
+/* ---------- BOTÓN BUSCAR ---------- */
 nav ul.menu li.buscar {
     position: relative;
     display: flex;
@@ -155,7 +157,6 @@ nav ul.menu li.buscar button:hover {
     transform: scale(1.1);
 }
 
-/* Campo de búsqueda */
 .campo-busqueda {
     position: absolute;
     top: 110%;
@@ -182,13 +183,8 @@ nav ul.menu li.buscar button:hover {
     font-family: 'Orbitron', sans-serif;
     color: #f207fe;
     background-color: #090039;
-    text-shadow: none;
     font-weight: bold;
     font-size: 0.9rem;
-    line-height: 1.2;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: geometricPrecision;
 }
 
 .campo-busqueda input:focus {
@@ -196,7 +192,6 @@ nav ul.menu li.buscar button:hover {
     box-shadow: 0 0 4px #f207fe, 0 0 8px #f207fe inset;
 }
 
-/* Animación desplegar */
 @keyframes slideDown {
     0% { opacity: 0; transform: translateY(-10px); }
     100% { opacity: 1; transform: translateY(0); }
@@ -228,9 +223,10 @@ nav ul.menu li.buscar button:hover {
 }
 
 .card img {
-    width: 100%;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .card h3 {
@@ -246,7 +242,7 @@ nav ul.menu li.buscar button:hover {
     text-shadow: 0 0 3px #7dd504;
 }
 
-/* ---------- SECCIÓN CON PUBLICIDAD ---------- */
+/* ---------- SECCIÓN JUEGOS ---------- */
 .games-section {
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -269,7 +265,6 @@ nav ul.menu li.buscar button:hover {
     border-radius: 5px;
 }
 
-/* Título de sección */
 .games-section h2 {
     text-align: center;
     font-size: 1.8rem;
@@ -286,4 +281,86 @@ footer {
     border-top: 2px solid #00FF00;
     color: #000;
     font-family: 'Orbitron', sans-serif;
+}
+
+/* ---------- HAMBURGUESA RESPONSIVE ---------- */
+.hamburger {
+    display: none;
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* ---------- RESPONSIVE MÓVIL ---------- */
+@media (max-width: 768px) {
+
+    .hamburger {
+        display: block;
+    }
+
+    /* Ocultamos nav completo por defecto */
+    #nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 10px;
+        background-color: #222;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    #nav-menu.show {
+        display: block;
+    }
+
+    /* Lista dentro del nav */
+    #menu-principal {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+    }
+
+    #menu-principal > li {
+        width: 100%;
+    }
+
+    /* Submenús en móvil */
+    #menu-principal ul.submenu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        border: none;
+        background: transparent;
+        padding-left: 15px;
+    }
+
+    #menu-principal ul.submenu li {
+        padding: 4px 0;
+    }
+
+    /* Campo de búsqueda más pequeño */
+    .campo-busqueda input {
+        width: 140px;
+    }
+
+    nav ul.menu li.buscar button {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    /* Ajuste de cards y sección juegos */
+    .cards-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .games-section {
+        grid-template-columns: 1fr;
+    }
 }
