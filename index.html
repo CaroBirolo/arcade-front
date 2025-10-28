@@ -47,7 +47,7 @@
     <main>
       <section class="games-section">
         <div class="cards-column">
-          <h2>-- P o p u l a r - G a m e s --</h2>
+          <h2 id="titulo">-- P o p u l a r - G a m e s --</h2>
           <div class="cards-container" id="cards-container">
             <!-- Los juegos se cargarán aquí desde el backend -->
           </div>
@@ -55,10 +55,24 @@
 
         <div class="ads-column">
           <h2>Publicidad</h2>
-          <div class="ad-space">
-            <img src="ruta/a/tu/publicidad.png" alt="Publicidad" />
-          </div>
+         <div class="ad-space" id="ad-space">
+  <!-- Banner de prueba de Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-3940256099942544"  <!-- ID de prueba de Google -->
+       data-ad-slot="6300978111"                  <!-- Slot de prueba -->
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
         </div>
+         <div id="pagination" class="pagination"></div>
       </section>
     </main>
 

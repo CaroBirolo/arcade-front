@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RetroVerse</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Estilos externos -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>
+        <a href="index.html">
+          <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+        </a>
+      </h1>
+
+      <!-- Botón hamburguesa -->
+      <button class="hamburger" id="hamburger">&#9776;</button>
+
+      <nav id="nav-menu">
+        <ul class="menu" id="menu-principal">
+          <li class="buscar">
+            <button id="btn-buscar">Buscar</button>
+            <div class="campo-busqueda">
+              <input type="text" placeholder="Escriba su búsqueda..." />
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="games-section">
+        <div class="cards-column">
+          <div class="" id="cards-container">
+            <!-- El juego se cargará aquí -->
+          </div>
+        </div>
+
+        <div class="ads-column">
+          <h2>Publicidad</h2>
+          <div class="ad-space">
+            <img src="ruta/a/tu/publicidad.png" alt="Publicidad" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 — RetroVerse</p>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+      const API_CATEGORIAS = "http://localhost:8080/api/categoria";
+
+      $(document).ready(function () {
+        const $menu = $("#menu-principal");
+        const $hamburger = $("#hamburger");
+        const $navMenu = $("#nav-menu");
+
+        // --- Menú hamburguesa ---
+        $hamburger.on("click", function () {
+          $navMenu.toggleClass("activo");
+        });
+
+        // --- Cargar categorías ---
+        function cargarCategorias() {
+          $.getJSON(API_CATEGORIAS)
+            .done(function (categorias) {
+              if (!Array.isArray(categorias) || categorias.length === 0) return;
+
+              const principales = categorias
+                .filter((cat) => cat.padreId === null)
+                .sort((a, b) => a.orden - b.orden);
+
+              const secundarias = categorias.filter(
+                (cat) => cat.padreId !== null
+              );
+
+              principales.forEach((cat) => {
+                const li = $("<li></li>");
+                const a = $(
+                  `<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`
+                );
+                li.append(a);
+
+                const subs = secundarias
+                  .filter((sub) => sub.padreId === cat.id)
+                  .sort((a, b) => a.orden - b.orden);
+
+                if (subs.length > 0) {
+                  const ulSub = $('<ul class="submenu"></ul>');
+                  subs.forEach((sub) => {
+                    const liSub = $("<li></li>");
+                    const aSub = $(
+                      `<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`
+                    );
+                    liSub.append(aSub);
+                    ulSub.append(liSub);
+                  });
+                  li.append(ulSub);
+                }
+
+                $menu.find(".buscar").before(li);
+              });
+            })
+            .fail(function () {
+              console.error("Error cargando categorías");
+            });
+        }
+
+        cargarCategorias();
+
+        // --- Leer parámetro de la URL ---
+        function getQueryParam(param) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(param);
+        }
+
+        const juegoId = getQueryParam("id");
+
+        if (!juegoId) {
+          $("#cards-container").html(
+            "<p>No se especificó un ID de juego en la URL.</p>"
+          );
+          return;
+        }
+
+        // --- Cargar juego ---
+        $.ajax({
+          url: `http://localhost:8080/api/juegos/${juegoId}`,
+          method: "GET",
+          success: function (juego) {
+            const cardHtml = `
+              <div class="card-juego">
+                <h2>${juego.nombre}</h2>
+                <h2>Plataforma: ${juego.plataforma || "Desconocida"}</h2>
+                ${
+                  juego.iframe
+                    ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>`
+                    : ""
+                }
+              </div>
+            `;
+            $("#cards-container").html(cardHtml);
+          },
+          error: function () {
+            $("#cards-container").html("<p>No se pudo cargar el juego.</p>");
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
