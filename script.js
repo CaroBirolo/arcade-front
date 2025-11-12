@@ -11,20 +11,20 @@ $(document).ready(function () {
     $.getJSON(API_CATEGORIAS)
       .done(function (categorias) {
         if (!Array.isArray(categorias) || categorias.length === 0) return;
-        const principales = categorias.filter(cat => cat.padre_id === null).sort((a, b) => a.orden - b.orden);
-        const secundarias = categorias.filter(cat => cat.padre_id !== null);
+        const principales = categorias.filter((cat) => cat.padre_id === null).sort((a, b) => a.orden - b.orden);
+        const secundarias = categorias.filter((cat) => cat.padre_id !== null);
 
-        principales.forEach(cat => {
+        principales.forEach((cat) => {
           const li = $("<li></li>");
-          const a = $('<a href="#"></a>').text(cat.nombre);
+          const a = $(`<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`);
           li.append(a);
 
-          const subs = secundarias.filter(sub => sub.padre_id === cat.id).sort((a, b) => a.orden - b.orden);
+          const subs = secundarias.filter((sub) => sub.padre_id === cat.id).sort((a, b) => a.orden - b.orden);
           if (subs.length > 0) {
             const ulSub = $('<ul class="submenu"></ul>');
-            subs.forEach(sub => {
+            subs.forEach((sub) => {
               const liSub = $("<li></li>");
-              const aSub = $(`<a href="index.html?categoria=${sub.id}&nombreCategoria=${encodeURIComponent(sub.nombre)}&pagina=1"></a>`).text(sub.nombre);
+              const aSub = $(`<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`);
               liSub.append(aSub);
               ulSub.append(liSub);
             });
@@ -43,31 +43,48 @@ $(document).ready(function () {
   const $inputBusqueda = $campoBusqueda.find("input");
 
   $btnBuscar.on("click", function () {
-    if ($campoBusqueda.hasClass("activo")) {
-      buscarJuegos($inputBusqueda.val(), 0);
+    if ($campoBusqueda.is(":visible")) {
+      const termino = $inputBusqueda.val().trim();
+      if (termino !== "") buscarJuegos(termino, 0);
     } else {
-      $campoBusqueda.addClass("activo");
+      $campoBusqueda.show();
       $inputBusqueda.focus();
     }
   });
 
-  $inputBusqueda.on("keypress", function (e) {
-    if (e.key === "Enter") buscarJuegos($inputBusqueda.val(), 0);
-  });
-
-  $(document).on("click", (e) => {
-    if (!$btnBuscar.is(e.target) && !$campoBusqueda.is(e.target) && $campoBusqueda.has(e.target).length === 0) {
-      $campoBusqueda.removeClass("activo");
+  $("#btn-ejecutar-busqueda").on("click", function (e) {
+    e.preventDefault();
+    const termino = $inputBusqueda.val().trim();
+    if (termino !== "") {
+      buscarJuegos(termino, 0);
     }
   });
 
+  $inputBusqueda.on("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const termino = $inputBusqueda.val().trim();
+      if (termino !== "") buscarJuegos(termino, 0);
+    }
+  });
+
+  // Cerrar campo si clickeas fuera
+  $(document).on("click", function (e) {
+    if (!$(e.target).is($btnBuscar) && !$(e.target).closest($campoBusqueda).length) {
+      $campoBusqueda.hide();
+    }
+  });
+
+  // --- Función de búsqueda ---
   function buscarJuegos(termino, pagina) {
     if (!termino || termino.trim() === "") return;
+    console.log("Buscando:", termino, pagina);
+
     const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(termino.trim())}&page=${pagina}&size=40`;
 
     fetch(url)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const juegos = data.content || data;
         renderJuegos(juegos, $contenedor, "No se encontraron juegos.");
         $("#titulo").text(`Resultados para: "${termino}"`);
@@ -80,26 +97,8 @@ $(document).ready(function () {
           pagDiv.style.display = "none";
         }
       })
-      .catch(err => console.error("Error en búsqueda:", err));
+      .catch((err) => console.error("Error en búsqueda:", err));
   }
-
-  // --- Hamburguesa responsive ---
-  const $hamburger = $("#hamburger");
-  const $navMenu = $("#nav-menu");
-  $hamburger.on("click", () => $navMenu.toggleClass("show"));
-
-  // --- Obtener parámetros de URL ---
-  function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  }
-
-  const juegoCategoria = getQueryParam("categoria");
-  const nombreCategoria = getQueryParam("nombreCategoria");
-  let pagina = parseInt(getQueryParam("pagina")) || 1;
-    // Cambiar título al cargar la página según la categoría
-  actualizarTitulo(nombreCategoria);
-
 
   // --- Renderizar juegos ---
   function renderJuegos(juegos, $contenedor, mensajeVacio) {
@@ -108,25 +107,36 @@ $(document).ready(function () {
       $contenedor.html(`<p>${mensajeVacio}</p>`);
       return;
     }
-    juegos.forEach(juego => {
+    juegos.forEach((juego) => {
       let imagen = juego.imagen;
       if (!imagen || imagen.trim() === "" || imagen === "null") imagen = "img/no-image.png";
       const cardHtml = `
-      <div class="card">
-        <a href='juego.html?id=${juego.id}'>
-          <img src="${imagen}" alt="${juego.nombre}" onerror="this.src='img/no-image.png'; this.onerror=null;" />
-        </a>
-        <h3>${juego.nombre} - ${juego.plataforma}</h3>
-      </div>`;
+        <div class="card">
+          <a href='juego.html?id=${juego.id}'>
+            <img src="${imagen}" alt="${juego.nombre}" onerror="this.src='img/no-image.png'; this.onerror=null;" />
+          </a>
+          <h3>${juego.nombre} - ${juego.plataforma}</h3>
+        </div>
+      `;
       $contenedor.append(cardHtml);
     });
   }
 
-  // --- Cargar juegos ---
+  // --- Otras funciones que tenías (paginación, categorías, etc) ---
+  // ... (puedes dejar todo lo que tenías igual, solo asegurate de no duplicar eventos)
+
+  // --- Inicializar ---
+  cargarCategorias();
+  cargarJuegos(0);
+
+  // --- Cargar juegos random o por categoría ---
   function cargarJuegos(paginaSeleccionada) {
-    pagina = paginaSeleccionada + 1;
+    let pagina = paginaSeleccionada + 1;
     let url;
     let paginacionVisible = true;
+
+    const juegoCategoria = new URLSearchParams(window.location.search).get("categoria");
+    const nombreCategoria = new URLSearchParams(window.location.search).get("nombreCategoria");
 
     if (juegoCategoria) {
       url = `${API_JUEGOS}/categoria/${juegoCategoria}?page=${pagina - 1}&size=40`;
@@ -137,8 +147,8 @@ $(document).ready(function () {
     }
 
     fetch(url)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const juegos = data.content || data;
         renderJuegos(juegos, $contenedor, "No hay juegos en esta categoría.");
 
@@ -149,13 +159,11 @@ $(document).ready(function () {
         } else {
           pagDiv.style.display = "none";
         }
-
-        if (nombreCategoria) mostrarLetras((letra) => cargarPorLetra(letra, 0));
       })
-      .catch(err => console.error("Error cargando juegos:", err));
+      .catch((err) => console.error("Error cargando juegos:", err));
   }
 
-  // --- Mostrar paginación ---
+  // --- Paginación ---
   function mostrarPaginacion(totalPaginas, paginaActual, callback) {
     const pagDiv = document.getElementById("pagination");
     pagDiv.innerHTML = "";
@@ -172,152 +180,9 @@ $(document).ready(function () {
     }
   }
 
- // --- Mostrar letras (A–Z + #) ---
-function mostrarLetras(callback) {
-  const letrasDiv = document.getElementById("letters");
-  if (!letrasDiv) return;
+  // --- Menú hamburguesa ---
+  const $hamburger = $("#hamburger");
+  const $navMenu = $("#nav-menu");
+  $hamburger.on("click", () => $navMenu.toggleClass("show"));
 
-  letrasDiv.innerHTML = ""; // Limpia antes de volver a cargar
-  const letras = ["#", ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))];
-
-  letras.forEach((letra) => {
-    const btn = document.createElement("button");
-    btn.textContent = letra;
-    btn.classList.add("btn-letra");
-    btn.addEventListener("click", () => {
-      callback(letra);
-      window.scrollTo(0, 0);
-    });
-    letrasDiv.appendChild(btn);
-  });
-}
-
-
-  // --- Cargar por letra ---
-  function cargarPorLetra(letra, pagina = 0) {
-    if (!nombreCategoria) return;
-
-    const url = `${API_JUEGOS}/categoria/nombre/${encodeURIComponent(nombreCategoria)}/letra/${encodeURIComponent(letra)}?page=${pagina}&size=40`;
-
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        renderJuegos(data.content, $contenedor, "No hay juegos con esa letra.");
-        if (data.totalPages && data.totalPages > 1) {
-          mostrarPaginacion(data.totalPages, pagina, (i) => cargarPorLetra(letra, i));
-        } else {
-          document.getElementById("pagination").style.display = "none";
-        }
-      })
-      .catch(err => console.error("Error cargando por letra:", err));
-  }
-
-  // --- Inicial ---
-  cargarCategorias();
-  cargarJuegos(pagina - 1);
-
- // --- Nuevo botón dentro del campo de búsqueda ---
-$("#btn-ejecutar-busqueda").on("click", function (event) {
-  event.preventDefault(); // 🔒 Evita que recargue la página
-
-  const termino = $(".campo-busqueda input").val().trim();
-  if (termino) {
-    window.location.href = `index.html?buscar=${encodeURIComponent(termino)}`;
-  }
-});
-
-
-  // --- PUBLICIDAD DINÁMICA ---
-  const banners = [
-    {
-      type: "img",
-      src: "imagenes/publicidad1.png",
-      url: "https://www.tu-enlace1.com"
-    },
-    {
-      type: "img",
-      src: "imagenes/publicidad2.png",
-      url: "https://www.tu-enlace2.com"
-    },
-    {
-      type: "adsense",
-      adClient: "ca-pub-3940256099942544",
-      adSlot: "6300978111"
-    }
-  ];
-
-  let adIndex = 0;
-  const adSpace = document.getElementById("ad-space");
-
-  function crearBanner(banner) {
-    const div = document.createElement("div");
-    div.style.opacity = 0;
-    div.style.position = "absolute";
-    div.style.top = 0;
-    div.style.left = 0;
-    div.style.width = "100%";
-
-    if (banner.type === "img") {
-      const a = document.createElement("a");
-      a.href = banner.url;
-      a.target = "_blank";
-      const img = document.createElement("img");
-      img.src = banner.src;
-      img.alt = "Publicidad";
-      img.style.width = "100%";
-      img.style.borderRadius = "5px";
-      a.appendChild(img);
-      div.appendChild(a);
-    } else if (banner.type === "adsense") {
-      const script1 = document.createElement("script");
-      script1.async = true;
-      script1.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
-      div.appendChild(script1);
-
-      const ins = document.createElement("ins");
-      ins.className = "adsbygoogle";
-      ins.style.display = "block";
-      ins.setAttribute("data-ad-client", banner.adClient);
-      ins.setAttribute("data-ad-slot", banner.adSlot);
-      ins.setAttribute("data-ad-format", "auto");
-      ins.setAttribute("data-full-width-responsive", "true");
-      div.appendChild(ins);
-
-      const script2 = document.createElement("script");
-      script2.innerHTML = "(adsbygoogle = window.adsbygoogle || []).push({});";
-      div.appendChild(script2);
-    }
-
-    return div;
-  }
-
-  const bannerDivs = banners.map(crearBanner);
-  bannerDivs.forEach(d => adSpace.appendChild(d));
-
-  function mostrarBanner(index) {
-    bannerDivs.forEach((div, i) => {
-      div.style.opacity = (i === index) ? 1 : 0;
-    });
-  }
-
-  mostrarBanner(adIndex);
-  setInterval(() => {
-    adIndex = (adIndex + 1) % banners.length;
-    mostrarBanner(adIndex);
-  }, 10000);
-
-    // --- Actualizar título dinámicamente ---
-  function actualizarTitulo(nombre) {
-    const titulo = document.getElementById("titulo");
-
-    if (!titulo) return;
-
-    if (!nombre || nombre.trim() === "") {
-      titulo.textContent = "-- P o p u l a r - G a m e s --";
-    } else {
-      titulo.textContent = `-- ${nombre.toUpperCase()} - G a m e s --`;
-    }
-  }
-
-  
 });
