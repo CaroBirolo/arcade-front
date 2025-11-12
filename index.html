@@ -1,89 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RetroVerse</title>
 
-    <title>RetroVerse</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="estilos.css" />
+</head>
 
-    <!-- Estilos externos -->
-    <link rel="stylesheet" href="estilos.css" />
-  </head>
+<body>
+  <header>
+    <h1>
+      <a href="index.html">
+        <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+      </a>
+    </h1>
 
-  <body>
-    <header>
-      <h1>
-        <a href="index.html">
-          <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
-        </a>
-      </h1>
+    <button class="hamburger" id="hamburger">&#9776;</button>
 
-      <button class="hamburger" id="hamburger">
-        &#9776;
-        <!-- ícono de hamburguesa -->
-      </button>
-
-      <nav id="nav-menu">
-        <ul class="menu" id="menu-principal">
-          <li class="buscar">
-            <button id="btn-buscar">Buscar</button>
-            <div class="campo-busqueda">
-              <input type="text" placeholder="Escriba su búsqueda..." />
-            </div>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <main>
-      <section class="games-section">
-        <div class="cards-column">
-          <h2 id="titulo">-- P o p u l a r - G a m e s --</h2>
-          <div class="cards-container" id="cards-container">
-            <!-- Los juegos se cargarán aquí desde el backend -->
+    <nav id="nav-menu">
+      <ul class="menu" id="menu-principal">
+        <li class="buscar">
+          <button id="btn-buscar">Buscar</button>
+          <div class="campo-busqueda">
+            <input type="text" placeholder="Escriba su búsqueda..." />
+            <button id="btn-ejecutar-busqueda">Buscar</button>
           </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="games-section">
+      <div class="cards-column">
+        <h2 id="titulo">-- P o p u l a r - G a m e s --</h2>
+
+        <!-- 🔽 Buscador por letras justo debajo del título -->
+        <div id="letters" class="pagination"></div>
+
+        <div class="cards-container" id="cards-container">
+          <!-- Los juegos se cargarán aquí desde el backend -->
         </div>
+      </div>
 
-        <div class="ads-column">
-          <h2>Publicidad</h2>
-         <div class="ad-space" id="ad-space">
-  <!-- Banner de prueba de Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-3940256099942544"  <!-- ID de prueba de Google -->
-       data-ad-slot="6300978111"                  <!-- Slot de prueba -->
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</div>
-
+      <div class="ads-column">
+        <h2>Publicidad</h2>
+        <div class="ad-space" id="ad-space">
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3940256099942544"
+            data-ad-slot="6300978111" data-ad-format="auto" data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
-         <div id="pagination" class="pagination"></div>
-      </section>
-    </main>
+      </div>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      <div id="pagination" class="pagination"></div>
+    </section>
+  </main>
 
-    <!-- Tu JS separado -->
-    <script src="script.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="script.js"></script>
 
-    <footer>
-      <p>© 2025 — RetroVerse</p>
-    </footer>
-  </body>
+  <footer>
+    <p>© 2025 — RetroVerse</p>
+  </footer>
+</body>
+
 </html>

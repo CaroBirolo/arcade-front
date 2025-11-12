@@ -1,4 +1,6 @@
-/* ---------- RESETEO BÁSICO ---------- */
+/* ===============================
+   🔹 RESETEO Y BASE
+   =============================== */
 body {
   margin: 0;
   font-family: "Orbitron", system-ui, sans-serif;
@@ -9,7 +11,9 @@ body {
   text-rendering: geometricPrecision;
 }
 
-/* ---------- HEADER RETRO ---------- */
+/* ===============================
+   🔹 HEADER
+   =============================== */
 header {
   display: flex;
   align-items: center;
@@ -22,7 +26,6 @@ header {
   z-index: 100;
 }
 
-/* Logo y título */
 header h1 {
   display: flex;
   align-items: center;
@@ -33,7 +36,6 @@ header h1 {
   text-shadow: 0 0 5px #00ffff;
 }
 
-/* Logo */
 header h1 img {
   height: 50px;
   width: auto;
@@ -47,7 +49,9 @@ header h1 img:hover {
   transform: scaleX(1.45) rotate(-2deg);
 }
 
-/* ---------- MENÚ DESPLEGABLE ---------- */
+/* ===============================
+   🔹 MENÚ DE NAVEGACIÓN
+   =============================== */
 nav ul.menu {
   list-style: none;
   margin: 0;
@@ -56,7 +60,6 @@ nav ul.menu {
   gap: 25px;
   align-items: center;
   height: 50px;
-  font-family: "Orbitron", sans-serif;
 }
 
 nav ul.menu > li {
@@ -66,7 +69,6 @@ nav ul.menu > li {
   height: 100%;
 }
 
-/* Enlaces del menú */
 nav a {
   display: flex;
   align-items: center;
@@ -106,14 +108,12 @@ nav ul.submenu {
   overflow-y: auto;
 }
 
-/* Mostrar submenú en desktop */
 nav ul.menu li:hover > ul.submenu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* Elementos del submenú */
 nav ul.submenu li {
   padding: 6px 15px;
 }
@@ -132,7 +132,9 @@ nav ul.submenu li a:hover {
   transform: scale(1.05);
 }
 
-/* ---------- BOTÓN BUSCAR ---------- */
+/* ===============================
+   🔹 BUSCADOR
+   =============================== */
 nav ul.menu li.buscar {
   position: relative;
   display: flex;
@@ -171,7 +173,9 @@ nav ul.menu li.buscar button:hover {
 }
 
 .campo-busqueda.activo {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .campo-busqueda input {
@@ -192,6 +196,24 @@ nav ul.menu li.buscar button:hover {
   box-shadow: 0 0 4px #f207fe, 0 0 8px #f207fe inset;
 }
 
+/* 🔹 Nuevo botón “Buscar” dentro del campo */
+.campo-busqueda button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #0f207f, #f207fe);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: "Orbitron", sans-serif;
+  transition: transform 0.2s ease;
+}
+
+.campo-busqueda button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #f207fe, 0 0 15px #00ffcc;
+}
+
 @keyframes slideDown {
   0% {
     opacity: 0;
@@ -203,18 +225,45 @@ nav ul.menu li.buscar button:hover {
   }
 }
 
-/* ---------- CARDS ---------- */
+/* ===============================
+   🔹 TÍTULO
+   =============================== */
+#titulo {
+  text-align: center;
+  color: #0f207fec;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: 8px;
+  text-shadow: 0 0 10px #0f207fec, 0 0 18px #f207fe;
+  margin: 50px auto 30px;
+  border: none;
+  background: none;
+  padding: 10px 0;
+  width: 100%;
+  box-shadow: none;
+  animation: titulo-glow 2s infinite alternate;
+}
+
+@keyframes titulo-glow {
+  0% {
+    text-shadow: 0 0 8px #f207fe, 0 0 14px #00ffcc;
+  }
+  100% {
+    text-shadow: 0 0 18px #f207fe, 0 0 25px #00ffcc;
+  }
+}
+
+/* ===============================
+   🔹 TARJETAS DE JUEGOS
+   =============================== */
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  margin-top: 20px;
-  max-width: 1200px;     /* Mantiene el grid centrado */
-  margin-left: auto;
-  margin-right: auto;
+  margin: 20px auto 0;
+  max-width: 1200px;
 }
-
-
 
 .card {
   background: #090039;
@@ -248,12 +297,13 @@ nav ul.menu li.buscar button:hover {
 
 .card p {
   font-size: 0.8rem;
-  line-height: 1.2;
   color: #7dd504;
   text-shadow: 0 0 3px #7dd504;
 }
 
-/* ---------- SECCIÓN JUEGOS ---------- */
+/* ===============================
+   🔹 SECCIÓN PRINCIPAL
+   =============================== */
 .games-section {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -271,20 +321,20 @@ nav ul.menu li.buscar button:hover {
   text-align: center;
 }
 
+.ad-space {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
 .ad-space img {
   width: 100%;
   border-radius: 5px;
 }
 
-.games-section h2 {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #ff00d4;
-  text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc;
-  margin-bottom: 20px;
-}
-
-/* ---------- FOOTER ---------- */
+/* ===============================
+   🔹 FOOTER
+   =============================== */
 footer {
   text-align: center;
   padding: 15px;
@@ -294,7 +344,81 @@ footer {
   font-family: "Orbitron", sans-serif;
 }
 
-/* ---------- HAMBURGUESA RESPONSIVE ---------- */
+/* ===============================
+   🔹 BOTONES (Paginación + Letras)
+   =============================== */
+.paginacion, #pagination, #letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 100%;
+}
+
+.btn-pagina,
+.btn-letra {
+  padding: 6px 12px;
+  border: 2px solid #00ffcc;
+  background-color: #090039;
+  color: #00ffcc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Orbitron", sans-serif;
+  font-weight: bold;
+  text-shadow: 0 0 3px #00ffcc;
+  transition: all 0.3s;
+  min-width: 32px;
+  text-align: center;
+}
+
+.btn-pagina:hover,
+.btn-letra:hover {
+  background-color: #00ffcc;
+  color: #090039;
+  transform: scale(1.1);
+}
+
+.btn-pagina.activa,
+.btn-letra.activa {
+  background-color: #ff00ff;
+  color: #fff;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+/* ===============================
+   🔹 CARD DETALLE
+   =============================== */
+.card-juego {
+  margin-bottom: 20px;
+}
+
+.card-juego h3 {
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+  color: #00ffcc;
+  text-shadow: 0 0 5px #00ffcc;
+}
+
+.card-juego p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #7dd504;
+  text-shadow: 0 0 3px #7dd504;
+}
+
+.card-juego iframe {
+  display: block;
+  width: 100%;
+  height: 600px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc inset;
+}
+
+/* ===============================
+   🔹 RESPONSIVE
+   =============================== */
 .hamburger {
   display: none;
   font-size: 30px;
@@ -304,7 +428,6 @@ footer {
   cursor: pointer;
 }
 
-/* ---------- RESPONSIVE MÓVIL ---------- */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
@@ -329,35 +452,6 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 0;
-    margin: 0;
-  }
-
-  #menu-principal > li {
-    width: 100%;
-  }
-
-  #menu-principal ul.submenu {
-    position: static;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    border: none;
-    background: transparent;
-    padding-left: 15px;
-  }
-
-  #menu-principal ul.submenu li {
-    padding: 4px 0;
-  }
-
-  .campo-busqueda input {
-    width: 140px;
-  }
-
-  nav ul.menu li.buscar button {
-    font-size: 0.9rem;
-    padding: 6px 10px;
   }
 
   .cards-container {
@@ -369,89 +463,13 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .card-juego iframe {
-    display: block;
-    width: 100%;
-    height: 500px; /* o un valor responsive */
-    border: none;
+  .campo-busqueda input {
+    width: 140px;
+  }
+
+  .btn-letra, .btn-pagina {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
   }
 }
-
-/* ---------- CARD JUEGO DETALLE ---------- */
-.card-juego {
-  margin-bottom: 20px;
-}
-
-.card-juego h3 {
-  margin-bottom: 5px;
-  font-size: 1.2rem;
-  color: #00ffcc;
-  text-shadow: 0 0 5px #00ffcc;
-}
-
-.card-juego p {
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #7dd504;
-  text-shadow: 0 0 3px #7dd504;
-}
-
-.card-juego iframe {
-  display: block;
-  width: 100%;
-  height: 600px; /* Ajustalo si quieres más o menos alto */
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc inset;
-}
-/* Paginación estilo RetroVerse */
-.paginacion, #pagination {
-  display: flex;
-  flex-wrap: wrap;       /* Permite que los botones pasen a otra fila */
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-  max-width: 100%;       /* No excede el ancho del contenedor principal */
-}
-
-.btn-pagina {
-  padding: 6px 12px;
-  border: 2px solid #00ffcc;
-  background-color: #090039;
-  color: #00ffcc;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: "Orbitron", sans-serif;
-  font-weight: bold;
-  text-shadow: 0 0 3px #00ffcc;
-  transition: all 0.3s;
-}
-
-.btn-pagina:hover {
-  background-color: #00ffcc;
-  color: #090039;
-  transform: scale(1.1);
-}
-
-.btn-pagina.activa {
-  background-color: #ff00ff;
-  color: #fff;
-  text-shadow: 0 0 5px #ff00ff;
-}
-
-.ad-space > div {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.ad-space {
-  position: relative;
-  height: 200px; /* Ajusta según tu diseño */
-  overflow: hidden;
-}
-
-

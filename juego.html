@@ -1,168 +1,220 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RetroVerse</title>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RetroVerse</title>
 
-    <!-- Estilos externos -->
-    <link rel="stylesheet" href="estilos.css" />
-  </head>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
 
-  <body>
-    <header>
-      <h1>
-        <a href="index.html">
-          <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
-        </a>
-      </h1>
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="estilos.css" />
+</head>
 
-      <!-- Botón hamburguesa -->
-      <button class="hamburger" id="hamburger">&#9776;</button>
+<body>
+  <header>
+    <h1>
+      <a href="index.html">
+        <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+      </a>
+    </h1>
 
-      <nav id="nav-menu">
-        <ul class="menu" id="menu-principal">
-          <li class="buscar">
-            <button id="btn-buscar">Buscar</button>
-            <div class="campo-busqueda">
-              <input type="text" placeholder="Escriba su búsqueda..." />
-            </div>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <button class="hamburger" id="hamburger">
+      &#9776;
+      <!-- ícono de hamburguesa -->
+    </button>
 
-    <main>
-      <section class="games-section">
-        <div class="cards-column">
-          <div class="" id="cards-container">
-            <!-- El juego se cargará aquí -->
+    <nav id="nav-menu">
+      <ul class="menu" id="menu-principal">
+        <li class="buscar">
+          <button id="btn-buscar">Buscar</button>
+          <div class="campo-busqueda">
+            <input type="text" placeholder="Escriba su búsqueda..." />
+            <button id="btn-ejecutar-busqueda">Buscar</button>
           </div>
+        </li>
+
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="games-section">
+      <div class="cards-column">
+        <div class="" id="cards-container">
+          <!-- El juego se cargará aquí -->
         </div>
+      </div>
 
-        <div class="ads-column">
-          <h2>Publicidad</h2>
-          <div class="ad-space">
-            <img src="ruta/a/tu/publicidad.png" alt="Publicidad" />
-          </div>
+      <div class="ads-column">
+        <h2>Publicidad</h2>
+        <div class="ad-space">
+          <img src="ruta/a/tu/publicidad.png" alt="Publicidad" />
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
+  </main>
 
-    <footer>
-      <p>© 2025 — RetroVerse</p>
-    </footer>
+  <footer>
+    <p>© 2025 — RetroVerse</p>
+  </footer>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script>
-      const API_CATEGORIAS = "http://localhost:8080/api/categoria";
+  <script>
+  const API_CATEGORIAS = "https://retroarcade-api.contactoretroverse.workers.dev/api/categorias";
 
-      $(document).ready(function () {
-        const $menu = $("#menu-principal");
-        const $hamburger = $("#hamburger");
-        const $navMenu = $("#nav-menu");
+  $(document).ready(function () {
+    const $menu = $("#menu-principal");
+    const $hamburger = $("#hamburger");
+    const $navMenu = $("#nav-menu");
 
-        // --- Menú hamburguesa ---
-        $hamburger.on("click", function () {
-          $navMenu.toggleClass("activo");
-        });
+    // --- Menú hamburguesa ---
+    $hamburger.on("click", function () {
+      $navMenu.toggleClass("activo");
+    });
 
-        // --- Cargar categorías ---
-        function cargarCategorias() {
-          $.getJSON(API_CATEGORIAS)
-            .done(function (categorias) {
-              if (!Array.isArray(categorias) || categorias.length === 0) return;
+    // --- Cargar categorías ---
+    function cargarCategorias() {
+      $.getJSON(API_CATEGORIAS)
+        .done(function (categorias) {
+          if (!Array.isArray(categorias) || categorias.length === 0) return;
 
-              const principales = categorias
-                .filter((cat) => cat.padreId === null)
-                .sort((a, b) => a.orden - b.orden);
+          const principales = categorias
+            .filter((cat) => cat.padre_id === null)
+            .sort((a, b) => a.orden - b.orden);
 
-              const secundarias = categorias.filter(
-                (cat) => cat.padreId !== null
-              );
-
-              principales.forEach((cat) => {
-                const li = $("<li></li>");
-                const a = $(
-                  `<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`
-                );
-                li.append(a);
-
-                const subs = secundarias
-                  .filter((sub) => sub.padreId === cat.id)
-                  .sort((a, b) => a.orden - b.orden);
-
-                if (subs.length > 0) {
-                  const ulSub = $('<ul class="submenu"></ul>');
-                  subs.forEach((sub) => {
-                    const liSub = $("<li></li>");
-                    const aSub = $(
-                      `<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`
-                    );
-                    liSub.append(aSub);
-                    ulSub.append(liSub);
-                  });
-                  li.append(ulSub);
-                }
-
-                $menu.find(".buscar").before(li);
-              });
-            })
-            .fail(function () {
-              console.error("Error cargando categorías");
-            });
-        }
-
-        cargarCategorias();
-
-        // --- Leer parámetro de la URL ---
-        function getQueryParam(param) {
-          const urlParams = new URLSearchParams(window.location.search);
-          return urlParams.get(param);
-        }
-
-        const juegoId = getQueryParam("id");
-
-        if (!juegoId) {
-          $("#cards-container").html(
-            "<p>No se especificó un ID de juego en la URL.</p>"
+          const secundarias = categorias.filter(
+            (cat) => cat.padre_id !== null
           );
-          return;
-        }
 
-        // --- Cargar juego ---
-        $.ajax({
-          url: `http://localhost:8080/api/juegos/${juegoId}`,
-          method: "GET",
-          success: function (juego) {
-            const cardHtml = `
-              <div class="card-juego">
-                <h2>${juego.nombre}</h2>
-                <h2>Plataforma: ${juego.plataforma || "Desconocida"}</h2>
-                ${
-                  juego.iframe
-                    ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>`
-                    : ""
-                }
-              </div>
-            `;
-            $("#cards-container").html(cardHtml);
-          },
-          error: function () {
-            $("#cards-container").html("<p>No se pudo cargar el juego.</p>");
-          },
+          principales.forEach((cat) => {
+            const li = $("<li></li>");
+            const a = $(
+              `<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`
+            );
+            li.append(a);
+
+            const subs = secundarias
+              .filter((sub) => sub.padre_id === cat.id)
+              .sort((a, b) => a.orden - b.orden);
+
+            if (subs.length > 0) {
+              const ulSub = $('<ul class="submenu"></ul>');
+              subs.forEach((sub) => {
+                const liSub = $("<li></li>");
+                const aSub = $(
+                  `<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`
+                );
+                liSub.append(aSub);
+                ulSub.append(liSub);
+              });
+              li.append(ulSub);
+            }
+
+            $menu.find(".buscar").before(li);
+          });
+        })
+        .fail(function () {
+          console.error("Error cargando categorías");
         });
-      });
-    </script>
-  </body>
+    }
+
+    cargarCategorias();
+
+    // --- Búsqueda: abrir campo y redirigir ---
+    const $btnBuscar = $("#btn-buscar");
+    const $campoBusqueda = $(".campo-busqueda");
+    const $inputBusqueda = $campoBusqueda.find("input");
+
+    $btnBuscar.on("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if ($campoBusqueda.hasClass("activo")) {
+        const termino = $inputBusqueda.val().trim();
+        if (termino) {
+          window.location.href = `index.html?buscar=${encodeURIComponent(termino)}`;
+        }
+      } else {
+        $campoBusqueda.addClass("activo");
+        $inputBusqueda.focus();
+      }
+    });
+
+    // Enter dentro del input
+    $inputBusqueda.on("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const termino = $inputBusqueda.val().trim();
+        if (termino) {
+          window.location.href = `index.html?buscar=${encodeURIComponent(termino)}`;
+        }
+      }
+    });
+
+    // Botón "Buscar" al lado del input
+    $("#btn-ejecutar-busqueda").on("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const termino = $inputBusqueda.val().trim();
+      if (termino) {
+        window.location.href = `index.html?buscar=${encodeURIComponent(termino)}`;
+      }
+    });
+
+    // Cerrar el campo si clickeás afuera
+    $(document).on("click", (e) => {
+      if (
+        !$btnBuscar.is(e.target) &&
+        !$campoBusqueda.is(e.target) &&
+        $campoBusqueda.has(e.target).length === 0
+      ) {
+        $campoBusqueda.removeClass("activo");
+      }
+    });
+
+    // --- Leer parámetro de la URL ---
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const juegoId = getQueryParam("id");
+
+    if (!juegoId) {
+      $("#cards-container").html(
+        "<p>No se especificó un ID de juego en la URL.</p>"
+      );
+      return;
+    }
+
+    // --- Cargar juego ---
+    $.ajax({
+      url: `https://retroarcade-api.contactoretroverse.workers.dev/api/juegos/id/${juegoId}`,
+      method: "GET",
+      success: function (juego) {
+        const cardHtml = `
+            <div class="card-juego">
+              <h2>${juego.nombre}</h2>
+              <h2>Plataforma: ${juego.plataforma || "Desconocida"}</h2>
+              ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
+            </div>
+          `;
+        $("#cards-container").html(cardHtml);
+      },
+      error: function () {
+        $("#cards-container").html("<p>No se pudo cargar el juego.</p>");
+      },
+    });
+  });
+</script>
+
+
+</body>
+
 </html>
