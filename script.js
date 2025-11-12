@@ -1,7 +1,10 @@
 $(document).ready(function () {
-  const API_JUEGOS = "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos";
-  const API_JUEGOS_RANDOM = "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos/random";
-  const API_CATEGORIAS = "https://retroarcade-api.contactoretroverse.workers.dev/api/categorias";
+  const API_JUEGOS =
+    "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos";
+  const API_JUEGOS_RANDOM =
+    "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos/random";
+  const API_CATEGORIAS =
+    "https://retroarcade-api.contactoretroverse.workers.dev/api/categorias";
 
   const $contenedor = $("#cards-container");
   const $menu = $("#menu-principal");
@@ -22,7 +25,9 @@ $(document).ready(function () {
 
         principales.forEach((cat) => {
           const li = $("<li></li>");
-          const a = $(`<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`);
+          const a = $(
+            `<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`
+          );
           li.append(a);
 
           const subs = secundarias
@@ -33,15 +38,26 @@ $(document).ready(function () {
             const ulSub = $('<ul class="submenu"></ul>');
             subs.forEach((sub) => {
               const liSub = $("<li></li>");
-              const aSub = $(`<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`);
+              const aSub = $(
+                `<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`
+              );
               liSub.append(aSub);
               ulSub.append(liSub);
             });
             li.append(ulSub);
           }
+        
 
           $menu.find(".buscar").before(li);
         });
+
+        const catId = getQueryParam('categoria');
+        if(catId){
+          $("#titulo").html(categorias.find(cat => cat.id == catId).nombre)
+        } else {
+          $("#titulo").html('-- P o p u l a r - G a m e s --');
+        }
+
       })
       .fail(() => console.error("Error cargando categorías"));
   }
@@ -79,7 +95,10 @@ $(document).ready(function () {
 
   // Cerrar campo si clickeas fuera
   $(document).on("click", function (e) {
-    if (!$(e.target).is($btnBuscar) && !$(e.target).closest($campoBusqueda).length) {
+    if (
+      !$(e.target).is($btnBuscar) &&
+      !$(e.target).closest($campoBusqueda).length
+    ) {
       $campoBusqueda.hide();
     }
   });
@@ -90,7 +109,9 @@ $(document).ready(function () {
   function buscarJuegos(termino, pagina) {
     if (!termino || termino.trim() === "") return;
 
-    const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(termino.trim())}&page=${pagina}&size=40`;
+    const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(
+      termino.trim()
+    )}&page=${pagina}&size=40`;
 
     fetch(url)
       .then((res) => res.json())
@@ -101,14 +122,18 @@ $(document).ready(function () {
 
         const pagDiv = document.getElementById("pagination");
         if (data.totalPages && data.totalPages > 1) {
-          mostrarPaginacion(data.totalPages, pagina, (i) => buscarJuegos(termino, i));
+          mostrarPaginacion(data.totalPages, pagina, (i) =>
+            buscarJuegos(termino, i)
+          );
           pagDiv.style.display = "flex";
         } else {
           pagDiv.style.display = "none";
         }
 
         // Valida imágenes
-        validateImagesForGames(juegos, { maxChecks: 200 }).then(reportImageProblems);
+        validateImagesForGames(juegos, { maxChecks: 200 }).then(
+          reportImageProblems
+        );
       })
       .catch((err) => console.error("Error en búsqueda:", err));
   }
@@ -125,7 +150,8 @@ $(document).ready(function () {
 
     juegos.forEach((juego) => {
       let imagen = juego.imagen;
-      if (!imagen || imagen.trim() === "" || imagen === "null") imagen = "img/no-image.png";
+      if (!imagen || imagen.trim() === "" || imagen === "null")
+        imagen = "img/no-image.png";
       const cardHtml = `
         <div class="card">
           <a href='juego.html?id=${juego.id}'>
@@ -143,7 +169,12 @@ $(document).ready(function () {
   // ---------------------------
   async function checkImageUrl(url, timeout = 8000) {
     return new Promise((resolve) => {
-      if (!url || typeof url !== "string" || url.trim() === "" || url === "null") {
+      if (
+        !url ||
+        typeof url !== "string" ||
+        url.trim() === "" ||
+        url === "null"
+      ) {
         resolve({ ok: false, reason: "empty-or-null" });
         return;
       }
@@ -197,20 +228,33 @@ $(document).ready(function () {
     if (!Array.isArray(problems)) problems = [];
 
     if (problems.length === 0) {
-      console.log("%cTodas las imágenes comprobadas están OK ✅", "color: green; font-weight: bold;");
+      console.log(
+        "%cTodas las imágenes comprobadas están OK ✅",
+        "color: green; font-weight: bold;"
+      );
       return;
     }
 
-    console.group("%cImágenes problemáticas de juegos", "color: orange; font-weight: bold;");
+    console.group(
+      "%cImágenes problemáticas de juegos",
+      "color: orange; font-weight: bold;"
+    );
     problems.forEach((p, idx) => {
-      console.log(`${idx + 1}. id=${p.id} | nombre="${p.nombre}" | imagen="${p.imagen}" | motivo=${p.reason}`);
+      console.log(
+        `${idx + 1}. id=${p.id} | nombre="${p.nombre}" | imagen="${
+          p.imagen
+        }" | motivo=${p.reason}`
+      );
     });
     console.groupEnd();
 
     // Crear CSV y botón para descargar
-    const csvRows = [["id", "nombre", "imagen", "motivo"]]
-      .concat(problems.map((p) => [p.id, p.nombre, p.imagen, p.reason]));
-    const csvContent = csvRows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const csvRows = [["id", "nombre", "imagen", "motivo"]].concat(
+      problems.map((p) => [p.id, p.nombre, p.imagen, p.reason])
+    );
+    const csvContent = csvRows
+      .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
 
@@ -244,10 +288,14 @@ $(document).ready(function () {
     let url;
     let paginacionVisible = true;
 
-    const juegoCategoria = new URLSearchParams(window.location.search).get("categoria");
+    const juegoCategoria = new URLSearchParams(window.location.search).get(
+      "categoria"
+    );
 
     if (juegoCategoria) {
-      url = `${API_JUEGOS}/categoria/${juegoCategoria}?page=${pagina - 1}&size=40`;
+      url = `${API_JUEGOS}/categoria/${juegoCategoria}?page=${
+        pagina - 1
+      }&size=40`;
     } else {
       url = `${API_JUEGOS_RANDOM}?size=20`;
       paginacionVisible = false;
@@ -268,7 +316,9 @@ $(document).ready(function () {
         }
 
         // Valida imágenes
-        validateImagesForGames(juegos, { maxChecks: 200 }).then(reportImageProblems);
+        validateImagesForGames(juegos, { maxChecks: 200 }).then(
+          reportImageProblems
+        );
       })
       .catch((err) => console.error("Error cargando juegos:", err));
   }
@@ -304,106 +354,9 @@ $(document).ready(function () {
   // ---------------------------
   cargarCategorias();
   cargarJuegos(0);
-
-
-// ==========================
-// 🧩 FUNCIONES DE VALIDACIÓN DE IMÁGENES
-// ==========================
-
-async function validateImagesForGames(games, { maxChecks = 100 } = {}) {
-  const problems = [];
-  let checked = 0;
-
-  for (const game of games) {
-    if (checked >= maxChecks) break;
-
-    if (!game.imagen) {
-      problems.push({ id: game.id, nombre: game.nombre, error: "No tiene URL de imagen" });
-      continue;
-    }
-
-    try {
-      const res = await fetch(game.imagen, { method: "HEAD" });
-      if (!res.ok) {
-        problems.push({ id: game.id, nombre: game.nombre, imagen: game.imagen, error: res.status });
-      }
-    } catch (err) {
-      problems.push({ id: game.id, nombre: game.nombre, imagen: game.imagen, error: err.message });
-    }
-
-    checked++;
-  }
-
-  return problems;
-}
-
-function reportImageProblems(problems) {
-  if (problems.length === 0) {
-    console.log("%c✅ Todas las imágenes funcionan correctamente.", "color: green; font-weight: bold;");
-  } else {
-    console.log(`%c🚨 Se encontraron ${problems.length} problemas de imágenes:`, "color: red; font-weight: bold;");
-    console.table(problems);
-  }
-}
-
-// ==========================
-// 🔎 VALIDAR TODAS LAS IMÁGENES (TODOS LOS JUEGOS)
-// ==========================
-async function validarTodasLasImagenes() {
-  console.log("%cDescargando lista completa de juegos...", "color: cyan; font-weight: bold;");
-
-  let todosLosJuegos = [];
-  let page = 0;
-  let totalPages = 32;
-
-  // Traer todas las páginas de juegos (1000 por página)
-  while (page < totalPages) {
-    const res = await fetch(`${API_JUEGOS}?page=${page}&size=1000`);
-    const data = await res.json();
-    const juegos = data.content || data;
-
-    todosLosJuegos = todosLosJuegos.concat(juegos);
-    totalPages = data.totalPages || 32;
-    page++;
-
-    console.log(`Página ${page}/${totalPages} descargada (${juegos.length} juegos).`);
-  }
-
-  console.log(`✅ Se descargaron ${todosLosJuegos.length} juegos en total. Verificando imágenes...`);
-
-  // Validar imágenes de todos los juegos con una pequeña pausa entre cada uno
-  const problems = [];
-  let contador = 0;
-
-  for (const juego of todosLosJuegos) {
-    contador++;
-
-    const resultado = await checkImageUrl(juego.imagen);
-    if (!resultado.ok) {
-      problems.push({
-        id: juego.id,
-        nombre: juego.nombre,
-        imagen: juego.imagen,
-        reason: resultado.reason,
-      });
-    }
-
-    // Pequeña pausa para no saturar el navegador (50ms)
-    await new Promise((r) => setTimeout(r, 50));
-
-    if (contador % 50 === 0) {
-      console.log(`Progreso: ${contador}/${todosLosJuegos.length} juegos verificados...`);
-    }
-  }
-
-  console.log(`🔍 Validación finalizada. Total de juegos verificados: ${todosLosJuegos.length}`);
-  reportImageProblems(problems);
-}
-
-// Exponer la función para poder llamarla desde consola
-window.validarTodasLasImagenes = validarTodasLasImagenes;
-
-
-
 });
 
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
