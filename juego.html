@@ -167,8 +167,8 @@
         success: function (juego) {
           const cardHtml = `
             <div class="card-juego">
-              <h2>${juego.nombre}</h2>
-              <h2>Plataforma: ${juego.plataforma || "Desconocida"}</h2>
+              <h2 id="titulo2">${juego.nombre}</h2>
+              <h2 id="titulo3">Plataforma: ${juego.plataforma || "Desconocida"}</h2>
               ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
             </div>
           `;

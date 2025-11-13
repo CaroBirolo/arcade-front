@@ -228,31 +228,30 @@ nav ul.menu li.buscar button:hover {
 /* ===============================
    🔹 TÍTULO
    =============================== */
-#titulo {
+#titulo, #titulo2, #titulo3 {
   text-align: center;
-  color: #0f207fec;
+  color: #f207fe;
   font-family: "Orbitron", sans-serif;
   font-weight: 900;
   font-size: 2rem;
   letter-spacing: 8px;
-  text-shadow: 0 0 10px #0f207fec, 0 0 18px #f207fe;
-  margin: 50px auto 30px;
-  border: none;
-  background: none;
   padding: 10px 0;
-  width: 100%;
-  box-shadow: none;
-  animation: titulo-glow 2s infinite alternate;
+  -webkit-text-stroke: 0.6px black;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #00ffcc,
+    0 0 20px #00ffcc,
+    0 0 30px #00ffcc,
+    0 0 60px #f207fe,
+    0 0 100px #f207fe,
+    0 0 140px #00ffcc;
+  animation: titulo-glow 2.2s ease-in-out infinite alternate;
 }
 
-@keyframes titulo-glow {
-  0% {
-    text-shadow: 0 0 8px #f207fe, 0 0 14px #00ffcc;
-  }
-  100% {
-    text-shadow: 0 0 18px #f207fe, 0 0 25px #00ffcc;
-  }
-}
+#titulo { margin: 50px auto 20px; }
+#titulo2 { margin: 10px auto 5px; font-size: 1.6rem; }
+#titulo3 { margin: 0 auto 20px; font-size: 1.3rem; }
+
 
 /* ===============================
    🔹 TARJETAS DE JUEGOS
