@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+  const BASE_URL="https://retroarcade-api.contactoretroverse.workers.dev";
+
   const API_JUEGOS =
     "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos";
   const API_JUEGOS_RANDOM =
@@ -6,8 +9,10 @@ $(document).ready(function () {
   const API_CATEGORIAS =
     "https://retroarcade-api.contactoretroverse.workers.dev/api/categorias";
 
+
   const $contenedor = $("#cards-container");
   const $menu = $("#menu-principal");
+  const lettersDiv = $("#letters");
 
   // ---------------------------
   // CARGAR CATEGORÍAS
@@ -46,24 +51,34 @@ $(document).ready(function () {
             });
             li.append(ulSub);
           }
-        
 
           $menu.find(".buscar").before(li);
         });
 
-        const catId = getQueryParam('categoria');
-        if(catId){
-          $("#titulo").html(categorias.find(cat => cat.id == catId).nombre)
+        const catId = getQueryParam("categoria");
+        if (catId) {
+          $("#titulo").html(categorias.find((cat) => cat.id == catId).nombre);
         } else {
-          $("#titulo").html('-- P o p u l a r - G a m e s --');
+          $("#titulo").html("-- P o p u l a r - G a m e s --");
         }
-
       })
       .fail(() => console.error("Error cargando categorías"));
   }
 
   // ---------------------------
-  // BÚSQUEDA
+  // BÚSQUEDA AUTOMÁTICA POR ?buscar=
+  // ---------------------------
+  const params = new URLSearchParams(window.location.search);
+  const terminoBusqueda = params.get("buscar");
+
+  if (terminoBusqueda) {
+    buscarJuegos(terminoBusqueda, 0);
+  } else {
+    cargarJuegos(0);
+  }
+
+  // ---------------------------
+  // EVENTOS DE BÚSQUEDA
   // ---------------------------
   const $btnBuscar = $("#btn-buscar");
   const $campoBusqueda = $(".campo-busqueda");
@@ -93,7 +108,6 @@ $(document).ready(function () {
     }
   });
 
-  // Cerrar campo si clickeas fuera
   $(document).on("click", function (e) {
     if (
       !$(e.target).is($btnBuscar) &&
@@ -129,11 +143,6 @@ $(document).ready(function () {
         } else {
           pagDiv.style.display = "none";
         }
-
-        // Valida imágenes
-        validateImagesForGames(juegos, { maxChecks: 200 }).then(
-          reportImageProblems
-        );
       })
       .catch((err) => console.error("Error en búsqueda:", err));
   }
@@ -143,6 +152,7 @@ $(document).ready(function () {
   // ---------------------------
   function renderJuegos(juegos, $contenedor, mensajeVacio) {
     $contenedor.empty();
+
     if (!juegos || juegos.length === 0) {
       $contenedor.html(`<p>${mensajeVacio}</p>`);
       return;
@@ -152,6 +162,7 @@ $(document).ready(function () {
       let imagen = juego.imagen;
       if (!imagen || imagen.trim() === "" || imagen === "null")
         imagen = "img/no-image.png";
+
       const cardHtml = `
         <div class="card">
           <a href='juego.html?id=${juego.id}'>
@@ -162,10 +173,12 @@ $(document).ready(function () {
       `;
       $contenedor.append(cardHtml);
     });
+
+    inicializarFiltroLetras(); // ahora se inicializa SIEMPRE después de renderizar juegos
   }
 
   // ---------------------------
-  // CARGAR JUEGOS (INICIAL)
+  // CARGAR JUEGOS (INICIO Y CATEGORÍAS)
   // ---------------------------
   function cargarJuegos(paginaSeleccionada) {
     let pagina = paginaSeleccionada + 1;
@@ -181,28 +194,24 @@ $(document).ready(function () {
         pagina - 1
       }&size=40`;
     } else {
-      url = `${API_JUEGOS_RANDOM}?size=20`;
+      url = `${API_JUEGOS_RANDOM}?size=40&noCache=${Date.now()}`;
       paginacionVisible = false;
     }
 
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        const juegos = data.content || data;
+        const juegos = Array.isArray(data) ? data : data.content || [];
         renderJuegos(juegos, $contenedor, "No hay juegos en esta categoría.");
 
         const pagDiv = document.getElementById("pagination");
+
         if (paginacionVisible && data.totalPages) {
           mostrarPaginacion(data.totalPages, pagina - 1, cargarJuegos);
           pagDiv.style.display = "flex";
         } else {
           pagDiv.style.display = "none";
         }
-
-        // Valida imágenes
-        validateImagesForGames(juegos, { maxChecks: 200 }).then(
-          reportImageProblems
-        );
       })
       .catch((err) => console.error("Error cargando juegos:", err));
   }
@@ -227,6 +236,60 @@ $(document).ready(function () {
   }
 
   // ---------------------------
+  // FILTRO POR LETRA (INICIALIZACIÓN DINÁMICA)
+  // ---------------------------
+
+
+function inicializarFiltroLetras() {
+  const categoria = new URLSearchParams(window.location.search).get("categoria");
+  if (!categoria) {
+    lettersDiv.hide();
+    return;
+  }
+  lettersDiv.show();
+
+  if (!lettersDiv.children().length) {
+    const letters = ["#"].concat(
+      Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))
+    );
+    letters.forEach((letter) => {
+      lettersDiv.append(`<button class="letter-btn">${letter}</button>`);
+    });
+  }
+
+  lettersDiv.off("click");
+
+  lettersDiv.on("click", ".letter-btn", function () {
+    const letra = $(this).text().toUpperCase();
+
+    lettersDiv.find(".letter-btn").removeClass("activa");
+    $(this).addClass("activa");
+
+    // Página 0 y tamaño 40 por defecto (puedes hacerlo dinámico)
+    const page = 0;
+    const size = 40;
+
+    // Construir URL para fetch
+    const url = `${BASE_URL}/api/juegos/categoria/id/${encodeURIComponent(categoria)}/letra/${encodeURIComponent(letra)}?page=${page}&size=${size}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        const juegos = data.content || [];
+        renderJuegos(juegos, $contenedor, `No se encontraron juegos para la letra "${letra}".`);
+        // Podés actualizar paginación si querés usando data.totalPages y data.page
+      })
+      .catch((err) => {
+        console.error("Error cargando juegos por letra:", err);
+        $contenedor.html(`<p>Error al cargar juegos.</p>`);
+      });
+  });
+}
+
+
+ 
+
+  // ---------------------------
   // MENÚ HAMBURGUESA
   // ---------------------------
   const $hamburger = $("#hamburger");
@@ -237,10 +300,12 @@ $(document).ready(function () {
   // INICIALIZAR
   // ---------------------------
   cargarCategorias();
-  cargarJuegos(0);
 });
 
+// ---------------------------
+// UTILIDAD
+// ---------------------------
 function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
 }

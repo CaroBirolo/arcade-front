@@ -146,10 +146,9 @@
         }
       });
 
-      // Función ficticia de búsqueda (por ahora sólo muestra en consola)
       function buscarJuegos(termino, pagina) {
-        console.log("Buscando:", termino, pagina);
-        // Aquí podés poner la lógica para cargar juegos por búsqueda
+        const encoded = encodeURIComponent(termino.trim());
+        window.location.href = `index.html?buscar=${encoded}`;
       }
 
       // --- Cargar juego ---

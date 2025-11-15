@@ -228,7 +228,9 @@ nav ul.menu li.buscar button:hover {
 /* ===============================
    🔹 TÍTULO
    =============================== */
-#titulo, #titulo2, #titulo3 {
+#titulo,
+#titulo2,
+#titulo3 {
   text-align: center;
   color: #f207fe;
   font-family: "Orbitron", sans-serif;
@@ -237,21 +239,22 @@ nav ul.menu li.buscar button:hover {
   letter-spacing: 8px;
   padding: 10px 0;
   -webkit-text-stroke: 0.6px black;
-  text-shadow:
-    0 0 5px #fff,
-    0 0 10px #00ffcc,
-    0 0 20px #00ffcc,
-    0 0 30px #00ffcc,
-    0 0 60px #f207fe,
-    0 0 100px #f207fe,
-    0 0 140px #00ffcc;
+  text-shadow: 0 0 5px #fff, 0 0 10px #00ffcc, 0 0 20px #00ffcc,
+    0 0 30px #00ffcc, 0 0 60px #f207fe, 0 0 100px #f207fe, 0 0 140px #00ffcc;
   animation: titulo-glow 2.2s ease-in-out infinite alternate;
 }
 
-#titulo { margin: 50px auto 20px; }
-#titulo2 { margin: 10px auto 5px; font-size: 1.6rem; }
-#titulo3 { margin: 0 auto 20px; font-size: 1.3rem; }
-
+#titulo {
+  margin: 50px auto 20px;
+}
+#titulo2 {
+  margin: 10px auto 5px;
+  font-size: 1.6rem;
+}
+#titulo3 {
+  margin: 0 auto 20px;
+  font-size: 1.3rem;
+}
 
 /* ===============================
    🔹 TARJETAS DE JUEGOS
@@ -300,6 +303,48 @@ nav ul.menu li.buscar button:hover {
   text-shadow: 0 0 3px #7dd504;
 }
 
+#letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px auto 40px;
+  padding: 10px;
+}
+
+/* ===============================
+   🔹 botones a-z
+   =============================== */
+#letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 15px auto 30px;
+  padding: 5px;
+}
+
+.letter-btn {
+  background: none;
+  border: 1.5px solid #ff00ff;
+  color: #5e69fe;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem; /* antes 1.1rem */
+  padding: 4px 8px; /* más chico */
+  border-radius: 4px;
+  cursor: pointer;
+  text-shadow: 0 0 4px #00ffcc, 0 0 8px #00ffcc;
+  transition: all 0.2s ease-in-out;
+}
+
+.letter-btn:hover {
+  background-color: #00ffcc;
+  color: #0a0a0a;
+  box-shadow: 0 0 6px #00ffcc, 0 0 15px #00ffcc, 0 0 30px #ff00ff;
+  transform: scale(1.05);
+}
+
 /* ===============================
    🔹 SECCIÓN PRINCIPAL
    =============================== */
@@ -346,7 +391,9 @@ footer {
 /* ===============================
    🔹 BOTONES (Paginación + Letras)
    =============================== */
-.paginacion, #pagination, #letters {
+.paginacion,
+#pagination,
+#letters {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -357,18 +404,17 @@ footer {
 
 .btn-pagina,
 .btn-letra {
-  padding: 6px 12px;
-  border: 2px solid #00ffcc;
-  background-color: #090039;
-  color: #00ffcc;
-  border-radius: 5px;
-  cursor: pointer;
+  background: none;
+  border: 1.5px solid #ff00ff;
+  color: #5e69fe;
   font-family: "Orbitron", sans-serif;
-  font-weight: bold;
-  text-shadow: 0 0 3px #00ffcc;
-  transition: all 0.3s;
-  min-width: 32px;
-  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem; /* antes 1.1rem */
+  padding: 4px 8px; /* más chico */
+  border-radius: 4px;
+  cursor: pointer;
+  text-shadow: 0 0 4px #00ffcc, 0 0 8px #00ffcc;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-pagina:hover,
@@ -466,7 +512,8 @@ footer {
     width: 140px;
   }
 
-  .btn-letra, .btn-pagina {
+  .btn-letra,
+  .btn-pagina {
     width: 30px;
     height: 30px;
     font-size: 12px;
