@@ -1,7 +1,6 @@
 /*
 arreglar la tarjeta del juego cuando se hace una busqueda y solo muestra 1 se ve raro
 la base readonly y cors
-otro banner
 */
 
 const BASE_URL = "https://retroarcade-api.contactoretroverse.workers.dev";
