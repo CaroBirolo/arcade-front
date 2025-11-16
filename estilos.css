@@ -346,8 +346,9 @@ nav ul.menu li.buscar button:hover {
 }
 
 /* ===============================
-   🔹 SECCIÓN PRINCIPAL
+   🔹 SECCIÓN PRINCIPAL (detalle)
    =============================== */
+
 .games-section {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -355,6 +356,22 @@ nav ul.menu li.buscar button:hover {
   margin-top: 20px;
 }
 
+/* ⭐ Cuando estás en juego.html forzamos 1 sola card (el iframe) */
+.games-section-detalle .cards-container {
+  display: block !important;
+}
+
+/* Columna izquierda (solo 1 card grande) */
+.cards-column {
+  width: 100%;
+}
+
+/* Contenedor del juego */
+.cards-container-detalle {
+  width: 100%;
+}
+
+/* Contenedor de publicidad lateral */
 .ads-column {
   background: #090039;
   border: 2px solid #00ffcc;
@@ -365,6 +382,7 @@ nav ul.menu li.buscar button:hover {
   text-align: center;
 }
 
+/* Cuadro donde va el banner lateral */
 .ad-space {
   position: relative;
   height: 200px;
@@ -373,8 +391,39 @@ nav ul.menu li.buscar button:hover {
 
 .ad-space img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 5px;
 }
+
+/* 🔹 Hacer que el banner inferior tenga el MISMO estilo que .ads-column */
+
+.ad-space-bottom {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+
+  background: #090039;
+  border: 2px solid #00ffcc;
+  border-radius: 8px;
+  padding: 10px;
+  color: #00ffcc;
+  font-family: "Orbitron", sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.ad-space-bottom img {
+  width: 100%;
+  max-width: 460px; /* Más grande aún */
+  border-radius: 8px;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 0 6px rgba(0, 255, 204, 0.06) inset;
+}
+
 
 /* ===============================
    🔹 FOOTER
@@ -499,9 +548,12 @@ footer {
     gap: 10px;
   }
 
-  .cards-container {
+  #cards-container {
+    display: grid;
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 20px;
+    margin: 20px auto 0;
+    max-width: 1200px;
   }
 
   .games-section {
@@ -518,4 +570,13 @@ footer {
     height: 30px;
     font-size: 12px;
   }
+}
+
+/* ===================================================
+   🔹 CARDS CONTAINER (detalle del juego)
+   =================================================== */
+.cards-container-detalle {
+  grid-template-columns: 1fr !important;
+  max-width: 100% !important;
+  margin: 0 !important;
 }

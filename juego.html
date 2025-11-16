@@ -16,6 +16,7 @@
 </head>
 
 <body>
+
   <header>
     <h1>
       <a href="index.html">
@@ -39,20 +40,38 @@
   </header>
 
   <main>
-    <section class="games-section">
+
+    <!-- ⭐ Le agrego “games-section-detalle” para forzar 1 columna -->
+    <section class="games-section games-section-detalle">
+
+      <!-- ⭐ Le agrego cards-container-detalle para aplicar tu CSS -->
       <div class="cards-column">
-        <div id="cards-container">
-          <!-- El juego se cargará aquí -->
-        </div>
+        <div id="cards-container" class="cards-container cards-container-detalle"></div>
       </div>
 
       <div class="ads-column">
-        <h2>Publicidad</h2>
         <div class="ad-space">
-          <img src="ruta/a/tu/publicidad.png" alt="Publicidad" />
+             <h2>        </h2>
+          <img src="https://placehold.co/300x250?text=Ad+300x250" alt="Publicidad" />
+        </div>
+        <h2>        </h2>
+        <div class="ad-space">
+          <img src="https://placehold.co/300x250?text=Ad+300x250" alt="Publicidad" />
+        </div>
+           <h2>        </h2>
+        <div class="ad-space">
+          <img src="https://placehold.co/300x250?text=Ad+300x250" alt="Publicidad" />
         </div>
       </div>
+
     </section>
+
+    <div class="ad-space-bottom">
+      <img src="https://placehold.co/728x90?text=Ad+728x90" alt="Publicidad inferior">
+      <img src="https://placehold.co/728x90?text=Ad+728x90" alt="Publicidad inferior">
+    </div>
+  
+
   </main>
 
   <footer>
@@ -61,102 +80,13 @@
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="script.js"></script>
 
   <script>
     $(document).ready(function () {
-      const API_CATEGORIAS = "https://retroarcade-api.contactoretroverse.workers.dev/api/categorias";
-      const $menu = $("#menu-principal");
-      const $hamburger = $("#hamburger");
-      const $navMenu = $("#nav-menu");
-
-      // Menú hamburguesa
-      $hamburger.on("click", function () {
-        $navMenu.toggleClass("activo");
-      });
-
-      // Cargar categorías
-      function cargarCategorias() {
-        $.getJSON(API_CATEGORIAS)
-          .done(function (categorias) {
-            if (!Array.isArray(categorias) || categorias.length === 0) return;
-
-            const principales = categorias.filter(cat => cat.padre_id === null).sort((a, b) => a.orden - b.orden);
-            const secundarias = categorias.filter(cat => cat.padre_id !== null);
-
-            principales.forEach((cat) => {
-              const li = $("<li></li>");
-              const a = $(`<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`);
-              li.append(a);
-
-              const subs = secundarias.filter(sub => sub.padre_id === cat.id).sort((a, b) => a.orden - b.orden);
-              if (subs.length > 0) {
-                const ulSub = $('<ul class="submenu"></ul>');
-                subs.forEach((sub) => {
-                  const liSub = $("<li></li>");
-                  const aSub = $(`<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`);
-                  liSub.append(aSub);
-                  ulSub.append(liSub);
-                });
-                li.append(ulSub);
-              }
-
-              $menu.find(".buscar").before(li);
-            });
-          })
-          .fail(function () {
-            console.error("Error cargando categorías");
-          });
-      }
 
       cargarCategorias();
-
-      // --- Botón búsqueda ---
-      const $btnBuscar = $("#btn-buscar");
-      const $campoBusqueda = $(".campo-busqueda");
-      const $inputBusqueda = $campoBusqueda.find("input");
-
-      $btnBuscar.on("click", function () {
-        if ($campoBusqueda.is(":visible")) {
-          const termino = $inputBusqueda.val().trim();
-          if (termino !== "") buscarJuegos(termino, 0);
-        } else {
-          $campoBusqueda.show();
-          $inputBusqueda.focus();
-        }
-      });
-
-      $("#btn-ejecutar-busqueda").on("click", function (e) {
-        e.preventDefault();
-        const termino = $inputBusqueda.val().trim();
-        if (termino !== "") buscarJuegos(termino, 0);
-      });
-
-      $inputBusqueda.on("keypress", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          const termino = $inputBusqueda.val().trim();
-          if (termino !== "") buscarJuegos(termino, 0);
-        }
-      });
-
-      // Cerrar campo si clickeas fuera
-      $(document).on("click", function (e) {
-        if (!$(e.target).is($btnBuscar) && !$(e.target).closest($campoBusqueda).length) {
-          $campoBusqueda.hide();
-        }
-      });
-
-      function buscarJuegos(termino, pagina) {
-        const encoded = encodeURIComponent(termino.trim());
-        window.location.href = `index.html?buscar=${encoded}`;
-      }
-
-      // --- Cargar juego ---
-
-      function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-      }
+      InitSeccionBusqueda();
 
       const juegoId = getQueryParam("id");
 
@@ -164,6 +94,7 @@
         url: `https://retroarcade-api.contactoretroverse.workers.dev/api/juegos/id/${juegoId}`,
         method: "GET",
         success: function (juego) {
+
           const cardHtml = `
             <div class="card-juego">
               <h2 id="titulo2">${juego.nombre}</h2>
@@ -171,15 +102,17 @@
               ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
             </div>
           `;
+
           $("#cards-container").html(cardHtml);
         },
+
         error: function () {
           $("#cards-container").html("<p>No se pudo cargar el juego.</p>");
-        },
+        }
       });
 
     });
   </script>
-</body>
 
+</body>
 </html>
