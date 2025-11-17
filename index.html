@@ -103,6 +103,28 @@
   <footer>
     <p>© 2025 — RetroVerse</p>
   </footer>
+
+  <!-- 🔹 POP-UP ANTI ADBLOCK -->
+  <div id="adblock-popup">
+    <div class="popup-box">
+      <h2>🛑 AdBlock Detectado</h2>
+      <p>
+        Para poder seguir disfrutando RetroVerse te pedimos que desactives tu
+        bloqueador de anuncios.<br><br>
+        Prometemos anuncios livianos y no invasivos 💜
+      </p>
+      <button id="popup-close">Entendido</button>
+    </div>
+  </div>
+
+  <!-- Scripts anti-adblock -->
+  <script src="anti-adblock.js"></script>
+  <script>
+    document.getElementById("popup-close").addEventListener("click", () => {
+      document.getElementById("adblock-popup").style.display = "none";
+    });
+  </script>
+
 </body>
 
 </html>

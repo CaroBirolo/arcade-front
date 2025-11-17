@@ -1,3 +1,42 @@
+/* ======================================
+   🔹 POP-UP PARA BLOQUEADOR DE ANUNCIOS
+   ====================================== */
+#adblock-popup {
+  display: none; /* se muestra solo si detecta adblock */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  background: #090039;
+  border: 2px solid #00ffcc;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 350px;
+  color: white;
+  text-align: center;
+  font-family: "Orbitron", sans-serif;
+}
+
+#popup-close {
+  margin-top: 15px;
+  background: #00ffcc;
+  border: none;
+  padding: 8px 15px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #000;
+}
+
 /* ===============================
    🔹 RESETEO Y BASE
    =============================== */
@@ -381,20 +420,18 @@ nav ul.menu li.buscar button:hover {
   font-family: "Orbitron", sans-serif;
   text-align: center;
 
-  width: 300px;        /* 👈 nuevo */
-  min-width: 250px;    /* 👈 nuevo */
+  width: 300px; /* 👈 nuevo */
+  min-width: 250px; /* 👈 nuevo */
   box-sizing: border-box;
 }
-
 
 /* Cuadro donde va el banner lateral */
 .ad-space {
   position: relative;
-  min-height: 200px;  /* mínimo para evitar colapso */
+  min-height: 200px; /* mínimo para evitar colapso */
   width: 100%;
   overflow: hidden;
 }
-
 
 /* 🔹 Hacer que el banner inferior tenga el MISMO estilo que .ads-column */
 .ad-space-bottom {
@@ -422,7 +459,6 @@ nav ul.menu li.buscar button:hover {
   object-fit: cover;
   box-shadow: 0 0 6px rgba(0, 255, 204, 0.06) inset;
 }
-
 
 /* ===============================
    🔹 FOOTER
