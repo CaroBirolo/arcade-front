@@ -380,24 +380,23 @@ nav ul.menu li.buscar button:hover {
   color: #00ffcc;
   font-family: "Orbitron", sans-serif;
   text-align: center;
+
+  width: 300px;        /* 👈 nuevo */
+  min-width: 250px;    /* 👈 nuevo */
+  box-sizing: border-box;
 }
+
 
 /* Cuadro donde va el banner lateral */
 .ad-space {
   position: relative;
-  height: 200px;
+  min-height: 200px;  /* mínimo para evitar colapso */
+  width: 100%;
   overflow: hidden;
 }
 
-.ad-space img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 5px;
-}
 
 /* 🔹 Hacer que el banner inferior tenga el MISMO estilo que .ads-column */
-
 .ad-space-bottom {
   display: flex;
   flex-direction: row;
