@@ -166,22 +166,25 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
 
   juegos.forEach((juego) => {
     let imagen = juego.imagen;
-    if (!imagen || imagen.trim() === "" || imagen === "null")
-      imagen = "img/no-image.png";
+    if (!imagen || imagen.trim() === "" || imagen === "null") {
+      imagen = "imagenes/no-img-available.png"; // Ruta de la imagen fallback
+    }
 
     const cardHtml = `
-        <div class="card">
-          <a href='juego.html?id=${juego.id}'>
-            <img src="${imagen}" alt="${juego.nombre}" onerror="this.src='img/no-img-available'; this.onerror=null;" />
-          </a>
-          <h3>${juego.nombre} - ${juego.plataforma}</h3>
-        </div>
-      `;
+      <div class="card">
+        <a href='juego.html?id=${juego.id}'>
+          <img src="${imagen}" alt="${juego.nombre}"
+               onerror="this.onerror=null; this.src='/imagenes/no-img-available.png';" />
+        </a>
+        <h3>${juego.nombre} - ${juego.plataforma}</h3>
+      </div>
+    `;
     $contenedor.append(cardHtml);
   });
 
   inicializarFiltroLetras(); // ahora se inicializa SIEMPRE después de renderizar juegos
 }
+
 
 function cargarJuegos(paginaSeleccionada) {
   let pagina = paginaSeleccionada + 1;
