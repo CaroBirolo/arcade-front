@@ -91,13 +91,21 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="script.js"></script>
   <script>
-
     $(document).ready(function () {
       cargarCategorias();
       initBusqueda();
-      InitSeccionBusqueda();
-    });
 
+      const categoria = new URLSearchParams(window.location.search).get("categoria");
+
+      if (categoria) {
+        // 👉 Estás en categorías → mostrar A-Z
+        InitSeccionBusqueda();
+        $("#letters").show();
+      } else {
+        // 👉 Inicio → ocultar A-Z
+        $("#letters").hide();
+      }
+    });
   </script>
 
   <footer>
@@ -124,6 +132,12 @@
       document.getElementById("adblock-popup").style.display = "none";
     });
   </script>
+  <script>
+    document.getElementById("hamburger").addEventListener("click", () => {
+      document.getElementById("menu-principal").classList.toggle("activo");
+    });
+  </script>
+
 
 </body>
 

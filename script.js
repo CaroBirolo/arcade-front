@@ -236,14 +236,15 @@ function mostrarPaginacion(totalPaginas, paginaActual, callback) {
 }
 
 function inicializarFiltroLetras() {
-  const categoria = new URLSearchParams(window.location.search).get(
-    "categoria"
-  );
-  if (!categoria) {
-    lettersDiv.hide();
-    return;
-  }
-  lettersDiv.show();
+InitSeccionBusqueda();
+const categoria = new URLSearchParams(window.location.search).get("categoria");
+// 🔥 solo mostramos las letras A-Z si hay categoría
+if (categoria) {
+  $("#letters").show();
+} else {
+  $("#letters").hide();
+}
+
 
   // Crear botones una sola vez
   if (!lettersDiv.children().length) {

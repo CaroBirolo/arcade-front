@@ -50,6 +50,7 @@
 
       <div class="cards-column">
         <div id="cards-container" class="cards-container cards-container-detalle"></div>
+        <div id="iframe-preview" class="iframe-preview"></div>
       </div>
 
       <div class="ads-column">
@@ -77,6 +78,26 @@
   <footer>
     <p>© 2025 — RetroVerse</p>
   </footer>
+  <!-- 🔹 POP-UP ANTI ADBLOCK -->
+  <div id="adblock-popup">
+    <div class="popup-box">
+      <h2>🛑 AdBlock Detectado</h2>
+      <p>
+        Para poder seguir disfrutando RetroVerse te pedimos que desactives tu
+        bloqueador de anuncios.<br><br>
+        Los anuncios son livianos y no invasivos 💜
+      </p>
+      <button id="popup-close">Entendido</button>
+    </div>
+  </div>
+
+  <!-- Scripts anti-adblock -->
+  <script src="anti-adblock.js"></script>
+  <script>
+    document.getElementById("popup-close").addEventListener("click", () => {
+      document.getElementById("adblock-popup").style.display = "none";
+    });
+  </script>
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -104,6 +125,9 @@
           `;
 
           $("#cards-container").html(cardHtml);
+          if (juego.iframe) {
+            $("#iframe-preview").html(` <h3>     Embed Code: </h3><textarea>&lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</textarea>`);
+          }
         },
 
         error: function () {

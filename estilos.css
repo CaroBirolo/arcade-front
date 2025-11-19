@@ -57,7 +57,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: black;
+  background: #090039;
   padding: 8px 25px;
   border-bottom: 2px solid #f207fe;
   box-shadow: 0 0 10px #f207fe;
@@ -343,25 +343,16 @@ nav ul.menu li.buscar button:hover {
 }
 
 #letters {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin: 20px auto 40px;
-  padding: 10px;
-}
-
-/* ===============================
-   🔹 botones a-z
-   =============================== */
-#letters {
-  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
   margin: 15px auto 30px;
   padding: 5px;
 }
+
+/* ===============================
+   🔹 botones a-z
+   =============================== */
 
 .letter-btn {
   background: none;
@@ -412,11 +403,8 @@ nav ul.menu li.buscar button:hover {
 
 /* Contenedor de publicidad lateral */
 .ads-column {
-  background: #090039;
-  border: 2px solid #00ffcc;
   border-radius: 8px;
   padding: 10px;
-  color: #00ffcc;
   font-family: "Orbitron", sans-serif;
   text-align: center;
 
@@ -440,24 +428,12 @@ nav ul.menu li.buscar button:hover {
   gap: 15px;
   justify-content: center;
   margin-top: 20px;
-
-  background: #090039;
-  border: 2px solid #00ffcc;
   border-radius: 8px;
   padding: 10px;
   color: #00ffcc;
   font-family: "Orbitron", sans-serif;
   text-align: center;
   box-sizing: border-box;
-}
-
-.ad-space-bottom img {
-  width: 100%;
-  max-width: 460px; /* Más grande aún */
-  border-radius: 8px;
-  display: block;
-  object-fit: cover;
-  box-shadow: 0 0 6px rgba(0, 255, 204, 0.06) inset;
 }
 
 /* ===============================
@@ -476,8 +452,7 @@ footer {
    🔹 BOTONES (Paginación + Letras)
    =============================== */
 .paginacion,
-#pagination,
-#letters {
+#pagination {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -567,7 +542,7 @@ footer {
     position: absolute;
     top: 70px;
     right: 10px;
-    background-color: #222;
+    background-color: #090039;
     padding: 10px;
     border-radius: 5px;
     z-index: 1000;
@@ -607,6 +582,70 @@ footer {
   }
 }
 
+/* ===============================
+   🔹 MENÚ HAMBURGUESA (MÓVIL)
+   =============================== */
+
+/* Botón hamburguesa */
+.hamburger {
+  display: none;
+  font-size: 32px;
+  background: none;
+  border: none;
+  color: #5e69fe;
+  cursor: pointer;
+}
+
+/* Ocultamos el menú en móvil */
+@media (max-width: 900px) {
+  /* El menú correcto es #menu-principal */
+  #menu-principal {
+    display: none;
+    flex-direction: column;
+    background: #000;
+    border: 2px solid #5e69fe;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 200px;
+    padding: 15px;
+    gap: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #5e69fe;
+  }
+
+  /* Mostrar menú cuando está activo */
+  #menu-principal.activo {
+    display: flex;
+  }
+
+  /* Mostrar botón hamburguesa */
+  .hamburger {
+    display: block;
+  }
+
+  nav ul.menu li {
+    width: 100%;
+  }
+
+  nav ul.menu li a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #5e69fe;
+  }
+
+  nav ul.menu li a:last-child {
+    border-bottom: none;
+  }
+
+  /* Desactivar submenú en móvil */
+  nav ul.menu li:hover > ul.submenu {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
 /* ===================================================
    🔹 CARDS CONTAINER (detalle del juego)
    =================================================== */
@@ -614,4 +653,57 @@ footer {
   grid-template-columns: 1fr !important;
   max-width: 100% !important;
   margin: 0 !important;
+}
+
+/* Contenedor general */
+#iframe-preview {
+  background: #090039; 
+  margin: 20px 0 40px 0;
+  padding: 10px; 
+  width: 100%;  
+  max-width: none;
+  box-sizing: border-box;
+  display: flex; 
+  align-items: center; 
+  gap: 15px; 
+}
+
+/* Título estilo neon, sin cambios */
+#iframe-preview h3 {
+  background: #090039;
+  margin: 0;
+  padding-left: 10px;
+  text-align: left;
+  color: #00ffcc;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 4px;
+  -webkit-text-stroke: 0.6px black;
+  text-shadow: 0 0 5px #fff, 0 0 10px #f207fe, 0 0 20px #f207fe,
+    0 0 30px #f207fe, 0 0 60px #f207fe, 0 0 100px #f207fe, 0 0 140px #f207fe;
+  animation: titulo-glow 2.2s ease-in-out infinite alternate;
+  white-space: nowrap; /* 🔥 evita que salte de línea */
+}
+
+/* Textarea */
+#iframe-preview textarea {
+  flex: 1; /* 🔥 ocupa todo el espacio restante */
+  height: 40px;
+  background: #090039;
+  color: #eaeaea;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  resize: none;
+  font-family: monospace;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Margen izquierdo para el detalle del juego */
+.games-section-detalle .cards-column {
+  padding-left: 25px; /* Ajustá el valor que quieras */
+  box-sizing: border-box;
 }
