@@ -172,7 +172,7 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
     const cardHtml = `
         <div class="card">
           <a href='juego.html?id=${juego.id}'>
-            <img src="${imagen}" alt="${juego.nombre}" onerror="this.src='img/no-image.png'; this.onerror=null;" />
+            <img src="${imagen}" alt="${juego.nombre}" onerror="this.src='img/no-img-available'; this.onerror=null;" />
           </a>
           <h3>${juego.nombre} - ${juego.plataforma}</h3>
         </div>
