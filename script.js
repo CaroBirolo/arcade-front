@@ -1,6 +1,7 @@
 /*
 arreglar la tarjeta del juego cuando se hace una busqueda y solo muestra 1 se ve raro
 la base readonly y cors
+anda cuando seleccionas una letra y una pagina pero no cambia de color la pagina y la letra, no queda "seleccionado"
 */
 
 const BASE_URL = "https://retroarcade-api.contactoretroverse.workers.dev";
