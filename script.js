@@ -4,12 +4,9 @@ la base readonly y cors
 */
 
 const BASE_URL = "https://retroarcade-api.contactoretroverse.workers.dev";
-const API_JUEGOS =
-  "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos";
-const API_JUEGOS_RANDOM =
-  "https://retroarcade-api.contactoretroverse.workers.dev/api/juegos/random";
-const API_CATEGORIAS =
-  "https://retroarcade-api.contactoretroverse.workers.dev/api/categorias";
+const API_JUEGOS = `${BASE_URL}/api/juegos`;
+const API_JUEGOS_RANDOM = `${BASE_URL}/api/juegos/random`;
+const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
 
 const $contenedor = $("#cards-container");
 const $menu = $("#menu-principal");
@@ -20,6 +17,54 @@ const $inputBusqueda = $campoBusqueda.find("input");
 const $hamburger = $("#hamburger");
 const $navMenu = $("#nav-menu");
 $hamburger.on("click", () => $navMenu.toggleClass("show"));
+
+// ----------------------------------------------------
+// SLUG DETECTADO EN URL
+// ----------------------------------------------------
+const path = window.location.pathname;
+
+let categoriaSlug = null;
+let juegoSlug = null;
+
+if (path.startsWith("/categoria/")) {
+  categoriaSlug = path.replace("/categoria/", "").trim();
+}
+
+if (path.startsWith("/juego/")) {
+  juegoSlug = path.replace("/juego/", "").trim();
+}
+
+async function cargarJuegoPorSlug(slug) {
+  try {
+    const resp = await fetch(`${BASE_URL}/api/juego/slug/${slug}`);
+    const juego = await resp.json();
+
+    if (!juego || juego.error) {
+      console.error("Juego no encontrado");
+      return;
+    }
+
+    cargarJuego(juego.id); // tu función original
+  } catch (e) {
+    console.error("Error", e);
+  }
+}
+
+async function cargarCategoriaPorSlug(slug) {
+  try {
+    const resp = await fetch(`${BASE_URL}/api/categoria/slug/${slug}`);
+    const categoria = await resp.json();
+
+    if (!categoria || categoria.error) {
+      console.error("Categoría no encontrada");
+      return;
+    }
+
+    cargarCategoria(categoria.id); // tu función original
+  } catch (e) {
+    console.error("Error", e);
+  }
+}
 
 function initBusqueda() {
   const params = new URLSearchParams(window.location.search);
@@ -92,7 +137,7 @@ function cargarCategorias() {
           cat.padre_id == null &&
           !secundarias.find((sec) => sec.padre_id == cat.id)
         ) {
-          a = $(`<a href="index.html?categoria=${cat.id}">${cat.nombre}</a>`);
+          a = $(`<a href="/categoria/${cat.slug}">${cat.nombre}</a>`);
         } else {
           a = $(`<a href="javascript:void(0)">${cat.nombre}</a>`);
         }
@@ -107,9 +152,7 @@ function cargarCategorias() {
           const ulSub = $('<ul class="submenu"></ul>');
           subs.forEach((sub) => {
             const liSub = $("<li></li>");
-            const aSub = $(
-              `<a href="index.html?categoria=${sub.id}">${sub.nombre}</a>`
-            );
+            const aSub = $(`<a href="/categoria/${sub.slug}">${sub.nombre}</a>`);
             liSub.append(aSub);
             ulSub.append(liSub);
           });
@@ -119,9 +162,11 @@ function cargarCategorias() {
         $menu.find(".buscar").before(li);
       });
 
-      const catId = getQueryParam("categoria");
-      if (catId) {
-        $("#titulo").html(categorias.find((cat) => cat.id == catId).nombre);
+      if (categoriaSlug) {
+        $("#titulo").html(
+          categorias.find((cat) => cat.slug == categoriaSlug)?.nombre ||
+            "Categoría"
+        );
       } else {
         $("#titulo").html("-- P o p u l a r - G a m e s --");
       }
@@ -165,15 +210,14 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
   }
 
   juegos.forEach((juego) => {
-      console.log("Imagen original de juego:", juego.imagen);  // <-- acá
     let imagen = juego.imagen;
     if (!imagen || imagen.trim() === "" || imagen === "null") {
-      imagen = "imagenes/no-img-available.png"; // Ruta de la imagen fallback
+      imagen = "imagenes/no-img-available.png";
     }
 
     const cardHtml = `
       <div class="card">
-        <a href='juego.html?id=${juego.id}'>
+        <a href='/juego/${juego.slug}'>
           <img src="${imagen}" alt="${juego.nombre}"
                onerror="this.onerror=null; this.src='imagenes/no-img-available.png';" />
         </a>
@@ -183,32 +227,25 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
     $contenedor.append(cardHtml);
   });
 
-  inicializarFiltroLetras(); // ahora se inicializa SIEMPRE después de renderizar juegos
+  inicializarFiltroLetras();
 }
-
 
 function cargarJuegos(paginaSeleccionada) {
   let pagina = paginaSeleccionada + 1;
   let url;
   let paginacionVisible = true;
 
-  const juegoCategoria = new URLSearchParams(window.location.search).get(
-    "categoria"
-  );
-
-  if (juegoCategoria) {
-    url = `${API_JUEGOS}/categoria/${juegoCategoria}?page=${
-      pagina - 1
-    }&size=40`;
+  if (categoriaSlug) {
+    url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${pagina - 1}&size=40`;
   } else {
-    url = `${API_JUEGOS_RANDOM}?size=40&noCache=${Date.now()}`;
+    url = `${API_JUEGOS_RANDOM}/40?&noCache=${Date.now()}`;
     paginacionVisible = false;
   }
 
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      const juegos = Array.isArray(data) ? data : data.content || [];
+      const juegos = Array.isArray(data) ? data : data.juegos || [];
       renderJuegos(juegos, $contenedor, "No hay juegos en esta categoría.");
 
       const pagDiv = document.getElementById("pagination");
@@ -240,17 +277,14 @@ function mostrarPaginacion(totalPaginas, paginaActual, callback) {
 }
 
 function inicializarFiltroLetras() {
-InitSeccionBusqueda();
-const categoria = new URLSearchParams(window.location.search).get("categoria");
-// 🔥 solo mostramos las letras A-Z si hay categoría
-if (categoria) {
-  $("#letters").show();
-} else {
-  $("#letters").hide();
-}
+  InitSeccionBusqueda();
 
+  if (window.location.pathname.startsWith("/categoria/")) {
+    $("#letters").show();
+  } else {
+    $("#letters").hide();
+  }
 
-  // Crear botones una sola vez
   if (!lettersDiv.children().length) {
     const letters = ["#"].concat(
       Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))
@@ -260,7 +294,7 @@ if (categoria) {
     });
   }
 
-  let juegosFiltradosLetra = []; // ⭐ guardamos el array filtrado
+  let juegosFiltradosLetra = [];
   let paginaActual = 0;
   const size = 40;
 
@@ -288,12 +322,10 @@ if (categoria) {
     lettersDiv.find(".letter-btn").removeClass("activa");
     $(this).addClass("activa");
 
-    // Reiniciamos página
     paginaActual = 0;
 
-    // Fetch juegos por letra (sin paginación del back)
-    const url = `${BASE_URL}/api/juegos/categoria/id/${encodeURIComponent(
-      categoria
+    const url = `${BASE_URL}/api/juegos/categoria/slug/${encodeURIComponent(
+      categoriaSlug
     )}/letra/${encodeURIComponent(letra)}?page=0&size=5000`;
 
     fetch(url)
@@ -302,16 +334,11 @@ if (categoria) {
         juegosFiltradosLetra = data.content || data || [];
 
         renderPaginaLetra();
-        renderPaginacionLetra(); // ⭐ ahora la paginación usa los juegos filtrados
+        renderPaginacionLetra();
       })
       .catch((err) => {
         console.error("Error cargando juegos por letra:", err);
         $contenedor.html(`<p>Error al cargar juegos.</p>`);
       });
   });
-}
-
-function getQueryParam(param) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(param);
 }
