@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>- RetroVerse - Juegos Retro Online Gratis - </title>
+  <title> RetroVerse - Free Online Retro Games- </title>
   <meta name="description"
     content="Juegos retro online totalmente gratis. Arcade clásicos, consolas viejas y juegos de los 80 y 90 sin descargar. RetroVerse: tu portal de nostalgia gamer.">
 
@@ -24,8 +24,8 @@
 <body>
   <header>
     <h1>
-      <a href="index.html">
-        <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+      <a href="/index.html">
+        <img src="/imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
       </a>
     </h1>
 
@@ -45,7 +45,7 @@
   </header>
 
   <main>
-    <section class="games-section">
+    <section class="games-section" id="games-section">
       <div class="cards-column">
         <h2 id="titulo"></h2>
 
@@ -72,45 +72,80 @@
       </div>
       <div id="pagination" class="pagination"></div>
     </section>
+
+
+    <section id="main-game-container" class="games-section games-section-detalle main-game-container">
+      <div>
+        <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
+        <div id="iframe-preview" class="iframe-preview"></div>
+      </div>
+
+      <div class="ads-column">
+        <div class="ad-space">
+          <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+            data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <div id="pagination" class="pagination"></div>
+      </div>
+
+      <div class="ad-space-bottom">
+        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+    </section>
+
+
+
     <!-- 🔽 Texto SEO para Google -->
     <div class="contenedor-ancho">
       <section id="seo-text">
-        <h2>Juegos Retro Online Gratis</h2>
+        <h2>Free Online Retro Games</h2>
         <p>
-          RetroVerse es un portal dedicado a los juegos retro online gratis, pensado para todos los que quieren
-          revivir la magia de los clásicos sin descargar nada. Acá vas a encontrar una colección cuidada de juegos
-          arcade, videojuegos de los 80, 90 y 2000, y títulos legendarios de consolas como Sega, Nintendo y más,
-          todo disponible directamente desde tu navegador.
+          RetroVerse is a portal dedicated to free online retro games, designed for everyone who wants
+          to relive the magic of the classics without downloading anything. Here you'll find a carefully curated
+          collection of
+          arcade games, video games from the 80s, 90s, and 2000s, and legendary titles from consoles like Sega,
+          Nintendo, and more —
+          all available directly from your browser.
         </p>
         <p>
-          Nuestro objetivo es ofrecerte una experiencia rápida, simple y auténtica, con juegos que funcionan en
-          cualquier dispositivo y sin complicaciones. Si buscás jugar juegos retro online, explorar clásicos
-          olvidados o simplemente disfrutar un rato de nostalgia gamer, este es tu lugar.
+          Our goal is to offer you a fast, simple, and authentic experience, with games that work on any device and
+          without complications.
+          Whether you're looking to play retro games online, explore forgotten classics, or simply enjoy a moment of
+          gamer nostalgia,
+          this is the place for you.
         </p>
         <p>
-          Actualizamos el catálogo de forma constante para que siempre encuentres algo nuevo: plataformas, carreras,
-          peleas, puzzles, aventuras y mucho más. RetroVerse es una comunidad para quienes aman los videojuegos de
-          siempre y quieren volver a jugarlos tal como los recuerdan.
+          We constantly update the catalog so you always find something new: platformers, racing, fighting, puzzles,
+          adventures, and much more. RetroVerse is a community for those who love timeless video games and want to play
+          them again
+          just as they remember.
         </p>
         <p>
-          Disfrutá de una selección de juegos clásicos online, 100% gratis, sin descargas, sin registros y con carga
-          instantánea. ¡Entrá, elegí un juego y viajá directo a la época dorada del gaming!
+          Enjoy a selection of classic online games — 100% free, no downloads, no registration, and instant loading.
+          Just jump in, pick a game, and travel straight to the golden age of gaming!
         </p>
-    </div>
-    </section>
 
-    <div class="ad-space-bottom">
+      </section>
 
-      <!-- Anuncio inferior -->
-      <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
-        data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
+      <div class="ad-space-bottom">
 
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+        <!-- Anuncio inferior -->
+        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
 
-    </div>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
+      </div>
   </main>
 
   <!-- jQuery -->
@@ -122,7 +157,6 @@
       initBusqueda();
 
       const categoria = new URLSearchParams(window.location.search).get("categoria");
-
       if (categoria) {
         // 👉 Estás en categorías → mostrar A-Z
         InitSeccionBusqueda();
@@ -131,6 +165,13 @@
         // 👉 Inicio → ocultar A-Z
         $("#letters").hide();
       }
+
+      $("#games-section").hide();
+      $("#main-game-container").hide();
+      if(juegoSlug) $("#main-game-container").show();
+      if(categoriaSlug) $("#games-section").show();
+      if(!juegoSlug && !categoriaSlug) $("#games-section").show();
+
     });
   </script>
 
@@ -141,13 +182,12 @@
   <!-- 🔹 POP-UP ANTI ADBLOCK -->
   <div id="adblock-popup">
     <div class="popup-box">
-      <h2>🛑 AdBlock Detectado</h2>
+      <h2>🛑 AdBlock Detected</h2>
       <p>
-        Para poder seguir disfrutando RetroVerse te pedimos que desactives tu
-        bloqueador de anuncios.<br><br>
-        Prometemos anuncios livianos y no invasivos 💜
+        To continue enjoying RetroVerse, we kindly ask you to disable your ad blocker.<br><br>
+        We promise light and non-intrusive ads 💜
       </p>
-      <button id="popup-close">Entendido</button>
+      <button id="popup-close">Got it</button>
     </div>
   </div>
 

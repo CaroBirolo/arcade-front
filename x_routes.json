@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [],
+  "routes": [
+    { "pattern": "/juego/*", "serve": "/juego.html" },
+    { "pattern": "/*", "serve": "/index.html" }
+  ]
+}

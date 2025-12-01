@@ -4,17 +4,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RetroVerse</title>
+  <title> RetroVerse - Free Online Retro Games- </title>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Estilos externos -->
   <link rel="stylesheet" href="/estilos.css" />
 
-  <!-- Goolge Ads -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3325573086861654"
     crossorigin="anonymous"></script>
 </head>
@@ -23,8 +20,8 @@
 
   <header>
     <h1>
-      <a href="index.html">
-        <img src="imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+      <a href="/index.html">
+        <img src="/imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
       </a>
     </h1>
 
@@ -32,6 +29,11 @@
 
     <nav id="nav-menu">
       <ul class="menu" id="menu-principal">
+
+        <!-- CONTENEDOR para las categorías -->
+        <li class="placeholder-categorias"></li>
+
+        <!-- BUSCADOR -->
         <li class="buscar">
           <button id="btn-buscar" type="button">Buscar</button>
           <div class="campo-busqueda" style="display:none;">
@@ -45,9 +47,7 @@
 
   <main>
 
-    <!-- ⭐ Le agrego “games-section-detalle” para forzar 1 columna -->
     <section class="games-section games-section-detalle">
-
       <div class="cards-column">
         <div id="cards-container" class="cards-container cards-container-detalle"></div>
         <div id="iframe-preview" class="iframe-preview"></div>
@@ -72,26 +72,23 @@
       </div>
 
     </section>
-
   </main>
 
   <footer>
     <p>© 2025 — RetroVerse</p>
   </footer>
-  <!-- 🔹 POP-UP ANTI ADBLOCK -->
+
   <div id="adblock-popup">
     <div class="popup-box">
-      <h2>🛑 AdBlock Detectado</h2>
+      <h2>🛑 AdBlock Detected 🛑 </h2>
       <p>
-        Para poder seguir disfrutando RetroVerse te pedimos que desactives tu
-        bloqueador de anuncios.<br><br>
-        Los anuncios son livianos y no invasivos 💜
+        To continue enjoying RetroVerse, we kindly ask you to disable your ad blocker.<br>
+        We promise light and non-intrusive ads💜
       </p>
-      <button id="popup-close">Entendido</button>
+      <button id="popup-close">Got it</button>
     </div>
   </div>
 
-  <!-- Scripts anti-adblock -->
   <script src="/anti-adblock.js"></script>
   <script>
     document.getElementById("popup-close").addEventListener("click", () => {
@@ -99,44 +96,8 @@
     });
   </script>
 
-  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="/script.js"></script>
-
-  <script>
-    $(document).ready(function () {
-
-      cargarCategorias();
-      InitSeccionBusqueda();
-
-      const juegoId = getQueryParam("id");
-
-      $.ajax({
-        url: `https://retroarcade-api.contactoretroverse.workers.dev/api/juegos/id/${juegoId}`,
-        method: "GET",
-        success: function (juego) {
-
-          const cardHtml = `
-            <div class="card-juego">
-              <h2 id="titulo2">${juego.nombre}</h2>
-              <h2 id="titulo3">Plataforma: ${juego.plataforma || "Desconocida"}</h2>
-              ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
-            </div>
-          `;
-
-          $("#cards-container").html(cardHtml);
-          if (juego.iframe) {
-            $("#iframe-preview").html(` <h3>     Embed Code: </h3><textarea>&lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</textarea>`);
-          }
-        },
-
-        error: function () {
-          $("#cards-container").html("<p>No se pudo cargar el juego.</p>");
-        }
-      });
-
-    });
-  </script>
 
 </body>
 

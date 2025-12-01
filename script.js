@@ -1,9 +1,3 @@
-/*
-arreglar la tarjeta del juego cuando se hace una busqueda y solo muestra 1 se ve raro
-la base readonly y cors
-anda cuando seleccionas una letra y una pagina pero no cambia de color la pagina y la letra, no queda "seleccionado"
-*/
-
 const BASE_URL = "https://retroarcade-api.contactoretroverse.workers.dev";
 const API_JUEGOS = `${BASE_URL}/api/juegos`;
 const API_JUEGOS_RANDOM = `${BASE_URL}/api/juegos/random`;
@@ -19,53 +13,56 @@ const $hamburger = $("#hamburger");
 const $navMenu = $("#nav-menu");
 $hamburger.on("click", () => $navMenu.toggleClass("show"));
 
-// ----------------------------------------------------
-// SLUG DETECTADO EN URL
-// ----------------------------------------------------
 const path = window.location.pathname;
 
-let categoriaSlug = null;
-let juegoSlug = null;
+var categoriaSlug = null;
+var juegoSlug = null;
 
 if (path.startsWith("/categoria/")) {
-  categoriaSlug = path.replace("/categoria/", "").trim();
+  categoriaSlug = path.replace("/categoria/", "")
+    .replace(/\/$/, "")
+    .trim();
+} else if (path.startsWith("/juego/")) {
+  juegoSlug = path.replace("/juego/", "")
+    .replace(/\/$/, "")
+    .trim();
 }
 
-if (path.startsWith("/juego/")) {
-  juegoSlug = path.replace("/juego/", "").trim();
+if (juegoSlug && juegoSlug.length > 0) {
+  cargarJuegoPorSlug(juegoSlug);
+} else if (categoriaSlug && categoriaSlug.length > 0) {
+  initBusqueda()
 }
 
 async function cargarJuegoPorSlug(slug) {
   try {
-    const resp = await fetch(`${BASE_URL}/api/juego/slug/${slug}`);
+    const resp = await fetch(`${BASE_URL}/api/juegos/slug/${slug}`);
     const juego = await resp.json();
 
     if (!juego || juego.error) {
       console.error("Juego no encontrado");
+      $("#game-cards-container").html("<p>Juego no encontrado.</p>");
       return;
     }
 
-    cargarJuego(juego.id); // tu función original
-  } catch (e) {
-    console.error("Error", e);
-  }
-}
+    const cardHtml = `
+      <div class="card-juego">
+        <h2 id="titulo2">${juego.nombre}</h2>
+        <h2 id="titulo3">Plataforma: ${juego.plataforma || "Desconocida"}</h2>
+        ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
+      </div>
+    `;
 
-async function cargarCategoriaPorSlug(slug) {
-  try {
-    const resp = await fetch(`${BASE_URL}/api/categoria/slug/${slug}`);
-    const categoria = await resp.json();
-
-    if (!categoria || categoria.error) {
-      console.error("Categoría no encontrada");
-      return;
+    $("#game-cards-container").html(cardHtml);
+    if (juego.iframe) {
+      $("#iframe-preview").html(` <h3>     Embed Code: </h3><textarea>&lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</textarea>`);
     }
 
-    cargarCategoria(categoria.id); // tu función original
   } catch (e) {
-    console.error("Error", e);
+    console.error("Error al cargar juego:", e); // Cambié el mensaje de error
   }
 }
+
 
 function initBusqueda() {
   const params = new URLSearchParams(window.location.search);
@@ -153,7 +150,9 @@ function cargarCategorias() {
           const ulSub = $('<ul class="submenu"></ul>');
           subs.forEach((sub) => {
             const liSub = $("<li></li>");
-            const aSub = $(`<a href="/categoria/${sub.slug}">${sub.nombre}</a>`);
+            const aSub = $(
+              `<a href="/categoria/${sub.slug}">${sub.nombre}</a>`
+            );
             liSub.append(aSub);
             ulSub.append(liSub);
           });
@@ -163,13 +162,15 @@ function cargarCategorias() {
         $menu.find(".buscar").before(li);
       });
 
-      if (categoriaSlug) {
+      if (path.startsWith("/categoria/")) {
         $("#titulo").html(
           categorias.find((cat) => cat.slug == categoriaSlug)?.nombre ||
-            "Categoría"
+          "Categoría"
         );
+      } else if (path.startsWith("/juego/")) {
+        $("#titulo").html("");
       } else {
-        $("#titulo").html("-- P o p u l a r - G a m e s --");
+        $("#titulo").html("-- 40 random games --");
       }
     })
     .fail(() => console.error("Error cargando categorías"));
@@ -237,7 +238,8 @@ function cargarJuegos(paginaSeleccionada) {
   let paginacionVisible = true;
 
   if (categoriaSlug) {
-    url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${pagina - 1}&size=40`;
+    url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${pagina - 1
+      }&size=40`;
   } else {
     url = `${API_JUEGOS_RANDOM}/40?&noCache=${Date.now()}`;
     paginacionVisible = false;
@@ -342,4 +344,26 @@ function inicializarFiltroLetras() {
         $contenedor.html(`<p>Error al cargar juegos.</p>`);
       });
   });
+}
+
+async function cargarJuego(id) {
+  try {
+    const resp = await fetch(`${BASE_URL}/api/juegos/${id}`);
+    const juego = await resp.json();
+
+    if (!juego || juego.error) {
+      console.error("Juego no encontrado");
+      return;
+    }
+
+    $("#titulo-juego").text(juego.nombre);
+    $("#imagen-juego").attr(
+      "src",
+      juego.imagen || "imagenes/no-img-available.png"
+    );
+    $("#descripcion-juego").text(juego.descripcion || "Sin descripción.");
+    $("#iframe-juego").attr("src", juego.iframe || "");
+  } catch (err) {
+    console.error("Error cargando juego:", err);
+  }
 }
