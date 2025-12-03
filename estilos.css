@@ -45,6 +45,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision;
+
+  /* 🚨 REGLAS GLOBALES PARA FORZAR EL RESPONSIVE (FUSIONADAS) 🚨 */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 🚨 REGLAS GLOBALES PARA MEDIA (IMAGENES, IFRAMES) 🚨 */
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
 }
 
 /*🔹 HEADER */
@@ -410,9 +424,9 @@ nav ul.menu li.buscar button:hover {
   text-align: center;
 
   width: 300px;
-  /* 👈 nuevo */
+  /* 👈 Estilo fijo que debemos anular en móvil */
   min-width: 250px;
-  /* 👈 nuevo */
+  /* 👈 Estilo fijo que debemos anular en móvil */
   box-sizing: border-box;
 }
 
@@ -554,13 +568,80 @@ footer {
   gap: 25px;
 }
 
-
 /* 3. MEDIA QUERY PARA MÓVIL (Max 900px) */
 @media (max-width: 900px) {
 
   /* Mostrar botón hamburguesa */
   .hamburger {
     display: block;
+  }
+
+  /* 🟢 TÍTULO: Reducir tamaño y espaciado */
+  #titulo,
+  #titulo2,
+  #titulo3 {
+    font-size: 1.4rem;
+    letter-spacing: 4px;
+    padding: 5px 0;
+  }
+
+  /* 🟢 LAYOUT PRINCIPAL: Pasar de Grid de 2 columnas a 1 columna */
+  .games-section {
+    grid-template-columns: 1fr;
+    /* Una sola columna para todos */
+    gap: 10px;
+    padding: 10px;
+    /* Aseguramos padding */
+  }
+
+  /* 🟢 ANULACIÓN DEL ANCHO FIJO DE PUBLICIDAD */
+  .ads-column {
+    width: 100%;
+    min-width: auto;
+    padding: 10px 0;
+    /* Ajustar padding si es necesario */
+  }
+
+  /* 🟢 CONTENEDOR GENERAL: Anular margen fijo */
+  .contenedor-ancho {
+    margin-left: auto;
+    /* Centrar */
+    margin-right: auto;
+    width: 100% !important;
+    /* Ocupar todo el ancho */
+    max-width: 100% !important;
+    /* Agregar padding en los lados para que no choque con los bordes */
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  /* 🟢 DETALLE DEL JUEGO: Asegurar que el iframe no se desborde */
+  .card-juego iframe {
+    height: 350px;
+    /* Reducir la altura para móvil */
+  }
+
+  /* 🟢 iframe-preview: Arreglar el flexbox que puede causar desborde */
+  #iframe-preview {
+    flex-direction: column;
+    /* Apilar elementos verticalmente */
+    gap: 5px;
+    padding: 5px;
+  }
+
+  #iframe-preview h3 {
+    text-align: center;
+    white-space: normal;
+    /* Permitir que el texto salte de línea */
+  }
+
+  #iframe-preview textarea {
+    width: 100%;
+  }
+
+  .games-section-detalle .cards-column {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   /* Ocultar el menú de navegación por defecto */
@@ -593,10 +674,6 @@ footer {
     flex-direction: column;
     width: 100%;
     gap: 15px;
-
-    /* Necesitamos que #menu-principal se muestre en el menú móvil, 
-       pero solo si su padre (#nav-menu) está visible, por eso 
-       no usamos display:flex aquí, sino en la regla general de arriba. */
   }
 
   nav ul.menu li {
@@ -609,6 +686,40 @@ footer {
     display: block;
     padding: 15px;
     border-bottom: 1px solid rgba(94, 105, 254, 0.3);
+  }
+
+  /* 🟢 REGLAS NUEVAS PARA EL SUBMENÚ MÓVIL (¡Esto ya lo teníamos y está bien!) */
+  nav ul.submenu {
+    position: static;
+    /* CAMBIO CLAVE: Se posiciona en el flujo normal (no flota) */
+    opacity: 1;
+    /* Necesario para anular el opacity: 0 del desktop */
+    visibility: visible;
+    transform: none;
+    /* Anula el transform: translateY(-10px) */
+
+    /* Estilos de apariencia para móvil */
+    background: #090039;
+    border: none;
+    border-radius: 0;
+    margin: 5px 0 5px 20px;
+    /* Indentación para que se vea anidado */
+    padding: 0;
+    min-width: auto;
+    max-height: none;
+
+    /* Ocultamos por defecto. Se mostrará con la función slideToggle de JavaScript */
+    display: none;
+  }
+
+  nav ul.submenu li a {
+    /* Estilos de los enlaces hijos en el submenú */
+    color: #00d2d9;
+    /* Cambiar a un color diferente al principal si quieres */
+    font-weight: normal;
+    border-bottom: none;
+    padding: 10px 20px;
+    text-align: left;
   }
 
   /* Ajustes del buscador en móvil */
@@ -624,7 +735,6 @@ footer {
     width: 90%;
   }
 }
-
 
 /* ⭐ Mantener menú siempre visible en desktop (ANULA las reglas mobile en pantalla grande) */
 @media (min-width: 901px) {
@@ -646,8 +756,7 @@ footer {
   }
 }
 
-
-/*🔹 CARDS CONTAINER (detalle del juego)*/
+/* 🔹 CARDS CONTAINER (detalle del juego)*/
 .cards-container-detalle {
   grid-template-columns: 1fr !important;
   max-width: 100% !important;
@@ -735,8 +844,7 @@ footer {
   color: #f207fe;
   -webkit-text-stroke: 0.6px black;
   text-shadow: 0 0 5px #fff, 0 0 10px #00ffcc, 0 0 20px #00ffcc,
-    0 0 30px #00ffcc, 0 0 60px #f207fe, 0 0 100px #f207fe,
-    0 0 140px #00ffcc;
+    0 0 30px #00ffcc, 0 0 60px #f207fe, 0 0 100px #f207fe, 0 0 140px #00ffcc;
   animation: titulo-glow 2.2s ease-in-out infinite alternate;
   font-size: 1.5rem;
   margin-bottom: 8px;

@@ -142,11 +142,12 @@ function cargarCategorias() {
       const $menu = $("#menu-principal");
       const $botonBuscar = $menu.find(".buscar");
 
-      // Iteramos las principales (pero al revés para usar prepend y mantener orden, o insertBefore)
-      // Vamos a usar insertBefore que es más seguro para tu diseño.
+      // Limpiar categorías previas antes de renderizar (opcional pero recomendado)
+      $menu.find('li').not('.buscar').remove();
 
+      // Iteramos las principales
       principales.forEach((cat) => {
-        console.log(`   -> Generando HTML para: ${cat.nombre}`); // ESTO DEBE SALIR EN CONSOLA
+        console.log(`   -> Generando HTML para: ${cat.nombre}`); // ESTO DEBE SALIR EN CONSOLA
 
         const li = $("<li></li>");
         let a = null;
@@ -158,7 +159,8 @@ function cargarCategorias() {
         if (!tieneSubmenu) {
           a = $(`<a href="/index.html?categoria=${cat.slug}">${cat.nombre}</a>`);
         } else {
-          a = $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`);
+          // El '▾' sirve como indicador visual de submenú
+          a = $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`); 
         }
 
         li.append(a);
@@ -188,6 +190,31 @@ function cargarCategorias() {
       });
 
       console.log("4. Proceso de renderizado finalizado.");
+
+      // 5. AGREGAR MANEJADOR DE EVENTOS PARA DESPLIEGUE MÓVIL (¡NUEVO CÓDIGO!)
+      
+      // Usamos delegación de eventos para capturar clics en los enlaces recién creados
+      $menu.off('click', 'a').on('click', 'a', function(e) {
+        const $link = $(this);
+        const $submenu = $link.siblings('.submenu');
+        
+        // Comprueba si estamos en vista móvil (ancho <= 900px, según tu CSS)
+        // Y si el elemento tiene un submenú
+        const esMovil = window.matchMedia("(max-width: 900px)").matches;
+
+        if (esMovil && $submenu.length) {
+          e.preventDefault(); // Evita que navegue
+          
+          // Oculta otros submenús abiertos para mantener un solo submenú activo
+          $menu.find('.submenu').not($submenu).slideUp(300);
+
+          // Muestra/oculta el submenú del elemento actual con animación
+          $submenu.slideToggle(300); 
+          
+          // Opcional: Cambia la clase para rotar el ícono si usas CSS para ello
+          $link.toggleClass('active'); 
+        }
+      });
 
     })
     .fail((jqxhr, textStatus, error) => {
