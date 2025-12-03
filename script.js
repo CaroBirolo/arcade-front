@@ -63,7 +63,6 @@ async function cargarJuegoPorSlug(slug) {
   }
 }
 
-
 function initBusqueda() {
   const params = new URLSearchParams(window.location.search);
   const terminoBusqueda = params.get("buscar");
@@ -272,9 +271,11 @@ function mostrarPaginacion(totalPaginas, paginaActual, callback) {
     btn.classList.add("btn-pagina");
     if (i === paginaActual) btn.classList.add("activa");
     btn.addEventListener("click", () => {
-      callback(i);
+      callback(i);            // Cambia la página
+      mostrarPaginacion(totalPaginas, i, callback);  // 🔥 vuelve a dibujar los botones
       window.scrollTo(0, 0);
     });
+
     pagDiv.appendChild(btn);
   }
 }
@@ -317,11 +318,13 @@ function inicializarFiltroLetras() {
     renderJuegos(juegosPagina, $contenedor, "No hay juegos para esta letra.");
   }
 
+  // Reset de eventos para evitar duplicados
   lettersDiv.off("click");
 
   lettersDiv.on("click", ".letter-btn", function () {
     const letra = $(this).text().toUpperCase();
 
+    // marcar la letra activa
     lettersDiv.find(".letter-btn").removeClass("activa");
     $(this).addClass("activa");
 
@@ -345,6 +348,7 @@ function inicializarFiltroLetras() {
       });
   });
 }
+
 
 async function cargarJuego(id) {
   try {

@@ -1,6 +1,4 @@
-/* ======================================
-   🔹 POP-UP PARA BLOQUEADOR DE ANUNCIOS
-   ====================================== */
+/* 🔹 POP-UP PARA BLOQUEADOR DE ANUNCIOS */
 #adblock-popup {
   display: none; /* se muestra solo si detecta adblock */
   position: fixed;
@@ -37,9 +35,7 @@
   color: #000;
 }
 
-/* ===============================
-   🔹 RESETEO Y BASE
-   =============================== */
+/*🔹 RESETEO Y BASE */
 body {
   margin: 0;
   font-family: "Orbitron", system-ui, sans-serif;
@@ -50,9 +46,7 @@ body {
   text-rendering: geometricPrecision;
 }
 
-/* ===============================
-   🔹 HEADER
-   =============================== */
+/*🔹 HEADER */
 header {
   display: flex;
   align-items: center;
@@ -88,9 +82,7 @@ header h1 img:hover {
   transform: scaleX(1.45) rotate(-2deg);
 }
 
-/* ===============================
-   🔹 MENÚ DE NAVEGACIÓN
-   =============================== */
+/*🔹 MENÚ DE NAVEGACIÓN */
 nav ul.menu {
   list-style: none;
   margin: 0;
@@ -171,9 +163,7 @@ nav ul.submenu li a:hover {
   transform: scale(1.05);
 }
 
-/* ===============================
-   🔹 BUSCADOR
-   =============================== */
+/* 🔹 BUSCADOR */
 nav ul.menu li.buscar {
   position: relative;
   display: flex;
@@ -264,9 +254,7 @@ nav ul.menu li.buscar button:hover {
   }
 }
 
-/* ===============================
-   🔹 TÍTULO
-   =============================== */
+/* 🔹 TÍTULO */
 #titulo,
 #titulo2,
 #titulo3 {
@@ -295,9 +283,7 @@ nav ul.menu li.buscar button:hover {
   font-size: 1.3rem;
 }
 
-/* ===============================
-   🔹 TARJETAS DE JUEGOS
-   =============================== */
+/* 🔹 TARJETAS DE JUEGOS */
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -351,9 +337,7 @@ nav ul.menu li.buscar button:hover {
   padding: 5px;
 }
 
-/* ===============================
-   🔹 botones a-z
-   =============================== */
+/*🔹 botones a-z */
 
 .letter-btn {
   background: none;
@@ -376,10 +360,12 @@ nav ul.menu li.buscar button:hover {
   transform: scale(1.05);
 }
 
-/* ===============================
-   🔹 SECCIÓN PRINCIPAL (detalle)
-   =============================== */
+.letter-btn.activa {
+  background-color: #ff00ff;
+  color: #fff;
+}
 
+/*🔹 SECCIÓN PRINCIPAL (detalle) */
 .games-section {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -438,9 +424,7 @@ nav ul.menu li.buscar button:hover {
   box-sizing: border-box;
 }
 
-/* ===============================
-   🔹 FOOTER
-   =============================== */
+/* 🔹 FOOTER */
 footer {
   text-align: center;
   padding: 15px;
@@ -450,9 +434,7 @@ footer {
   font-family: "Orbitron", sans-serif;
 }
 
-/* ===============================
-   🔹 BOTONES (Paginación + Letras)
-   =============================== */
+/*🔹 BOTONES (Paginación + Letras)*/
 .paginacion,
 #pagination {
   display: flex;
@@ -485,16 +467,14 @@ footer {
   transform: scale(1.1);
 }
 
-.btn-pagina.activa,
-.btn-letra.activa {
+.btn-pagina.activa {
   background-color: #ff00ff;
   color: #fff;
-  text-shadow: 0 0 5px #ff00ff;
+  border-color: #00ffcc;
+  transform: scale(1.12);
 }
 
-/* ===============================
-   🔹 CARD DETALLE
-   =============================== */
+/* 🔹 CARD DETALLE  */
 .card-juego {
   margin-bottom: 20px;
 }
@@ -522,9 +502,7 @@ footer {
   box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc inset;
 }
 
-/* ===============================
-   🔹 RESPONSIVE
-   =============================== */
+/*🔹 RESPONSIVE */
 .hamburger {
   display: none;
   font-size: 30px;
@@ -584,11 +562,8 @@ footer {
   }
 }
 
-/* ===============================
-   🔹 MENÚ HAMBURGUESA (MÓVIL)
-   =============================== */
+/* 🔹 MENÚ HAMBURGUESA (MÓVIL) */
 
-/* Botón hamburguesa */
 .hamburger {
   display: none;
   font-size: 32px;
@@ -648,16 +623,13 @@ footer {
   }
 }
 
-/* ===================================================
-   🔹 CARDS CONTAINER (detalle del juego)
-   =================================================== */
+/*🔹 CARDS CONTAINER (detalle del juego)*/
 .cards-container-detalle {
   grid-template-columns: 1fr !important;
   max-width: 100% !important;
   margin: 0 !important;
 }
 
-/* Contenedor general */
 #iframe-preview {
   background: #090039;
   margin: 10px 0 10px 0;
@@ -670,7 +642,6 @@ footer {
   gap: 15px;
 }
 
-/* Título estilo neon, sin cambios */
 #iframe-preview h3 {
   background: #090039;
   margin: 0;
@@ -688,7 +659,6 @@ footer {
   white-space: nowrap; /* 🔥 evita que salte de línea */
 }
 
-/* Textarea */
 #iframe-preview textarea {
   flex: 1; /* 🔥 ocupa todo el espacio restante */
   height: 40px;
@@ -710,9 +680,7 @@ footer {
   box-sizing: border-box;
 }
 
-/* ============================
-   🔹 CONTENEDOR GENERAL (ANCHO DE CARDS + ADS)
-   ============================ */
+/*🔹 CONTENEDOR GENERAL (ANCHO DE CARDS + ADS) */
 .contenedor-ancho {
   max-width: 1220px; /* cards + ads + gap */
   margin-left: 10px; /* margen izquierdo deseado */
@@ -721,9 +689,7 @@ footer {
   box-sizing: border-box;
 }
 
-/* ============================
-   🔹 ESTILO DEL TEXTO SEO
-   ============================ */
+/*🔹 ESTILO DEL TEXTO SEO */
 #seo-text {
   background: whitesmoke;
   padding: 25px;
