@@ -29,19 +29,20 @@
       </a>
     </h1>
 
+    <!-- Botón hamburguesa -->
     <button class="hamburger" id="hamburger">&#9776;</button>
 
     <nav id="nav-menu">
-      <ul class="menu" id="menu-principal">
-        <li class="buscar">
-          <button id="btn-buscar" type="button">Buscar</button>
-          <div class="campo-busqueda" style="display:none;">
-            <input type="text" placeholder="Escriba su búsqueda..." />
-            <button id="btn-ejecutar-busqueda" type="button">Buscar</button>
-          </div>
-        </li>
-      </ul>
-    </nav>
+  <ul id="menu-principal" class="menu">
+    <li class="buscar">
+      <button id="btn-buscar" type="button">Buscar</button>
+      <div class="campo-busqueda" style="display:none;">
+        <input type="text" placeholder="Escriba su búsqueda..." />
+        <button id="btn-ejecutar-busqueda" type="button">Buscar</button>
+      </div>
+    </li>
+  </ul>
+</nav>
   </header>
 
   <main>
@@ -168,9 +169,9 @@
 
       $("#games-section").hide();
       $("#main-game-container").hide();
-      if(juegoSlug) $("#main-game-container").show();
-      if(categoriaSlug) $("#games-section").show();
-      if(!juegoSlug && !categoriaSlug) $("#games-section").show();
+      if (juegoSlug) $("#main-game-container").show();
+      if (categoriaSlug) $("#games-section").show();
+      if (!juegoSlug && !categoriaSlug) $("#games-section").show();
 
     });
   </script>
@@ -198,13 +199,5 @@
       document.getElementById("adblock-popup").style.display = "none";
     });
   </script>
-  <script>
-    document.getElementById("hamburger").addEventListener("click", () => {
-      document.getElementById("menu-principal").classList.toggle("activo");
-    });
-  </script>
-
-
 </body>
-
 </html>

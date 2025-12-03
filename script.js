@@ -4,14 +4,18 @@ const API_JUEGOS_RANDOM = `${BASE_URL}/api/juegos/random`;
 const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
 
 const $contenedor = $("#cards-container");
-const $menu = $("#menu-principal");
 const lettersDiv = $("#letters");
 const $btnBuscar = $("#btn-buscar");
 const $campoBusqueda = $(".campo-busqueda");
 const $inputBusqueda = $campoBusqueda.find("input");
 const $hamburger = $("#hamburger");
+const $menu = $("#menu-principal");
 const $navMenu = $("#nav-menu");
-$hamburger.on("click", () => $navMenu.toggleClass("show"));
+
+$hamburger.on("click", () => {
+  $navMenu.toggleClass("show");
+});
+
 
 const path = window.location.pathname;
 
@@ -116,63 +120,79 @@ function redirigirBusqueda(termino) {
 }
 
 function cargarCategorias() {
+  console.log("1. Iniciando carga de categorías...");
+
   $.getJSON(API_CATEGORIAS)
     .done(function (categorias) {
+      console.log("2. Datos recibidos:", categorias.length, "categorías.");
+
       if (!Array.isArray(categorias) || categorias.length === 0) return;
 
+      // Filtramos las principales (padres)
+      // Usamos '==' para que capture tanto null como undefined
       const principales = categorias
-        .filter((cat) => cat.padre_id === null)
+        .filter((cat) => cat.padre_id == null)
         .sort((a, b) => a.orden - b.orden);
 
-      const secundarias = categorias.filter((cat) => cat.padre_id !== null);
+      const secundarias = categorias.filter((cat) => cat.padre_id != null);
+
+      console.log(`3. Se encontraron ${principales.length} categorías principales.`);
+
+      // Referencias al DOM
+      const $menu = $("#menu-principal");
+      const $botonBuscar = $menu.find(".buscar");
+
+      // Iteramos las principales (pero al revés para usar prepend y mantener orden, o insertBefore)
+      // Vamos a usar insertBefore que es más seguro para tu diseño.
 
       principales.forEach((cat) => {
+        console.log(`   -> Generando HTML para: ${cat.nombre}`); // ESTO DEBE SALIR EN CONSOLA
+
         const li = $("<li></li>");
         let a = null;
 
-        if (
-          cat.padre_id == null &&
-          !secundarias.find((sec) => sec.padre_id == cat.id)
-        ) {
-          a = $(`<a href="/categoria/${cat.slug}">${cat.nombre}</a>`);
+        // Verificamos si tiene hijos
+        const tieneSubmenu = secundarias.some((sec) => sec.padre_id == cat.id);
+
+        // Creamos el enlace
+        if (!tieneSubmenu) {
+          a = $(`<a href="/index.html?categoria=${cat.slug}">${cat.nombre}</a>`);
         } else {
-          a = $(`<a href="javascript:void(0)">${cat.nombre}</a>`);
+          a = $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`);
         }
 
         li.append(a);
 
+        // Lógica del submenú
         const subs = secundarias
-          .filter((sub) => sub.padre_id === cat.id)
+          .filter((sub) => sub.padre_id == cat.id)
           .sort((a, b) => a.orden - b.orden);
 
         if (subs.length > 0) {
           const ulSub = $('<ul class="submenu"></ul>');
           subs.forEach((sub) => {
             const liSub = $("<li></li>");
-            const aSub = $(
-              `<a href="/categoria/${sub.slug}">${sub.nombre}</a>`
-            );
+            const aSub = $(`<a href="/index.html?categoria=${sub.slug}">${sub.nombre}</a>`);
             liSub.append(aSub);
             ulSub.append(liSub);
           });
           li.append(ulSub);
         }
 
-        $menu.find(".buscar").before(li);
+        // --- MOMENTO DE INSERTAR EN EL HTML ---
+        if ($botonBuscar.length > 0) {
+          $botonBuscar.before(li); // Insertar antes del buscador
+        } else {
+          $menu.append(li); // Si no hay buscador, agregar al final
+        }
       });
 
-      if (path.startsWith("/categoria/")) {
-        $("#titulo").html(
-          categorias.find((cat) => cat.slug == categoriaSlug)?.nombre ||
-          "Categoría"
-        );
-      } else if (path.startsWith("/juego/")) {
-        $("#titulo").html("");
-      } else {
-        $("#titulo").html("-- 40 random games --");
-      }
+      console.log("4. Proceso de renderizado finalizado.");
+
     })
-    .fail(() => console.error("Error cargando categorías"));
+    .fail((jqxhr, textStatus, error) => {
+      console.error("Error FATAL cargando categorías:", textStatus, error);
+    });
 }
 
 function buscarJuegos(termino, pagina) {
@@ -348,7 +368,6 @@ function inicializarFiltroLetras() {
       });
   });
 }
-
 
 async function cargarJuego(id) {
   try {

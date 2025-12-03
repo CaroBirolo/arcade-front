@@ -1,6 +1,7 @@
 /* 🔹 POP-UP PARA BLOQUEADOR DE ANUNCIOS */
 #adblock-popup {
-  display: none; /* se muestra solo si detecta adblock */
+  display: none;
+  /* se muestra solo si detecta adblock */
   position: fixed;
   top: 0;
   left: 0;
@@ -90,14 +91,21 @@ nav ul.menu {
   display: flex;
   gap: 25px;
   align-items: center;
-  height: 50px;
+  /* 🟢 CAMBIOS CLAVE PARA VISIBILIDAD: */
+  height: auto;
+  /* Permite que el menú crezca según el contenido */
+  min-height: 50px;
+  /* Asegura una altura mínima si está vacío */
+  overflow: visible;
+  /* Asegura que no se recorte el contenido */
 }
 
-nav ul.menu > li {
+nav ul.menu>li {
   position: relative;
   display: flex;
   align-items: center;
-  height: 100%;
+  /* height: 100%; */
+  /* Se comenta para evitar conflicto con height:auto en el padre */
 }
 
 nav a {
@@ -139,7 +147,7 @@ nav ul.submenu {
   overflow-y: auto;
 }
 
-nav ul.menu li:hover > ul.submenu {
+nav ul.menu li:hover>ul.submenu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -248,6 +256,7 @@ nav ul.menu li.buscar button:hover {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -274,10 +283,12 @@ nav ul.menu li.buscar button:hover {
 #titulo {
   margin: 50px auto 20px;
 }
+
 #titulo2 {
   margin: 10px auto 5px;
   font-size: 1.6rem;
 }
+
 #titulo3 {
   margin: 0 auto 20px;
   font-size: 1.3rem;
@@ -331,7 +342,7 @@ nav ul.menu li.buscar button:hover {
 #letters {
   display: flex;
   flex-wrap: wrap;
-  justify-content:space-between;
+  justify-content: space-between;
   gap: 6px;
   margin: 15px auto 30px;
   padding: 5px;
@@ -345,8 +356,10 @@ nav ul.menu li.buscar button:hover {
   color: #5e69fe;
   font-family: "Orbitron", sans-serif;
   font-weight: 700;
-  font-size: 0.9rem; /* antes 1.1rem */
-  padding: 4px 8px; /* más chico */
+  font-size: 0.9rem;
+  /* antes 1.1rem */
+  padding: 4px 8px;
+  /* más chico */
   border-radius: 4px;
   cursor: pointer;
   text-shadow: 0 0 4px #00ffcc, 0 0 8px #00ffcc;
@@ -371,7 +384,7 @@ nav ul.menu li.buscar button:hover {
   grid-template-columns: 3fr 1fr;
   gap: 20px;
   margin-top: 20px;
-    padding: 10px;
+  padding: 10px;
 }
 
 /* ⭐ Cuando estás en juego.html forzamos 1 sola card (el iframe) */
@@ -396,15 +409,18 @@ nav ul.menu li.buscar button:hover {
   font-family: "Orbitron", sans-serif;
   text-align: center;
 
-  width: 300px; /* 👈 nuevo */
-  min-width: 250px; /* 👈 nuevo */
+  width: 300px;
+  /* 👈 nuevo */
+  min-width: 250px;
+  /* 👈 nuevo */
   box-sizing: border-box;
 }
 
 /* Cuadro donde va el banner lateral */
 .ad-space {
   position: relative;
-  min-height: 200px; /* mínimo para evitar colapso */
+  min-height: 200px;
+  /* mínimo para evitar colapso */
   width: 100%;
   overflow: hidden;
 }
@@ -452,8 +468,10 @@ footer {
   color: #5e69fe;
   font-family: "Orbitron", sans-serif;
   font-weight: 700;
-  font-size: 0.9rem; /* antes 1.1rem */
-  padding: 4px 8px; /* más chico */
+  font-size: 0.9rem;
+  /* antes 1.1rem */
+  padding: 4px 8px;
+  /* más chico */
   border-radius: 4px;
   cursor: pointer;
   text-shadow: 0 0 4px #00ffcc, 0 0 8px #00ffcc;
@@ -474,7 +492,7 @@ footer {
   transform: scale(1.12);
 }
 
-/* 🔹 CARD DETALLE  */
+/* 🔹 CARD DETALLE  */
 .card-juego {
   margin-bottom: 20px;
 }
@@ -502,68 +520,11 @@ footer {
   box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc inset;
 }
 
-/*🔹 RESPONSIVE */
-.hamburger {
-  display: none;
-  font-size: 30px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
+/* =========================================
+   ESTILOS DE NAVEGACIÓN RESPONSIVE
+   ========================================= */
 
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
-
-  #nav-menu {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 10px;
-    background-color: #090039;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
-  }
-
-  #nav-menu.show {
-    display: block;
-  }
-
-  #menu-principal {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  #cards-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin: 20px auto 0;
-    max-width: 1200px;
-  }
-
-  .games-section {
-    grid-template-columns: 1fr;
-  }
-
-  .campo-busqueda input {
-    width: 140px;
-  }
-
-  .btn-letra,
-  .btn-pagina {
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
-  }
-}
-
-/* 🔹 MENÚ HAMBURGUESA (MÓVIL) */
-
+/* 1. Ocultar botón hamburguesa en escritorio */
 .hamburger {
   display: none;
   font-size: 32px;
@@ -571,57 +532,120 @@ footer {
   border: none;
   color: #5e69fe;
   cursor: pointer;
+  padding: 0 10px;
 }
 
-/* Ocultamos el menú en móvil */
-@media (max-width: 900px) {
-  /* El menú correcto es #menu-principal */
-  #menu-principal {
-    display: none;
-    flex-direction: column;
-    background: #000;
-    border: 2px solid #5e69fe;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    width: 200px;
-    padding: 15px;
-    gap: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #5e69fe;
-  }
+/* 2. Estilos base del Nav (Escritorio por defecto) */
+#nav-menu {
+  display: flex !important;
+  /* Forzamos que se vea en PC */
+  flex-direction: row;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  position: static;
+  width: auto;
+}
 
-  /* Mostrar menú cuando está activo */
-  #menu-principal.activo {
-    display: flex;
-  }
+#menu-principal {
+  display: flex;
+  /* Asegura que la lista se vea */
+  gap: 25px;
+}
+
+
+/* 3. MEDIA QUERY PARA MÓVIL (Max 900px) */
+@media (max-width: 900px) {
 
   /* Mostrar botón hamburguesa */
   .hamburger {
     display: block;
   }
 
+  /* Ocultar el menú de navegación por defecto */
+  #nav-menu {
+    display: none !important;
+    /* Oculto hasta que se active */
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    left: 0;
+    /* Que ocupe todo el ancho o ajusta según prefieras */
+    background: #090039;
+    border-bottom: 2px solid #5e69fe;
+    border-top: 2px solid #5e69fe;
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* CLASE QUE AGREGA JQUERY PARA MOSTRARLO */
+  #nav-menu.show {
+    display: flex !important;
+  }
+
+  /* Ajustar la lista interna */
+  #menu-principal {
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+
+    /* Necesitamos que #menu-principal se muestre en el menú móvil, 
+       pero solo si su padre (#nav-menu) está visible, por eso 
+       no usamos display:flex aquí, sino en la regla general de arriba. */
+  }
+
   nav ul.menu li {
     width: 100%;
+    display: block;
+    text-align: center;
   }
 
   nav ul.menu li a {
     display: block;
-    width: 100%;
-    padding: 10px 0;
-    border-bottom: 1px solid #5e69fe;
+    padding: 15px;
+    border-bottom: 1px solid rgba(94, 105, 254, 0.3);
   }
 
-  nav ul.menu li a:last-child {
-    border-bottom: none;
+  /* Ajustes del buscador en móvil */
+  .buscar {
+    justify-content: center;
+    margin-top: 10px;
   }
 
-  /* Desactivar submenú en móvil */
-  nav ul.menu li:hover > ul.submenu {
-    display: none !important;
-    visibility: hidden !important;
+  .campo-busqueda {
+    right: 50%;
+    transform: translateX(50%);
+    top: 50px;
+    width: 90%;
   }
 }
+
+
+/* ⭐ Mantener menú siempre visible en desktop (ANULA las reglas mobile en pantalla grande) */
+@media (min-width: 901px) {
+  #nav-menu {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    width: auto;
+  }
+
+  /* Asegura que la lista interna sea display:flex en desktop */
+  #menu-principal {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+
 
 /*🔹 CARDS CONTAINER (detalle del juego)*/
 .cards-container-detalle {
@@ -656,11 +680,13 @@ footer {
   text-shadow: 0 0 5px #fff, 0 0 10px #f207fe, 0 0 20px #f207fe,
     0 0 30px #f207fe, 0 0 60px #f207fe, 0 0 100px #f207fe, 0 0 140px #f207fe;
   animation: titulo-glow 2.2s ease-in-out infinite alternate;
-  white-space: nowrap; /* 🔥 evita que salte de línea */
+  white-space: nowrap;
+  /* 🔥 evita que salte de línea */
 }
 
 #iframe-preview textarea {
-  flex: 1; /* 🔥 ocupa todo el espacio restante */
+  flex: 1;
+  /* 🔥 ocupa todo el espacio restante */
   height: 40px;
   background: #090039;
   color: #eaeaea;
@@ -676,14 +702,17 @@ footer {
 
 /* Margen izquierdo para el detalle del juego */
 .games-section-detalle .cards-column {
-  padding-left: 25px; /* Ajustá el valor que quieras */
+  padding-left: 25px;
+  /* Ajustá el valor que quieras */
   box-sizing: border-box;
 }
 
 /*🔹 CONTENEDOR GENERAL (ANCHO DE CARDS + ADS) */
 .contenedor-ancho {
-  max-width: 1220px; /* cards + ads + gap */
-  margin-left: 10px; /* margen izquierdo deseado */
+  max-width: 1220px;
+  /* cards + ads + gap */
+  margin-left: 10px;
+  /* margen izquierdo deseado */
   margin-right: auto;
   width: calc(100% - 10px);
   box-sizing: border-box;
