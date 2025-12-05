@@ -67,6 +67,23 @@ async function cargarJuegoPorSlug(slug) {
   }
 }
 
+async function obtenerNombreCategoria(slug) {
+  try {
+    const resp = await fetch(API_CATEGORIAS);
+    const categorias = await resp.json();
+
+    if (!Array.isArray(categorias)) return "Juegos de Categoría";
+
+    const categoriaEncontrada = categorias.find(cat => cat.slug === slug);
+
+    return categoriaEncontrada ? categoriaEncontrada.nombre : "Juegos de Consola";
+
+  } catch (e) {
+    console.error("Error al obtener nombre de categoría:", e);
+    return "Juegos de Consola";
+  }
+}
+
 function initBusqueda() {
   const params = new URLSearchParams(window.location.search);
   const terminoBusqueda = params.get("buscar");
@@ -160,7 +177,7 @@ function cargarCategorias() {
           a = $(`<a href="/index.html?categoria=${cat.slug}">${cat.nombre}</a>`);
         } else {
           // El '▾' sirve como indicador visual de submenú
-          a = $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`); 
+          a = $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`);
         }
 
         li.append(a);
@@ -192,27 +209,27 @@ function cargarCategorias() {
       console.log("4. Proceso de renderizado finalizado.");
 
       // 5. AGREGAR MANEJADOR DE EVENTOS PARA DESPLIEGUE MÓVIL (¡NUEVO CÓDIGO!)
-      
+
       // Usamos delegación de eventos para capturar clics en los enlaces recién creados
-      $menu.off('click', 'a').on('click', 'a', function(e) {
+      $menu.off('click', 'a').on('click', 'a', function (e) {
         const $link = $(this);
         const $submenu = $link.siblings('.submenu');
-        
+
         // Comprueba si estamos en vista móvil (ancho <= 900px, según tu CSS)
         // Y si el elemento tiene un submenú
         const esMovil = window.matchMedia("(max-width: 900px)").matches;
 
         if (esMovil && $submenu.length) {
           e.preventDefault(); // Evita que navegue
-          
+
           // Oculta otros submenús abiertos para mantener un solo submenú activo
           $menu.find('.submenu').not($submenu).slideUp(300);
 
           // Muestra/oculta el submenú del elemento actual con animación
-          $submenu.slideToggle(300); 
-          
+          $submenu.slideToggle(300);
+
           // Opcional: Cambia la clase para rotar el ícono si usas CSS para ello
-          $link.toggleClass('active'); 
+          $link.toggleClass('active');
         }
       });
 
@@ -278,17 +295,23 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
   inicializarFiltroLetras();
 }
 
-function cargarJuegos(paginaSeleccionada) {
+async function cargarJuegos(paginaSeleccionada) {
   let pagina = paginaSeleccionada + 1;
   let url;
   let paginacionVisible = true;
 
+  const $tituloH2 = $("#titulo");
+
   if (categoriaSlug) {
     url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${pagina - 1
       }&size=40`;
+    const nombreCategoria = await obtenerNombreCategoria(categoriaSlug);
+    $tituloH2.text(nombreCategoria || "Juegos de Consola");
+
   } else {
     url = `${API_JUEGOS_RANDOM}/40?&noCache=${Date.now()}`;
     paginacionVisible = false;
+    $tituloH2.text("Random Games");
   }
 
   fetch(url)

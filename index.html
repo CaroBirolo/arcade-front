@@ -33,64 +33,91 @@
     <button class="hamburger" id="hamburger">&#9776;</button>
 
     <nav id="nav-menu">
-  <ul id="menu-principal" class="menu">
-    <li class="buscar">
-      <button id="btn-buscar" type="button">Buscar</button>
-      <div class="campo-busqueda" style="display:none;">
-        <input type="text" placeholder="Escriba su búsqueda..." />
-        <button id="btn-ejecutar-busqueda" type="button">Buscar</button>
-      </div>
-    </li>
-  </ul>
-</nav>
+      <ul id="menu-principal" class="menu">
+        <li class="buscar">
+          <button id="btn-buscar" type="button">Buscar</button>
+          <div class="campo-busqueda" style="display:none;">
+            <input type="text" placeholder="Escriba su búsqueda..." />
+            <button id="btn-ejecutar-busqueda" type="button">Buscar</button>
+          </div>
+        </li>
+      </ul>
+    </nav>
   </header>
 
   <main>
-    <section class="games-section" id="games-section">
-      <div class="cards-column">
-        <h2 id="titulo"></h2>
+    <div class="contenedor-ancho">
 
-        <!-- 🔽 Buscador por letras justo debajo del título -->
-        <div id="letters" class="pagination"></div>
-
-        <div class="cards-container" id="cards-container">
-          <!-- Los juegos se cargarán aquí desde el backend -->
+      <section class="games-section" id="games-section">
+        <div class="cards-column">
+          <h2 id="titulo"></h2>
+          <div id="letters" class="pagination"></div>
+          <div class="cards-container" id="cards-container">
+          </div>
         </div>
-      </div>
-      <div class="ads-column">
-        <div class="ad-space">
 
-          <!-- Anuncio lateral -->
-          <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
-            data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-
-          <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
-
-        </div>
-      </div>
-      <div id="pagination" class="pagination"></div>
-    </section>
-
-
-    <section id="main-game-container" class="games-section games-section-detalle main-game-container">
-      <div>
-        <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
-        <div id="iframe-preview" class="iframe-preview"></div>
-      </div>
-
-      <div class="ads-column">
-        <div class="ad-space">
-          <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
-            data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="ads-column">
+          <div class="ad-space">
+            <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+              data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          </div>
         </div>
 
         <div id="pagination" class="pagination"></div>
+      </section>
+
+
+      <section id="main-game-container" class="games-section games-section-detalle main-game-container">
+        <div>
+          <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
+          <div id="iframe-preview" class="iframe-preview"></div>
+        </div>
+
+        <div class="ads-column">
+          <div class="ad-space">
+            <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+              data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          </div>
+
+          <div id="pagination" class="pagination"></div>
+        </div>
+
+      </section>
+
+      <div class="ad-space-bottom">
+        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
+      <section id="seo-text">
+        <h2>Free Online Retro Games</h2>
+        <p>
+          RetroVerse is a portal dedicated to free online retro games, designed for everyone who wants
+          to relive the magic of the classics without downloading anything. Here you'll find a carefully curated
+          collection of arcade games, video games from the 80s, 90s, and 2000s, and legendary titles from consoles like Sega,
+          Nintendo, and more — all available directly from your browser.
+        </p>
+        <p>
+          Our goal is to offer you a fast, simple, and authentic experience, with games that work on any device and
+          without complications.
+          Whether you're looking to play retro games online, explore forgotten classics, or simply enjoy a moment of
+          gamer nostalgia, this is the place for you.
+        </p>
+        <p>
+          We constantly update the catalog so you always find something new: platformers, racing, fighting, puzzles,
+          adventures, and much more. RetroVerse is a community for those who love timeless video games and want to play
+          them again just as they remember.
+        </p>
+        <p>
+          Enjoy a selection of classic online games — 100% free, no downloads, no registration, and instant loading.
+          Just jump in, pick a game, and travel straight to the golden age of gaming!
+        </p>
+      </section>
 
       <div class="ad-space-bottom">
         <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
@@ -99,54 +126,7 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
-    </section>
-
-
-
-    <!-- 🔽 Texto SEO para Google -->
-    <div class="contenedor-ancho">
-      <section id="seo-text">
-        <h2>Free Online Retro Games</h2>
-        <p>
-          RetroVerse is a portal dedicated to free online retro games, designed for everyone who wants
-          to relive the magic of the classics without downloading anything. Here you'll find a carefully curated
-          collection of
-          arcade games, video games from the 80s, 90s, and 2000s, and legendary titles from consoles like Sega,
-          Nintendo, and more —
-          all available directly from your browser.
-        </p>
-        <p>
-          Our goal is to offer you a fast, simple, and authentic experience, with games that work on any device and
-          without complications.
-          Whether you're looking to play retro games online, explore forgotten classics, or simply enjoy a moment of
-          gamer nostalgia,
-          this is the place for you.
-        </p>
-        <p>
-          We constantly update the catalog so you always find something new: platformers, racing, fighting, puzzles,
-          adventures, and much more. RetroVerse is a community for those who love timeless video games and want to play
-          them again
-          just as they remember.
-        </p>
-        <p>
-          Enjoy a selection of classic online games — 100% free, no downloads, no registration, and instant loading.
-          Just jump in, pick a game, and travel straight to the golden age of gaming!
-        </p>
-
-      </section>
-
-      <div class="ad-space-bottom">
-
-        <!-- Anuncio inferior -->
-        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
-          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-
-      </div>
+    </div>
   </main>
 
   <!-- jQuery -->
@@ -200,4 +180,5 @@
     });
   </script>
 </body>
+
 </html>
