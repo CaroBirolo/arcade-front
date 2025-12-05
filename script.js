@@ -16,25 +16,27 @@ $hamburger.on("click", () => {
   $navMenu.toggleClass("show");
 });
 
-
 const path = window.location.pathname;
+const params = new URLSearchParams(window.location.search);
 
 var categoriaSlug = null;
 var juegoSlug = null;
 
-if (path.startsWith("/categoria/")) {
-  categoriaSlug = path.replace("/categoria/", "")
-    .replace(/\/$/, "")
-    .trim();
-} else if (path.startsWith("/juego/")) {
+if (path.startsWith("/juego/")) {
   juegoSlug = path.replace("/juego/", "")
     .replace(/\/$/, "")
     .trim();
 }
+// Corregido: Capturar el slug de la categoría del parámetro 'categoria' si existe
+if (params.get("categoria")) {
+  categoriaSlug = params.get("categoria");
+}
 
+// LÓGICA DE INICIO CORREGIDA:
 if (juegoSlug && juegoSlug.length > 0) {
   cargarJuegoPorSlug(juegoSlug);
-} else if (categoriaSlug && categoriaSlug.length > 0) {
+} else {
+  // Si no es un juego específico, SIEMPRE llama a initBusqueda (que a su vez llama a cargarJuegos o buscarJuegos)
   initBusqueda()
 }
 
