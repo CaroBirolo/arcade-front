@@ -90,36 +90,29 @@ header h1 img {
   transform: scaleX(1.5);
   transform-origin: center;
   transition: transform 0.3s ease;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 header h1 img:hover {
   transform: scaleX(1.45) rotate(-2deg);
 }
 
-/*🔹 MENÚ DE NAVEGACIÓN */
 nav ul.menu {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 25px;
+  gap: 10px;
   align-items: center;
-  /* 🟢 CAMBIOS CLAVE PARA VISIBILIDAD: */
   height: auto;
-  /* Permite que el menú crezca según el contenido */
   min-height: 50px;
-  /* Asegura una altura mínima si está vacío */
   overflow: visible;
-  /* Asegura que no se recorte el contenido */
 }
 
 nav ul.menu>li {
   position: relative;
   display: flex;
   align-items: center;
-  /* height: 100%; */
-  /* Se comenta para evitar conflicto con height:auto en el padre */
 }
 
 nav a {
@@ -128,8 +121,8 @@ nav a {
   text-decoration: none;
   color: #5e69fe;
   font-weight: bold;
-  padding: 0 12px;
-  font-size: 1rem;
+  padding: 0 6px;
+  font-size: 0.85rem;
   letter-spacing: 1.5px;
   transition: color 0.3s, transform 0.2s;
   height: 100%;
@@ -159,6 +152,7 @@ nav ul.submenu {
   transition: all 0.3s ease;
   max-height: 300px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 nav ul.menu li:hover>ul.submenu {
@@ -175,7 +169,7 @@ nav ul.submenu li a {
   color: #00d2d9;
   font-weight: normal;
   display: block;
-  padding: 6px 10px;
+  padding: 4px 8px;
   transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
@@ -221,6 +215,8 @@ nav ul.menu li.buscar button:hover {
   padding: 8px;
   z-index: 200;
   animation: slideDown 0.3s ease forwards;
+  min-width: 260px;
+  width: 320px;
 }
 
 .campo-busqueda.activo {
@@ -234,7 +230,7 @@ nav ul.menu li.buscar button:hover {
   border: 2px solid #f207fe;
   border-radius: 3px;
   outline: none;
-  width: 100%;
+  width: 90%;
   font-family: "Orbitron", sans-serif;
   color: #f207fe;
   background-color: #090039;
@@ -280,7 +276,8 @@ nav ul.menu li.buscar button:hover {
 /* 🔹 TÍTULO */
 #titulo,
 #titulo2,
-#titulo3 {
+#titulo3,
+.titulo-juego {
   text-align: center;
   color: #f207fe;
   font-family: "Orbitron", sans-serif;
@@ -309,7 +306,6 @@ nav ul.menu li.buscar button:hover {
 }
 
 .contenedor-ancho {
-  max-width: 1220px;
   margin: 0 auto;
   padding: 0 10px;
   width: 100%;
@@ -319,9 +315,10 @@ nav ul.menu li.buscar button:hover {
 /* 🔹 TARJETAS DE JUEGOS */
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 250px));
   gap: 20px;
   margin: 20px auto 0;
+  justify-content: center;
 }
 
 .card {
@@ -373,7 +370,8 @@ nav ul.menu li.buscar button:hover {
 
 .letter-btn {
   background: none;
-  border: 1.5px solid #ff00ff;
+  border: 1px solid #f207fe;
+  box-shadow: 0 0 4px #00ffcc, inset 0 0 3px #f207fe;
   color: #5e69fe;
   font-family: "Orbitron", sans-serif;
   font-weight: 700;
@@ -402,7 +400,7 @@ nav ul.menu li.buscar button:hover {
 /*🔹 SECCIÓN PRINCIPAL (detalle) */
 .games-section {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr 300px;
   gap: 20px;
   margin-top: 20px;
   padding: 10px;
@@ -425,6 +423,8 @@ nav ul.menu li.buscar button:hover {
   font-family: "Orbitron", sans-serif;
   text-align: center;
   box-sizing: border-box;
+  min-width: 250px;
+
 }
 
 /* Cuadro donde va el banner lateral */
@@ -485,7 +485,6 @@ footer {
   /* más chico */
   border-radius: 4px;
   cursor: pointer;
-  text-shadow: 0 0 4px #00ffcc, 0 0 8px #00ffcc;
   transition: all 0.2s ease-in-out;
 }
 
@@ -573,15 +572,6 @@ footer {
     display: block;
   }
 
-  /* 🟢 TÍTULO: Reducir tamaño y espaciado */
-  #titulo,
-  #titulo2,
-  #titulo3 {
-    font-size: 1.4rem;
-    letter-spacing: 4px;
-    padding: 5px 0;
-  }
-
   /* 🟢 LAYOUT PRINCIPAL: Pasar de Grid de 2 columnas a 1 columna */
   .games-section {
     grid-template-columns: 1fr;
@@ -600,22 +590,6 @@ footer {
   .card-juego iframe {
     height: 350px;
     /* Reducir la altura para móvil */
-  }
-
-  /* 🟢 iframe-preview: Arreglar el flexbox que puede causar desborde */
-  #iframe-preview {
-    flex-direction: column;
-    /* Apilar elementos verticalmente */
-    gap: 5px;
-    padding: 5px;
-  }
-
-  #iframe-preview h3 {
-    white-space: normal;
-  }
-
-  #iframe-preview textarea {
-    width: 100%;
   }
 
   /* Ocultar el menú de navegación por defecto */
@@ -737,28 +711,32 @@ footer {
   margin: 0 !important;
 }
 
+
+
 #iframe-preview {
-  background: #090039;
+  background: #fdfdfd;
   margin: 10px 0 10px 0;
-  padding: 10px;
   width: 100%;
-  max-width: none;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: 15px;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #f207fe;
+  box-shadow:
+    0 0 4px #00ffcc,
+    inset 0 0 3px #f207fe;
+
 }
 
 #iframe-preview h3 {
-  background: #090039;
   margin: 0;
   padding-left: 10px;
   text-align: left;
   color: #00ffcc;
   font-family: "Orbitron", sans-serif;
   font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 4px;
   -webkit-text-stroke: 0.6px black;
   text-shadow: 0 0 5px #fff, 0 0 10px #f207fe, 0 0 20px #f207fe,
     0 0 30px #f207fe, 0 0 60px #f207fe, 0 0 100px #f207fe, 0 0 140px #f207fe;
@@ -767,20 +745,17 @@ footer {
   /* 🔥 evita que salte de línea */
 }
 
-#iframe-preview textarea {
+#iframe-preview span {
   flex: 1;
-  /* 🔥 ocupa todo el espacio restante */
   height: 40px;
-  background: #090039;
-  color: #eaeaea;
-  border: 1px solid #333;
+  color: #210d94;
   border-radius: 6px;
   padding: 10px;
-  font-size: 14px;
+  font-size: 15px;
   resize: none;
   font-family: monospace;
   outline: none;
-  box-shadow: none;
+  align-content: center;
 }
 
 /* Margen izquierdo para el detalle del juego */
@@ -793,13 +768,14 @@ footer {
 /*🔹 ESTILO DEL TEXTO SEO */
 #seo-text {
   background: whitesmoke;
-  padding: 25px;
   border-radius: 10px;
-  margin: 30px auto;
   font-size: 1rem;
-  line-height: 1.6;
-  color: #000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: #551a8b;
+  border: 1px solid #f207fe;
+  box-shadow: 0 0 4px #00ffcc, inset 0 0 3px #f207fe;
+  padding: inherit;
+  text-align: justify;
+  font-family: monospace;
 }
 
 #seo-text h2 {
@@ -813,8 +789,53 @@ footer {
   text-align: center;
   font-weight: 700;
   letter-spacing: 1px;
+  word-spacing: 10px;
 }
 
 #seo-text p {
   margin-bottom: 12px;
+}
+
+/* ESTO VA EN TU estilos.css */
+
+.oculto-al-inicio {
+  position: absolute !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: -9999px !important;
+  left: 0 !important;
+  z-index: -1 !important;
+}
+
+/* NUEVO MEDIA QUERY PARA TABLETS (1200px a 901px) */
+@media (max-width: 1200px) and (min-width: 901px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    /* Centrar todo el contenido (logo y menú) */
+    padding: 8px 15px;
+    /* Reducir padding horizontal del header */
+  }
+
+  header h1 {
+    width: 100%;
+    justify-content: center;
+    /* Centrar el contenido del h1 (incluyendo el img) */
+    margin-bottom: 5px;
+    /* Pequeño espacio entre el logo y el menú */
+  }
+
+  #nav-menu {
+    width: 100%;
+  }
+
+  #menu-principal {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Centrar los enlaces del menú horizontalmente */
+    gap: 10px;
+  }
 }

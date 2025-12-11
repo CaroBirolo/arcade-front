@@ -5,9 +5,7 @@ const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
 
 const $contenedor = $("#cards-container");
 const lettersDiv = $("#letters");
-const $btnBuscar = $("#btn-buscar");
-const $campoBusqueda = $(".campo-busqueda");
-const $inputBusqueda = $campoBusqueda.find("input");
+
 const $hamburger = $("#hamburger");
 const $menu = $("#menu-principal");
 const $navMenu = $("#nav-menu");
@@ -18,6 +16,8 @@ $hamburger.on("click", () => {
 
 const path = window.location.pathname;
 const params = new URLSearchParams(window.location.search);
+
+const IS_GAME_PAGE = path.startsWith("/juego/");
 
 var categoriaSlug = null;
 var juegoSlug = null;
@@ -32,13 +32,19 @@ if (params.get("categoria")) {
   categoriaSlug = params.get("categoria");
 }
 
-// LÓGICA DE INICIO CORREGIDA:
-if (juegoSlug && juegoSlug.length > 0) {
-  cargarJuegoPorSlug(juegoSlug);
-} else {
-  // Si no es un juego específico, SIEMPRE llama a initBusqueda (que a su vez llama a cargarJuegos o buscarJuegos)
-  initBusqueda()
-}
+$(document).ready(function () {
+
+  InitSeccionBusqueda();
+  cargarCategorias();
+
+  if (IS_GAME_PAGE && juegoSlug && juegoSlug.length > 0) {
+    // cargamos sólo el juego y salimos
+    cargarJuegoPorSlug(juegoSlug);
+
+  } else {
+    initBusqueda();
+  }
+});
 
 async function cargarJuegoPorSlug(slug) {
   try {
@@ -53,15 +59,17 @@ async function cargarJuegoPorSlug(slug) {
 
     const cardHtml = `
       <div class="card-juego">
-        <h2 id="titulo2">${juego.nombre}</h2>
-        <h2 id="titulo3">Plataforma: ${juego.plataforma || "Desconocida"}</h2>
+         <h2 class="titulo-juego">
+      ${juego.nombre} — <span class="plataforma">Plataforma: ${juego.plataforma || "Desconocida"}</span>
+    </h2>
+      
         ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
       </div>
     `;
 
     $("#game-cards-container").html(cardHtml);
     if (juego.iframe) {
-      $("#iframe-preview").html(` <h3>     Embed Code: </h3><textarea>&lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</textarea>`);
+      $("#iframe-preview").html(`<span> Embed Code: &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</span>`);
     }
 
   } catch (e) {
@@ -98,6 +106,16 @@ function initBusqueda() {
 }
 
 function InitSeccionBusqueda() {
+
+  const $btnBuscar = $("#btn-buscar");
+  const $campoBusqueda = $btnBuscar.closest('li').find(".campo-busqueda");
+  const $inputBusqueda = $campoBusqueda.find("input[type='text']");
+
+  if ($btnBuscar.length === 0 || $campoBusqueda.length === 0) {
+    console.warn("Advertencia: No se encontraron los elementos de búsqueda. La inicialización falló.");
+    return;
+  }
+
   function ejecutarBusqueda() {
     const termino = $inputBusqueda.val().trim();
     if (termino !== "") redirigirBusqueda(termino, 0);
@@ -135,7 +153,8 @@ function InitSeccionBusqueda() {
 }
 
 function redirigirBusqueda(termino) {
-  window.document.location = `index.html?buscar=${termino}`;
+  //window.document.location = `index.html?buscar=${termino}`;
+  window.location.href = `/?buscar=${termino}`;
 }
 
 function cargarCategorias() {
@@ -298,6 +317,9 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
 }
 
 async function cargarJuegos(paginaSeleccionada) {
+
+  if (IS_GAME_PAGE) return;
+
   let pagina = paginaSeleccionada + 1;
   let url;
   let paginacionVisible = true;
@@ -352,16 +374,22 @@ function mostrarPaginacion(totalPaginas, paginaActual, callback) {
   }
 }
 
-function inicializarFiltroLetras() {
-  InitSeccionBusqueda();
+function obtenerCategoriaSlugDesdeURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("categoria") || null;
+}
 
-  if (window.location.pathname.startsWith("/categoria/")) {
-    $("#letters").show();
-  } else {
-    $("#letters").hide();
+function inicializarFiltroLetras() {
+  const categoriaSlug = obtenerCategoriaSlugDesdeURL();
+  if (!categoriaSlug) {
+    lettersDiv.hide();
+    return;
   }
 
-  if (!lettersDiv.children().length) {
+  lettersDiv.show();
+  InitSeccionBusqueda();
+
+  if (lettersDiv.children().length === 0) {
     const letters = ["#"].concat(
       Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))
     );
@@ -391,7 +419,7 @@ function inicializarFiltroLetras() {
   }
 
   // Reset de eventos para evitar duplicados
-  lettersDiv.off("click");
+  lettersDiv.off("click", ".letter-btn");
 
   lettersDiv.on("click", ".letter-btn", function () {
     const letra = $(this).text().toUpperCase();

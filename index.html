@@ -18,7 +18,9 @@
 
   <!-- Goolge Ads -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3325573086861654"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous">
+    </script>
+
 </head>
 
 <body>
@@ -48,7 +50,7 @@
   <main>
     <div class="contenedor-ancho">
 
-      <section class="games-section" id="games-section">
+      <section class="games-section oculto-al-inicio" id="games-section">
         <div class="cards-column">
           <h2 id="titulo"></h2>
           <div id="letters" class="pagination"></div>
@@ -61,7 +63,6 @@
             <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
               data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
               data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
         </div>
 
@@ -69,7 +70,8 @@
       </section>
 
 
-      <section id="main-game-container" class="games-section games-section-detalle main-game-container">
+      <section id="main-game-container"
+        class="games-section games-section-detalle main-game-container oculto-al-inicio">
         <div>
           <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
           <div id="iframe-preview" class="iframe-preview"></div>
@@ -80,26 +82,25 @@
             <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
               data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
               data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
 
-          <div id="pagination" class="pagination"></div>
+          <div id="pagination-detalle" class="pagination"></div>
         </div>
-
       </section>
 
       <div class="ad-space-bottom">
         <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
           data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
           data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
+
       <section id="seo-text">
         <h2>Free Online Retro Games</h2>
         <p>
           RetroVerse is a portal dedicated to free online retro games, designed for everyone who wants
           to relive the magic of the classics without downloading anything. Here you'll find a carefully curated
-          collection of arcade games, video games from the 80s, 90s, and 2000s, and legendary titles from consoles like Sega,
+          collection of arcade games, video games from the 80s, 90s, and 2000s, and legendary titles from consoles like
+          Sega,
           Nintendo, and more — all available directly from your browser.
         </p>
         <p>
@@ -123,15 +124,14 @@
         <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
           data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
           data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
 
     </div>
   </main>
 
-  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="/script.js"></script>
+
   <script>
     $(document).ready(function () {
       cargarCategorias();
@@ -139,22 +139,46 @@
 
       const categoria = new URLSearchParams(window.location.search).get("categoria");
       if (categoria) {
-        // 👉 Estás en categorías → mostrar A-Z
         InitSeccionBusqueda();
         $("#letters").show();
       } else {
-        // 👉 Inicio → ocultar A-Z
         $("#letters").hide();
       }
+      $("#games-section").addClass('oculto-al-inicio');
+      $("#main-game-container").addClass('oculto-al-inicio');
 
-      $("#games-section").hide();
-      $("#main-game-container").hide();
-      if (juegoSlug) $("#main-game-container").show();
-      if (categoriaSlug) $("#games-section").show();
-      if (!juegoSlug && !categoriaSlug) $("#games-section").show();
+      let adVisible = false; // Bandera para saber si se mostró una sección
 
+      if (typeof juegoSlug !== 'undefined' && juegoSlug) {
+        // Si hay un juego (detalle), mostramos el contenedor principal
+        $("#main-game-container").removeClass('oculto-al-inicio');
+        adVisible = true;
+      } else if (typeof categoriaSlug !== 'undefined' && categoriaSlug) {
+        // Si hay una categoría, mostramos la sección de juegos
+        $("#games-section").removeClass('oculto-al-inicio');
+        adVisible = true;
+      } else {
+        // Si no hay nada, mostramos la sección de juegos (página principal)
+        $("#games-section").removeClass('oculto-al-inicio');
+        adVisible = true;
+      }
+
+      // --- 3. RE-EMPATE DE ADS (SOLO SI ALGO ES VISIBLE) ---
+      // Forzamos a AdSense a calcular el tamaño ahora que los contenedores 
+      // visibles ya tienen un ancho (width > 0).
+      if (adVisible) {
+        // Utilizamos un pequeño delay para asegurar el DOM/CSS
+        setTimeout(() => {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }, 50);
+      }
+
+      // Tu antiguo FIX de setTimeout se elimina, ya que la lógica 
+      // central de ocultamiento ha cambiado.
     });
   </script>
+
+
 
   <footer>
     <p>© 2025 — RetroVerse</p>
