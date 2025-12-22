@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/imagenes/LOGOS/favicon-32x32.png">
+  <link rel="canonical" href="https://retroverse.cc/" />
+  <link rel="alternate" hreflang="en" href="https://retroverse.cc/en/" />
+  <link rel="alternate" hreflang="es" href="https://retroverse.cc/" />
+  <link rel="alternate" hreflang="x-default" href="https://retroverse.cc/" />
+
+  <title>RetroVerse – Free Online Retro Games</title>
+  <meta name="description"
+    content="Play free online retro games. Classic arcade titles and legendary consoles from the 80s and 90s, all available directly in your browser. RetroVerse brings gaming nostalgia back to life.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="/estilos.css" />
+
+  <!-- Google Ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3325573086861654"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <h1>
+      <a href="/index.html">
+        <img src="/imagenes/LOGOS/logo-sin-fonfo.png" alt="RetroVerse Logo" />
+      </a>
+    </h1>
+
+    <!-- Hamburger button -->
+    <button class="hamburger" id="hamburger">&#9776;</button>
+
+    <nav id="nav-menu">
+      <ul id="menu-principal" class="menu">
+        <li class="buscar">
+          <button id="btn-buscar" type="button">Search</button>
+          <div class="campo-busqueda" style="display:none;">
+            <input type="text" placeholder="Type your search..." />
+            <button id="btn-ejecutar-busqueda" type="button">Search</button>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <main>
+    <div class="contenedor-ancho">
+
+      <section class="games-section oculto-al-inicio" id="games-section">
+        <div class="cards-column">
+          <h2 id="titulo"></h2>
+          <div id="letters" class="pagination"></div>
+          <div class="cards-container" id="cards-container"></div>
+        </div>
+
+        <div class="ads-column">
+          <div class="ad-space">
+            <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+              data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+          </div>
+        </div>
+
+        <div id="pagination" class="pagination"></div>
+      </section>
+
+      <section id="main-game-container"
+        class="games-section games-section-detalle main-game-container oculto-al-inicio">
+        <div>
+          <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
+          <div id="iframe-preview" class="iframe-preview"></div>
+        </div>
+
+        <div class="ads-column">
+          <div class="ad-space">
+            <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+              data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+          </div>
+
+          <div id="pagination-detalle" class="pagination"></div>
+        </div>
+      </section>
+
+      <div class="ad-space-bottom">
+        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+
+      <!-- SEO TEXT -->
+      <section id="seo-text">
+        <h2>Retro Games to Play Online</h2>
+
+        <p>
+          RetroVerse is a platform dedicated to classic video games, created for players who want
+          to relive iconic titles directly from their browser, without downloads or complex setups.
+        </p>
+
+        <p>
+          The catalog features a carefully curated selection of arcade games and retro classics
+          from different eras, including well-known titles from legendary consoles such as Sega
+          and Nintendo, all provided through third-party content.
+        </p>
+
+        <p>
+          The platform is designed to deliver a simple, fast, and device-friendly experience.
+          Whether you want to discover old games or revisit the ones that defined an era,
+          RetroVerse offers clear and easy access.
+        </p>
+
+        <p>
+          The catalog is updated regularly to keep the experience fresh, featuring games from
+          various genres and styles, always prioritizing usability and player experience.
+        </p>
+      </section>
+
+      <div class="ad-space-bottom">
+        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/script.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      cargarCategorias();
+      initBusqueda();
+
+      const categoria = new URLSearchParams(window.location.search).get("categoria");
+      if (categoria) {
+        InitSeccionBusqueda();
+        $("#letters").show();
+      } else {
+        $("#letters").hide();
+      }
+      $("#games-section").addClass('oculto-al-inicio');
+      $("#main-game-container").addClass('oculto-al-inicio');
+
+      let adVisible = false; // Bandera para saber si se mostró una sección
+
+      if (typeof juegoSlug !== 'undefined' && juegoSlug) {
+        // Si hay un juego (detalle), mostramos el contenedor principal
+        $("#main-game-container").removeClass('oculto-al-inicio');
+        adVisible = true;
+      } else if (typeof categoriaSlug !== 'undefined' && categoriaSlug) {
+        // Si hay una categoría, mostramos la sección de juegos
+        $("#games-section").removeClass('oculto-al-inicio');
+        adVisible = true;
+      } else {
+        // Si no hay nada, mostramos la sección de juegos (página principal)
+        $("#games-section").removeClass('oculto-al-inicio');
+        adVisible = true;
+      }
+
+      // --- 3. RE-EMPATE DE ADS (SOLO SI ALGO ES VISIBLE) ---
+      // Forzamos a AdSense a calcular el tamaño ahora que los contenedores 
+      // visibles ya tienen un ancho (width > 0).
+      if (adVisible) {
+        // Utilizamos un pequeño delay para asegurar el DOM/CSS
+        setTimeout(() => {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }, 50);
+      }
+
+      // Tu antiguo FIX de setTimeout se elimina, ya que la lógica 
+      // central de ocultamiento ha cambiado.
+    });
+  </script>
+
+
+  <footer>
+    <div class="footer-content">
+      <span>© 2025 — RetroVerse</span>
+      <span>contactoretroverse@gmail.com</span>
+      <a class="footer-link" href="/en/legales/terms.html">Terms</a>
+      <a class="footer-link" href="/en/legales/privacy.html">Privacy</a>
+      <a class="footer-link" href="/en/legales/DMCA.html">DMCA</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("popup-close").addEventListener("click", () => {
+      document.getElementById("adblock-popup").style.display = "none";
+    });
+  </script>
+</body>
+
+</html>

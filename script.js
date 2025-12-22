@@ -229,6 +229,28 @@ function cargarCategorias() {
         }
       });
 
+      /*
+     if ($menu.find('.lang-dropdown').length === 0) {
+      $menu.append(`
+        <div class="lang-dropdown">
+          <button class="lang-current" aria-haspopup="true" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-globe">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </button>
+
+          <ul class="lang-menu">
+            <li><a href="/">Español</a></li>
+            <li><a href="/en/">English</a></li>
+          </ul>
+        </div>
+      `);
+    }*/
+
+
       console.log("4. Proceso de renderizado finalizado.");
 
       // 5. AGREGAR MANEJADOR DE EVENTOS PARA DESPLIEGUE MÓVIL (¡NUEVO CÓDIGO!)
@@ -322,7 +344,7 @@ async function cargarJuegos(paginaSeleccionada) {
 
   if (IS_GAME_PAGE) return;
 
-  let pagina = paginaSeleccionada; 
+  let pagina = paginaSeleccionada;
   let url;
   let paginacionVisible = true;
 
