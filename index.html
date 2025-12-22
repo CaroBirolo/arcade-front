@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/imagenes/LOGOS/favicon-32x32.png">
+  <link rel="canonical" href="https://retroverse.cc/" />
   <title> RetroVerse - Free Online Retro Games- </title>
   <meta name="description"
     content="Juegos retro online totalmente gratis. Arcade clásicos, consolas viejas y juegos de los 80 y 90 sin descargar. RetroVerse: tu portal de nostalgia gamer.">
@@ -74,7 +76,8 @@
         class="games-section games-section-detalle main-game-container oculto-al-inicio">
         <div>
           <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
-          <div id="iframe-preview" class="iframe-preview"></div>
+          <div id="iframe-preview" class="iframe-preview">
+          </div>
         </div>
 
         <div class="ads-column">
@@ -95,29 +98,28 @@
       </div>
 
       <section id="seo-text">
-        <h2>Free Online Retro Games</h2>
+        <h2>Juegos Retro para Jugar Online</h2>
         <p>
-          RetroVerse is a portal dedicated to free online retro games, designed for everyone who wants
-          to relive the magic of the classics without downloading anything. Here you'll find a carefully curated
-          collection of arcade games, video games from the 80s, 90s, and 2000s, and legendary titles from consoles like
-          Sega,
-          Nintendo, and more — all available directly from your browser.
+          RetroVerse es un sitio dedicado a los videojuegos clásicos, pensado para quienes
+          quieren revivir títulos icónicos directamente desde el navegador, sin instalaciones
+          ni procesos complicados.
         </p>
         <p>
-          Our goal is to offer you a fast, simple, and authentic experience, with games that work on any device and
-          without complications.
-          Whether you're looking to play retro games online, explore forgotten classics, or simply enjoy a moment of
-          gamer nostalgia, this is the place for you.
+          El catálogo incluye una cuidada selección de juegos arcade y clásicos de distintas
+          épocas, así como títulos populares de consolas históricas como Sega y Nintendo,
+          presentados a través de contenidos de terceros.
         </p>
         <p>
-          We constantly update the catalog so you always find something new: platformers, racing, fighting, puzzles,
-          adventures, and much more. RetroVerse is a community for those who love timeless video games and want to play
-          them again just as they remember.
+          La plataforma está diseñada para ofrecer una experiencia simple, rápida y compatible
+          con todo tipo de dispositivos. Ya sea para descubrir juegos antiguos o volver a jugar
+          aquellos que marcaron una época, RetroVerse propone un acceso claro y directo.
         </p>
         <p>
-          Enjoy a selection of classic online games — 100% free, no downloads, no registration, and instant loading.
-          Just jump in, pick a game, and travel straight to the golden age of gaming!
+          El contenido se actualiza periódicamente para mantener una oferta variada, con juegos
+          de distintos géneros y estilos, siempre priorizando la facilidad de uso y la
+          experiencia del usuario.
         </p>
+
       </section>
 
       <div class="ad-space-bottom">
@@ -181,11 +183,17 @@
 
 
   <footer>
-    <p>© 2025 — RetroVerse</p>
+    <div class="footer-content">
+      <span>© 2025 — RetroVerse</span>
+      <span>contactoretroverse@gmail.com</span>
+      <a class="footer-link" href="/legales/terminos.html">Términos</a>
+      <a class="footer-link" href="/legales/privacidad.html">Privacidad</a>
+      <a class="footer-link" href="/legales/DMCA.html">DMCA</a>
+    </div>
   </footer>
 
   <!-- 🔹 POP-UP ANTI ADBLOCK -->
-  <div id="adblock-popup">
+  <!--<div id="adblock-popup">
     <div class="popup-box">
       <h2>🛑 AdBlock Detected</h2>
       <p>
@@ -197,7 +205,7 @@
   </div>
 
   <!-- Scripts anti-adblock -->
-  <script src="/anti-adblock.js"></script>
+  <!--<script src="/anti-adblock.js"></script> -->
   <script>
     document.getElementById("popup-close").addEventListener("click", () => {
       document.getElementById("adblock-popup").style.display = "none";

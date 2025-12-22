@@ -1,4 +1,4 @@
-// anti-adblock.js
+/* anti-adblock.js
 setTimeout(() => {
   let blocked = false;
 
@@ -30,3 +30,4 @@ setTimeout(() => {
     if (popup) popup.style.display = "flex";
   }
 }, 300);
+*/

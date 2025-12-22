@@ -69,7 +69,8 @@ async function cargarJuegoPorSlug(slug) {
 
     $("#game-cards-container").html(cardHtml);
     if (juego.iframe) {
-      $("#iframe-preview").html(`<span> Embed Code: &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</span>`);
+      $("#iframe-preview").html(`<span> Embed Code: &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</span> 
+         <span id="source">**Fuente: retrogames.cc. El contenido se muestra mediante iframe y pertenece exclusivamente a sus respectivos propietarios. No almacenamos ni distribuimos dicho contenido y no asumimos responsabilidad por el mismo.**</span>`);
     }
 
   } catch (e) {
@@ -97,11 +98,12 @@ async function obtenerNombreCategoria(slug) {
 function initBusqueda() {
   const params = new URLSearchParams(window.location.search);
   const terminoBusqueda = params.get("buscar");
+  const page = params.get("page");
 
   if (terminoBusqueda) {
-    buscarJuegos(terminoBusqueda, 0);
+    buscarJuegos(terminoBusqueda, page);
   } else {
-    cargarJuegos(0);
+    cargarJuegos(page);
   }
 }
 
@@ -265,7 +267,7 @@ function buscarJuegos(termino, pagina) {
 
   const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(
     termino.trim()
-  )}&page=${pagina}&size=40`;
+  )}&page=${(pagina || 0)}&size=40`;
 
   fetch(url)
     .then((res) => res.json())
@@ -320,15 +322,14 @@ async function cargarJuegos(paginaSeleccionada) {
 
   if (IS_GAME_PAGE) return;
 
-  let pagina = paginaSeleccionada + 1;
+  let pagina = paginaSeleccionada; 
   let url;
   let paginacionVisible = true;
 
   const $tituloH2 = $("#titulo");
 
   if (categoriaSlug) {
-    url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${pagina - 1
-      }&size=40`;
+    url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${(pagina || 0)}&size=40`;
     const nombreCategoria = await obtenerNombreCategoria(categoriaSlug);
     $tituloH2.text(nombreCategoria || "Juegos de Consola");
 
@@ -347,7 +348,7 @@ async function cargarJuegos(paginaSeleccionada) {
       const pagDiv = document.getElementById("pagination");
 
       if (paginacionVisible && data.totalPages) {
-        mostrarPaginacion(data.totalPages, pagina - 1, cargarJuegos);
+        mostrarPaginacion(data.totalPages, pagina, cargarJuegos);
         pagDiv.style.display = "flex";
       } else {
         pagDiv.style.display = "none";
@@ -356,7 +357,33 @@ async function cargarJuegos(paginaSeleccionada) {
     .catch((err) => console.error("Error cargando juegos:", err));
 }
 
-function mostrarPaginacion(totalPaginas, paginaActual, callback) {
+function mostrarPaginacion(totalPaginas, paginaActual) {
+  const pagDiv = document.getElementById("pagination");
+  pagDiv.innerHTML = "";
+
+  // Tomamos los parámetros actuales de la URL
+  const params = new URLSearchParams(window.location.search);
+
+  for (let i = 0; i < totalPaginas; i++) {
+    const a = document.createElement("a");
+    a.textContent = i + 1;
+    a.classList.add("btn-pagina");
+
+    if (i == (paginaActual || 0)) {
+      a.classList.add("activa");
+    }
+
+    // Clonamos los params para no pisarlos
+    const newParams = new URLSearchParams(params);
+    newParams.set("page", i);
+
+    a.href = `${window.location.pathname}?${newParams.toString()}`;
+
+    pagDiv.appendChild(a);
+  }
+}
+
+/*function mostrarPaginacion(totalPaginas, paginaActual, callback) {
   const pagDiv = document.getElementById("pagination");
   pagDiv.innerHTML = "";
   for (let i = 0; i < totalPaginas; i++) {
@@ -372,7 +399,7 @@ function mostrarPaginacion(totalPaginas, paginaActual, callback) {
 
     pagDiv.appendChild(btn);
   }
-}
+}*/
 
 function obtenerCategoriaSlugDesdeURL() {
   const params = new URLSearchParams(window.location.search);
