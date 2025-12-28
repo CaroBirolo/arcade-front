@@ -2,49 +2,143 @@ const BASE_URL = "https://retroarcade-api.contactoretroverse.workers.dev";
 const API_JUEGOS = `${BASE_URL}/api/juegos`;
 const API_JUEGOS_RANDOM = `${BASE_URL}/api/juegos/random`;
 const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
+var _categorias = [];
 
-const $contenedor = $("#cards-container");
-const lettersDiv = $("#letters");
 
-const $hamburger = $("#hamburger");
-const $menu = $("#menu-principal");
-const $navMenu = $("#nav-menu");
-
-$hamburger.on("click", () => {
-  $navMenu.toggleClass("show");
-});
-
-const path = window.location.pathname;
-const params = new URLSearchParams(window.location.search);
-
-const IS_GAME_PAGE = path.startsWith("/juego/");
-
-var categoriaSlug = null;
-var juegoSlug = null;
-
-if (path.startsWith("/juego/")) {
-  juegoSlug = path.replace("/juego/", "")
-    .replace(/\/$/, "")
-    .trim();
-}
-// Corregido: Capturar el slug de la categoría del parámetro 'categoria' si existe
-if (params.get("categoria")) {
-  categoriaSlug = params.get("categoria");
-}
 
 $(document).ready(function () {
 
-  InitSeccionBusqueda();
-  cargarCategorias();
+  setTimeout(() => {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  }, 50);
 
-  if (IS_GAME_PAGE && juegoSlug && juegoSlug.length > 0) {
-    // cargamos sólo el juego y salimos
-    cargarJuegoPorSlug(juegoSlug);
+  (async () => {
+    await cargarCategorias();
+    initRedirect();
+    initHamburguer();
+    InitSeccionBusqueda();
+  })();
 
-  } else {
-    initBusqueda();
-  }
 });
+
+function initHamburguer() {
+  const $hamburger = $("#hamburger");
+  const $navMenu = $("#nav-menu");
+
+  $hamburger.on("click", () => {
+    $navMenu.toggleClass("show");
+  });
+}
+
+function initRedirect() {
+
+  const path = window.location.pathname;
+  const params = new URLSearchParams(window.location.search);
+  splitedPath = path.split('/');
+
+  // JUEGOS
+  if(path.includes("/juego/")) {
+    cargarJuegoPorSlug(splitedPath[splitedPath.length-1]);
+    $("#main-game-container").removeClass("oculto-al-inicio");
+    return;
+  }
+
+  // CATEGORIA
+  if (path.includes("/categoria/")) {
+    $("#games-section").removeClass("oculto-al-inicio");
+
+    const categoria = splitedPath[splitedPath.length - 1];
+    const letra = params.get("letra");     // puede ser null
+    let page = Number(params.get("page")) || 1;
+
+    cargarCategoriaLetraPagina(categoria, letra, page);
+    inicializarFiltroLetras(letra);
+    return;
+  }
+
+  if(params.get('buscar')){
+    $("#games-section").removeClass("oculto-al-inicio");
+    let busqueda = params.get('buscar');
+    let page = Number(params.get("page")) || 1;
+    buscarJuegos(busqueda, page);
+    return;
+  }
+
+  //INDEX
+  $("#games-section").removeClass("oculto-al-inicio");
+  cargarJuegosRandom();
+
+}
+
+async function cargarCategorias() {
+  try {
+    const categorias = await $.getJSON(API_CATEGORIAS);
+
+    if (!Array.isArray(categorias) || categorias.length === 0) return;
+
+    _categorias = categorias;
+
+    const principales = categorias
+      .filter(cat => cat.padre_id == null)
+      .sort((a, b) => a.orden - b.orden);
+
+    const secundarias = categorias.filter(cat => cat.padre_id != null);
+
+    const $menu = $("#menu-principal");
+    const $botonBuscar = $menu.find(".buscar");
+
+    $menu.find("li").not(".buscar").remove();
+
+    principales.forEach(cat => {
+      const li = $("<li></li>");
+
+      const tieneSubmenu = secundarias.some(sec => sec.padre_id == cat.id);
+
+      const a = tieneSubmenu
+        ? $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`)
+        : $(`<a href="/categoria/${cat.slug}">${cat.nombre}</a>`);
+
+      li.append(a);
+
+      const subs = secundarias
+        .filter(sub => sub.padre_id == cat.id)
+        .sort((a, b) => a.orden - b.orden);
+
+      if (subs.length) {
+        const ulSub = $('<ul class="submenu"></ul>');
+
+        subs.forEach(sub => {
+          ulSub.append(`
+            <li>
+              <a href="/categoria/${sub.slug}">${sub.nombre}</a>
+            </li>
+          `);
+        });
+
+        li.append(ulSub);
+      }
+
+      $botonBuscar.length ? $botonBuscar.before(li) : $menu.append(li);
+    });
+
+    // eventos (igual que antes)
+    $menu.off("click", "a").on("click", "a", function (e) {
+      const $link = $(this);
+      const $submenu = $link.siblings(".submenu");
+      const esMovil = window.matchMedia("(max-width: 900px)").matches;
+
+      if (esMovil && $submenu.length) {
+        e.preventDefault();
+        $menu.find(".submenu").not($submenu).slideUp(300);
+        $submenu.slideToggle(300);
+        $link.toggleClass("active");
+      }
+    });
+
+  } catch (err) {
+    console.error("Error FATAL cargando categorías:", err);
+  }
+}
 
 async function cargarJuegoPorSlug(slug) {
   try {
@@ -78,33 +172,42 @@ async function cargarJuegoPorSlug(slug) {
   }
 }
 
-async function obtenerNombreCategoria(slug) {
+async function cargarJuegosBase({
+  url,
+  pagina = 0,
+  titulo = "",
+  showPages = true
+}) {
   try {
-    const resp = await fetch(API_CATEGORIAS);
-    const categorias = await resp.json();
+    if (titulo) {
+      $("#titulo").text(titulo);
+    }
 
-    if (!Array.isArray(categorias)) return "Juegos de Categoría";
+    const res = await fetch(url);
+    const data = await res.json();
 
-    const categoriaEncontrada = categorias.find(cat => cat.slug === slug);
+    const juegos = Array.isArray(data) ? data : data.juegos || [];
+    renderJuegos(juegos, "No hay juegos en esta categoría.");
 
-    return categoriaEncontrada ? categoriaEncontrada.nombre : "Juegos de Consola";
+    if (showPages && data.totalPages) {
+      mostrarPaginacion(data.totalPages, pagina);
+    }
 
-  } catch (e) {
-    console.error("Error al obtener nombre de categoría:", e);
-    return "Juegos de Consola";
+  } catch (err) {
+    console.error("Error cargando juegos:", err);
   }
 }
 
-function initBusqueda() {
-  const params = new URLSearchParams(window.location.search);
-  const terminoBusqueda = params.get("buscar");
-  const page = params.get("page");
+function cargarCategoriaLetraPagina(categoria, letra, pagina) {
+  const letraFilter = letra?"&letra="+letra : '';
+  const url = `${BASE_URL}/api/juegos/categoria/slug/${categoria}?page=${pagina-1}&size=40${letraFilter}`;
 
-  if (terminoBusqueda) {
-    buscarJuegos(terminoBusqueda, page);
-  } else {
-    cargarJuegos(page);
-  }
+  cargarJuegosBase({
+    url,
+    pagina: pagina,
+    titulo: _categorias.find(_cat => _cat.slug == categoria).nombre,
+    showPages: true,
+  });
 }
 
 function InitSeccionBusqueda() {
@@ -155,111 +258,7 @@ function InitSeccionBusqueda() {
 }
 
 function redirigirBusqueda(termino) {
-  //window.document.location = `index.html?buscar=${termino}`;
   window.location.href = `/?buscar=${termino}`;
-}
-
-function cargarCategorias() {
-  console.log("1. Iniciando carga de categorías...");
-
-  $.getJSON(API_CATEGORIAS)
-    .done(function (categorias) {
-      console.log("2. Datos recibidos:", categorias.length, "categorías.");
-
-      if (!Array.isArray(categorias) || categorias.length === 0) return;
-
-      // Filtramos las principales (padres)
-      // Usamos '==' para que capture tanto null como undefined
-      const principales = categorias
-        .filter((cat) => cat.padre_id == null)
-        .sort((a, b) => a.orden - b.orden);
-
-      const secundarias = categorias.filter((cat) => cat.padre_id != null);
-
-      console.log(`3. Se encontraron ${principales.length} categorías principales.`);
-
-      // Referencias al DOM
-      const $menu = $("#menu-principal");
-      const $botonBuscar = $menu.find(".buscar");
-
-      // Limpiar categorías previas antes de renderizar (opcional pero recomendado)
-      $menu.find('li').not('.buscar').remove();
-
-      // Iteramos las principales
-      principales.forEach((cat) => {
-        console.log(`   -> Generando HTML para: ${cat.nombre}`); // ESTO DEBE SALIR EN CONSOLA
-
-        const li = $("<li></li>");
-        let a = null;
-
-        // Verificamos si tiene hijos
-        const tieneSubmenu = secundarias.some((sec) => sec.padre_id == cat.id);
-
-        // Creamos el enlace
-        if (!tieneSubmenu) {
-          a = $(`<a href="/index.html?categoria=${cat.slug}">${cat.nombre}</a>`);
-        } else {
-          // El '▾' sirve como indicador visual de submenú
-          a = $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`);
-        }
-
-        li.append(a);
-
-        // Lógica del submenú
-        const subs = secundarias
-          .filter((sub) => sub.padre_id == cat.id)
-          .sort((a, b) => a.orden - b.orden);
-
-        if (subs.length > 0) {
-          const ulSub = $('<ul class="submenu"></ul>');
-          subs.forEach((sub) => {
-            const liSub = $("<li></li>");
-            const aSub = $(`<a href="/index.html?categoria=${sub.slug}">${sub.nombre}</a>`);
-            liSub.append(aSub);
-            ulSub.append(liSub);
-          });
-          li.append(ulSub);
-        }
-
-        // --- MOMENTO DE INSERTAR EN EL HTML ---
-        if ($botonBuscar.length > 0) {
-          $botonBuscar.before(li); // Insertar antes del buscador
-        } else {
-          $menu.append(li); // Si no hay buscador, agregar al final
-        }
-      });
-
-      console.log("4. Proceso de renderizado finalizado.");
-
-      // 5. AGREGAR MANEJADOR DE EVENTOS PARA DESPLIEGUE MÓVIL (¡NUEVO CÓDIGO!)
-
-      // Usamos delegación de eventos para capturar clics en los enlaces recién creados
-      $menu.off('click', 'a').on('click', 'a', function (e) {
-        const $link = $(this);
-        const $submenu = $link.siblings('.submenu');
-
-        // Comprueba si estamos en vista móvil (ancho <= 900px, según tu CSS)
-        // Y si el elemento tiene un submenú
-        const esMovil = window.matchMedia("(max-width: 900px)").matches;
-
-        if (esMovil && $submenu.length) {
-          e.preventDefault(); // Evita que navegue
-
-          // Oculta otros submenús abiertos para mantener un solo submenú activo
-          $menu.find('.submenu').not($submenu).slideUp(300);
-
-          // Muestra/oculta el submenú del elemento actual con animación
-          $submenu.slideToggle(300);
-
-          // Opcional: Cambia la clase para rotar el ícono si usas CSS para ello
-          $link.toggleClass('active');
-        }
-      });
-
-    })
-    .fail((jqxhr, textStatus, error) => {
-      console.error("Error FATAL cargando categorías:", textStatus, error);
-    });
 }
 
 function buscarJuegos(termino, pagina) {
@@ -267,29 +266,19 @@ function buscarJuegos(termino, pagina) {
 
   const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(
     termino.trim()
-  )}&page=${(pagina || 0)}&size=40`;
+  )}&page=${pagina}&size=40`;
 
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      const juegos = data.content || data;
-      renderJuegos(juegos, $contenedor, "No se encontraron juegos.");
-      $("#titulo").text(`Resultados para: "${termino}"`);
-
-      const pagDiv = document.getElementById("pagination");
-      if (data.totalPages && data.totalPages > 1) {
-        mostrarPaginacion(data.totalPages, pagina, (i) =>
-          buscarJuegos(termino, i)
-        );
-        pagDiv.style.display = "flex";
-      } else {
-        pagDiv.style.display = "none";
-      }
-    })
-    .catch((err) => console.error("Error en búsqueda:", err));
+  cargarJuegosBase({
+    url,
+    pagina: pagina,
+    titulo: `Resultados para: "${termino}"`,
+    showPages: true,
+  });
+ 
 }
 
-function renderJuegos(juegos, $contenedor, mensajeVacio) {
+function renderJuegos(juegos, mensajeVacio) {
+  const $contenedor = $("#cards-container");
   $contenedor.empty();
 
   if (!juegos || juegos.length === 0) {
@@ -315,50 +304,22 @@ function renderJuegos(juegos, $contenedor, mensajeVacio) {
     $contenedor.append(cardHtml);
   });
 
-  inicializarFiltroLetras();
 }
 
-async function cargarJuegos(paginaSeleccionada) {
+function cargarJuegosRandom(paginaSeleccionada = 0) {
+  const url = `${API_JUEGOS_RANDOM}/40?noCache=${Date.now()}`;
 
-  if (IS_GAME_PAGE) return;
-
-  let pagina = paginaSeleccionada; 
-  let url;
-  let paginacionVisible = true;
-
-  const $tituloH2 = $("#titulo");
-
-  if (categoriaSlug) {
-    url = `${API_JUEGOS}/categoria/slug/${categoriaSlug}?page=${(pagina || 0)}&size=40`;
-    const nombreCategoria = await obtenerNombreCategoria(categoriaSlug);
-    $tituloH2.text(nombreCategoria || "Juegos de Consola");
-
-  } else {
-    url = `${API_JUEGOS_RANDOM}/40?&noCache=${Date.now()}`;
-    paginacionVisible = false;
-    $tituloH2.text("Random Games");
-  }
-
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      const juegos = Array.isArray(data) ? data : data.juegos || [];
-      renderJuegos(juegos, $contenedor, "No hay juegos en esta categoría.");
-
-      const pagDiv = document.getElementById("pagination");
-
-      if (paginacionVisible && data.totalPages) {
-        mostrarPaginacion(data.totalPages, pagina, cargarJuegos);
-        pagDiv.style.display = "flex";
-      } else {
-        pagDiv.style.display = "none";
-      }
-    })
-    .catch((err) => console.error("Error cargando juegos:", err));
+  cargarJuegosBase({
+    url,
+    pagina: paginaSeleccionada,
+    titulo: "Random Games",
+    showPages: false,
+  });
 }
 
 function mostrarPaginacion(totalPaginas, paginaActual) {
   const pagDiv = document.getElementById("pagination");
+  pagDiv.style.display = "flex";
   pagDiv.innerHTML = "";
 
   // Tomamos los parámetros actuales de la URL
@@ -369,13 +330,13 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
     a.textContent = i + 1;
     a.classList.add("btn-pagina");
 
-    if (i == (paginaActual || 0)) {
+    if (i+1 == paginaActual) {
       a.classList.add("activa");
     }
 
     // Clonamos los params para no pisarlos
     const newParams = new URLSearchParams(params);
-    newParams.set("page", i);
+    newParams.set("page", i+1);
 
     a.href = `${window.location.pathname}?${newParams.toString()}`;
 
@@ -383,117 +344,18 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
   }
 }
 
-/*function mostrarPaginacion(totalPaginas, paginaActual, callback) {
-  const pagDiv = document.getElementById("pagination");
-  pagDiv.innerHTML = "";
-  for (let i = 0; i < totalPaginas; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i + 1;
-    btn.classList.add("btn-pagina");
-    if (i === paginaActual) btn.classList.add("activa");
-    btn.addEventListener("click", () => {
-      callback(i);            // Cambia la página
-      mostrarPaginacion(totalPaginas, i, callback);  // 🔥 vuelve a dibujar los botones
-      window.scrollTo(0, 0);
-    });
+function inicializarFiltroLetras(letra) {
+  const $letters = $("#letters").show();
 
-    pagDiv.appendChild(btn);
-  }
-}*/
+  if ($letters.children().length === 0) {
+    const baseURL = window.location.pathname;
 
-function obtenerCategoriaSlugDesdeURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("categoria") || null;
-}
-
-function inicializarFiltroLetras() {
-  const categoriaSlug = obtenerCategoriaSlugDesdeURL();
-  if (!categoriaSlug) {
-    lettersDiv.hide();
-    return;
-  }
-
-  lettersDiv.show();
-  InitSeccionBusqueda();
-
-  if (lettersDiv.children().length === 0) {
-    const letters = ["#"].concat(
-      Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))
-    );
-    letters.forEach((letter) => {
-      lettersDiv.append(`<button class="letter-btn">${letter}</button>`);
-    });
-  }
-
-  let juegosFiltradosLetra = [];
-  let paginaActual = 0;
-  const size = 40;
-
-  function renderPaginacionLetra() {
-    const totalPaginas = Math.ceil(juegosFiltradosLetra.length / size);
-    mostrarPaginacion(totalPaginas, paginaActual, (p) => {
-      paginaActual = p;
-      renderPaginaLetra();
-    });
-  }
-
-  function renderPaginaLetra() {
-    const inicio = paginaActual * size;
-    const fin = inicio + size;
-    const juegosPagina = juegosFiltradosLetra.slice(inicio, fin);
-
-    renderJuegos(juegosPagina, $contenedor, "No hay juegos para esta letra.");
-  }
-
-  // Reset de eventos para evitar duplicados
-  lettersDiv.off("click", ".letter-btn");
-
-  lettersDiv.on("click", ".letter-btn", function () {
-    const letra = $(this).text().toUpperCase();
-
-    // marcar la letra activa
-    lettersDiv.find(".letter-btn").removeClass("activa");
-    $(this).addClass("activa");
-
-    paginaActual = 0;
-
-    const url = `${BASE_URL}/api/juegos/categoria/slug/${encodeURIComponent(
-      categoriaSlug
-    )}/letra/${encodeURIComponent(letra)}?page=0&size=5000`;
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        juegosFiltradosLetra = data.content || data || [];
-
-        renderPaginaLetra();
-        renderPaginacionLetra();
-      })
-      .catch((err) => {
-        console.error("Error cargando juegos por letra:", err);
-        $contenedor.html(`<p>Error al cargar juegos.</p>`);
+    ["#", ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))]
+      .forEach(l => {
+        const href = `${baseURL}?letra=${encodeURIComponent(l)}`;
+        const classes = letra == l ? 'letter-btn activa' : 'letter-btn'
+        $letters.append(`<a class="${classes}" href="${href}">${l}</a>`);
       });
-  });
-}
-
-async function cargarJuego(id) {
-  try {
-    const resp = await fetch(`${BASE_URL}/api/juegos/${id}`);
-    const juego = await resp.json();
-
-    if (!juego || juego.error) {
-      console.error("Juego no encontrado");
-      return;
-    }
-
-    $("#titulo-juego").text(juego.nombre);
-    $("#imagen-juego").attr(
-      "src",
-      juego.imagen || "imagenes/no-img-available.png"
-    );
-    $("#descripcion-juego").text(juego.descripcion || "Sin descripción.");
-    $("#iframe-juego").attr("src", juego.iframe || "");
-  } catch (err) {
-    console.error("Error cargando juego:", err);
   }
 }
+
