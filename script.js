@@ -2,9 +2,25 @@ const BASE_URL = "https://retroarcade-api.contactoretroverse.workers.dev";
 const API_JUEGOS = `${BASE_URL}/api/juegos`;
 const API_JUEGOS_RANDOM = `${BASE_URL}/api/juegos/random`;
 const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
+
+const TITULOS = {
+  es: "Juegos Aleatorios",
+  en: "Random Games",
+  "pt-br": "Jogos Aleatórios",
+};
+
+const langs = [
+  { code: "es", path: "/es/" },
+  { code: "en", path: "/en/" },
+  { code: "pt-br", path: "/pt-br/" }
+];
+const path = window.location.pathname;
+const langObj = langs.find(l => path.startsWith(l.path));
+const currentLangPath = "/" + (langObj?.code ?? "es");
+const currentLangCode = langObj?.code ?? "es";
+
+
 var _categorias = [];
-
-
 
 $(document).ready(function () {
 
@@ -34,11 +50,12 @@ function initRedirect() {
 
   const path = window.location.pathname;
   const params = new URLSearchParams(window.location.search);
-  splitedPath = path.split('/');
+  const logicPath = path.replace(/^\/(es|en|pt-br)/, '');
+  const splitedPath = logicPath.split('/').filter(p => p !== "");
 
   // JUEGOS
-  if(path.includes("/juego/")) {
-    cargarJuegoPorSlug(splitedPath[splitedPath.length-1]);
+  if (path.includes("/juego/")) {
+    cargarJuegoPorSlug(splitedPath[splitedPath.length - 1]);
     $("#main-game-container").removeClass("oculto-al-inicio");
     return;
   }
@@ -56,7 +73,7 @@ function initRedirect() {
     return;
   }
 
-  if(params.get('buscar')){
+  if (params.get('buscar')) {
     $("#games-section").removeClass("oculto-al-inicio");
     let busqueda = params.get('buscar');
     let page = Number(params.get("page")) || 1;
@@ -87,7 +104,8 @@ async function cargarCategorias() {
     const $menu = $("#menu-principal");
     const $botonBuscar = $menu.find(".buscar");
 
-    $menu.find("li").not(".buscar").remove();
+    $menu.find("li").not(".buscar, .lang-item, .lang").remove();
+
 
     principales.forEach(cat => {
       const li = $("<li></li>");
@@ -96,7 +114,7 @@ async function cargarCategorias() {
 
       const a = tieneSubmenu
         ? $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`)
-        : $(`<a href="/categoria/${cat.slug}">${cat.nombre}</a>`);
+        : $(`<a href="${currentLangPath}/categoria/${cat.slug}">${cat.nombre}</a>`);
 
       li.append(a);
 
@@ -110,7 +128,7 @@ async function cargarCategorias() {
         subs.forEach(sub => {
           ulSub.append(`
             <li>
-              <a href="/categoria/${sub.slug}">${sub.nombre}</a>
+              <a href="${currentLangPath}/categoria/${sub.slug}">${sub.nombre}</a>
             </li>
           `);
         });
@@ -118,7 +136,11 @@ async function cargarCategorias() {
         li.append(ulSub);
       }
 
-      $botonBuscar.length ? $botonBuscar.before(li) : $menu.append(li);
+      if ($botonBuscar.length) {
+        $botonBuscar.before(li);
+      } else {
+        $menu.append(li);
+      }
     });
 
     // eventos (igual que antes)
@@ -129,9 +151,7 @@ async function cargarCategorias() {
 
       if (esMovil && $submenu.length) {
         e.preventDefault();
-        $menu.find(".submenu").not($submenu).slideUp(300);
         $submenu.slideToggle(300);
-        $link.toggleClass("active");
       }
     });
 
@@ -199,8 +219,8 @@ async function cargarJuegosBase({
 }
 
 function cargarCategoriaLetraPagina(categoria, letra, pagina) {
-  const letraFilter = letra?"&letra="+letra : '';
-  const url = `${BASE_URL}/api/juegos/categoria/slug/${categoria}?page=${pagina-1}&size=40${letraFilter}`;
+  const letraFilter = letra ? "&letra=" + letra : '';
+  const url = `${BASE_URL}/api/juegos/categoria/slug/${categoria}?page=${pagina - 1}&size=40${letraFilter}`;
 
   cargarJuegosBase({
     url,
@@ -258,7 +278,7 @@ function InitSeccionBusqueda() {
 }
 
 function redirigirBusqueda(termino) {
-  window.location.href = `/?buscar=${termino}`;
+  window.location.href = `${currentLangPath}/?buscar=${termino}`;
 }
 
 function buscarJuegos(termino, pagina) {
@@ -274,7 +294,7 @@ function buscarJuegos(termino, pagina) {
     titulo: `Resultados para: "${termino}"`,
     showPages: true,
   });
- 
+
 }
 
 function renderJuegos(juegos, mensajeVacio) {
@@ -294,9 +314,8 @@ function renderJuegos(juegos, mensajeVacio) {
 
     const cardHtml = `
       <div class="card">
-        <a href='/juego/${juego.slug}'>
-          <img src="${imagen}" alt="${juego.nombre}"
-               onerror="this.onerror=null; this.src='imagenes/no-img-available.png';" />
+        <a href='${currentLangPath}/juego/${juego.slug}'> 
+          <img src="${imagen}" ... />
         </a>
         <h3>${juego.nombre} - ${juego.plataforma}</h3>
       </div>
@@ -312,7 +331,7 @@ function cargarJuegosRandom(paginaSeleccionada = 0) {
   cargarJuegosBase({
     url,
     pagina: paginaSeleccionada,
-    titulo: "Random Games",
+    titulo: TITULOS[currentLangCode] || TITULOS.en,
     showPages: false,
   });
 }
@@ -330,13 +349,13 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
     a.textContent = i + 1;
     a.classList.add("btn-pagina");
 
-    if (i+1 == paginaActual) {
+    if (i + 1 == paginaActual) {
       a.classList.add("activa");
     }
 
     // Clonamos los params para no pisarlos
     const newParams = new URLSearchParams(params);
-    newParams.set("page", i+1);
+    newParams.set("page", i + 1);
 
     a.href = `${window.location.pathname}?${newParams.toString()}`;
 

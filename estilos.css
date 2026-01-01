@@ -67,11 +67,12 @@ header {
   align-items: center;
   justify-content: space-between;
   background: #090039;
-  padding: 8px 25px;
+  padding: 0px 25px;
   border-bottom: 2px solid #f207fe;
   box-shadow: 0 0 10px #f207fe;
   position: relative;
   z-index: 100;
+  overflow: visible;
 }
 
 header h1 {
@@ -98,16 +99,12 @@ header h1 img:hover {
 }
 
 nav ul.menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   gap: 10px;
   align-items: center;
-  height: auto;
-  min-height: 50px;
-  overflow: visible;
+  flex-wrap: nowrap;
 }
+
 
 nav ul.menu>li {
   position: relative;
@@ -181,10 +178,7 @@ nav ul.submenu li a:hover {
 
 /* 🔹 BUSCADOR */
 nav ul.menu li.buscar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%;
+  flex-shrink: 0;
 }
 
 nav ul.menu li.buscar button {
@@ -575,6 +569,24 @@ footer {
 /* 3. MEDIA QUERY PARA MÓVIL (Max 900px) */
 @media (max-width: 900px) {
 
+  .lang-dropdown {
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .lang-menu {
+    position: static; /* En móvil que fluya con el resto */
+    display: none;    /* Se oculta por defecto */
+    width: 100%;
+    border: none;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .lang-dropdown:hover .lang-menu {
+    display: block;
+  }
+
   /* Mostrar botón hamburguesa */
   .hamburger {
     display: block;
@@ -918,4 +930,80 @@ footer {
 
 .legal a:hover {
   text-decoration: underline;
+}
+
+/* 1. Contenedor principal */
+.lang-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    z-index: 1000;
+    /* Esto es clave: aumenta el área de contacto vertical */
+    padding-bottom: 15px; 
+    margin-bottom: -15px;
+}
+
+/* 2. Botón del idioma (globo) */
+.lang-current {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5e69fe; 
+    transition: color 0.3s, transform 0.2s;
+}
+
+.lang-current svg {
+    pointer-events: none; 
+    width: 24px;  /* Le damos un tamaño un poco más visible */
+    height: 24px;
+}
+
+/* 3. Hover efecto en el botón */
+.lang-dropdown:hover .lang-current {
+    color: #ff00ff;
+    transform: scale(1.1);
+}
+
+/* 4. Menú desplegable */
+.lang-menu {
+    position: absolute;
+    /* Ajusta este valor para que el menú "toque" el botón */
+    top: 80%; 
+    right: 0;
+    background: #090039;
+    border: 2px solid #00ffcc;
+    border-radius: 6px;
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    min-width: 140px;
+    display: none; 
+    z-index: 9999;
+    /* Evita que cualquier elemento hijo bloquee el hover */
+    pointer-events: auto; 
+}
+
+/* 5. MOSTRAR AL HOVER - El secreto está en el padre */
+.lang-dropdown:hover .lang-menu {
+    display: block !important;
+}
+
+/* 6. Estilo de los links de idioma para que se vean bien */
+.lang-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: #00ffcc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: "Orbitron", sans-serif;
+    transition: background 0.2s, color 0.2s;
+}
+
+.lang-menu li a:hover {
+    background: rgba(255, 0, 255, 0.2);
+    color: #ffffff;
 }
