@@ -46,6 +46,7 @@ function initRedirect() {
   // CATEGORIA
   if (path.includes("/categoria/")) {
     $("#games-section").removeClass("oculto-al-inicio");
+    $(".ficha-tecnica").removeClass("oculto-al-inicio");
 
     const categoria = splitedPath[splitedPath.length - 1];
     const letra = params.get("letra");     // puede ser null
@@ -53,6 +54,7 @@ function initRedirect() {
 
     cargarCategoriaLetraPagina(categoria, letra, page);
     inicializarFiltroLetras(letra);
+    completarFichaTecnica(_categorias.find(c => c.slug == categoria));
     return;
   }
 
@@ -358,5 +360,14 @@ function inicializarFiltroLetras(letra) {
         $letters.append(`<a class="${classes}" href="${href}">${l}</a>`);
       });
   }
+}
+
+function completarFichaTecnica(categoria){
+  $("#descripcion-corta").html(categoria.descripcion_corta);
+  $("#anio-lanzamiento").html(`Release year: ${categoria.anio_lanzamiento}`);
+  $("#fabricante").html(`Manufacturer: ${categoria.fabricante}`);
+  $("#region").html(`Origin region: ${categoria.region_origen}`);
+  $("#tipo").html(`Plataform tipe: ${categoria.tipo}`);
+  $("#descripcion-SEO").html(`Description: ${categoria.descripcion}`);
 }
 

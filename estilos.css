@@ -284,7 +284,6 @@ nav ul.menu li.buscar button:hover {
   font-weight: 900;
   font-size: 2rem;
   letter-spacing: 8px;
-  padding: 10px 0;
   -webkit-text-stroke: 0.6px black;
   text-shadow: 0 0 5px #fff, 0 0 10px #00ffcc, 0 0 20px #00ffcc,
     0 0 30px #00ffcc, 0 0 60px #f207fe, 0 0 100px #f207fe, 0 0 140px #00ffcc;
@@ -292,7 +291,7 @@ nav ul.menu li.buscar button:hover {
 }
 
 #titulo {
-  margin: 50px auto 20px;
+  margin: 40px auto 6px;
 }
 
 #titulo2 {
@@ -362,7 +361,7 @@ nav ul.menu li.buscar button:hover {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 6px;
-  margin: 15px auto 30px;
+  margin: 30px auto 30px;
   padding: 5px;
 }
 
@@ -918,4 +917,44 @@ footer {
 
 .legal a:hover {
   text-decoration: underline;
+}
+
+.ficha-tecnica {
+  max-width: 100%;
+}
+
+/* Títulos / datos */
+.ficha-tecnica h3 {
+  margin: 6px 0;
+  font-size: 0.9rem;            
+  font-weight: 400;
+  color: #551a8b;             
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Primera línea (descripción corta) un poco más destacada */
+.ficha-tecnica #descripcion-corta {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #551a8b;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Labels visuales tipo ficha */
+.ficha-tecnica h3::before {
+  content: "• ";
+  color: #00ffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ficha-tecnica {
+    padding: 14px;
+  }
+
+  .ficha-tecnica h3 {
+    font-size: 0.85rem;
+  }
 }
