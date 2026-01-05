@@ -323,27 +323,124 @@ function cargarJuegosRandom(paginaSeleccionada = 0) {
 function mostrarPaginacion(totalPaginas, paginaActual) {
   const pagDiv = document.getElementById("pagination");
   pagDiv.style.display = "flex";
+  pagDiv.className = "flex flex-wrap justify-center gap-2 my-5 max-w-full";
+
   pagDiv.innerHTML = "";
 
-  // Tomamos los parámetros actuales de la URL
   const params = new URLSearchParams(window.location.search);
 
-  for (let i = 0; i < totalPaginas; i++) {
+  function crearEnlace(num, texto = null, extraClasses = "") {
     const a = document.createElement("a");
-    a.textContent = i + 1;
-    a.classList.add("btn-pagina");
+    a.textContent = texto || num;
 
-    if (i + 1 == paginaActual) {
-      a.classList.add("activa");
+    a.className = `
+      font-orbitron font-extrabold text-[0.9rem] 
+      border-[1.5px] border-[#ff00ff] 
+      text-[#5e69fe] 
+      rounded-md 
+      px-2 py-1 
+      cursor-pointer 
+      transition-transform duration-200 ease-in-out
+      hover:bg-[#00ffcc] hover:text-[#090039] hover:scale-110
+      ${extraClasses}
+    `.trim().replace(/\s+/g, " ");
+
+    if (num === paginaActual) {
+      a.classList.add(
+        "bg-[#ff00ff]",
+        "text-white",
+        "border-[#00ffcc]",
+        "scale-110"
+      );
+      a.style.pointerEvents = "none";
     }
 
-    // Clonamos los params para no pisarlos
     const newParams = new URLSearchParams(params);
-    newParams.set("page", i + 1);
-
+    newParams.set("page", num);
     a.href = `${window.location.pathname}?${newParams.toString()}`;
 
-    pagDiv.appendChild(a);
+    return a;
+  }
+
+  function crearSpan(texto) {
+    const span = document.createElement("span");
+    span.textContent = texto;
+    span.className = "px-2 py-1 text-gray-400 select-none";
+    return span;
+  }
+
+  function crearBotonDeshabilitado(texto) {
+    const span = document.createElement("span");
+    span.textContent = texto;
+    span.className = `
+      font-orbitron font-extrabold text-[0.9rem] 
+      border-[1.5px] border-[#ff00ff] 
+      text-[#5e69fe] 
+      rounded-md 
+      px-2 py-1 
+      cursor-not-allowed 
+      opacity-50 select-none
+    `.trim().replace(/\s+/g, " ");
+    return span;
+  }
+
+  // Botón anterior
+  if (paginaActual > 1) {
+    pagDiv.appendChild(crearEnlace(paginaActual - 1, "Anterior"));
+  } else {
+    pagDiv.appendChild(crearBotonDeshabilitado("Anterior"));
+  }
+
+  // Páginas
+  if (totalPaginas <= 10) {
+    for (let i = 1; i <= totalPaginas; i++) {
+      pagDiv.appendChild(crearEnlace(i));
+    }
+  } else {
+    pagDiv.appendChild(crearEnlace(1));
+
+    let startPage, endPage;
+
+    if (paginaActual <= 5) {
+      startPage = 2;
+      endPage = 7;
+      for (let i = startPage; i <= endPage; i++) {
+        pagDiv.appendChild(crearEnlace(i));
+      }
+      if (endPage < totalPaginas - 3) {
+        pagDiv.appendChild(crearSpan("..."));
+      }
+    } else if (paginaActual >= totalPaginas - 4) {
+      if (2 < totalPaginas - 7) {
+        pagDiv.appendChild(crearSpan("..."));
+      }
+      startPage = totalPaginas - 6;
+      endPage = totalPaginas - 1;
+      for (let i = startPage; i <= endPage; i++) {
+        pagDiv.appendChild(crearEnlace(i));
+      }
+    } else {
+      if (2 < paginaActual - 2) {
+        pagDiv.appendChild(crearSpan("..."));
+      }
+      startPage = paginaActual - 2;
+      endPage = paginaActual + 2;
+      for (let i = startPage; i <= endPage; i++) {
+        pagDiv.appendChild(crearEnlace(i));
+      }
+      if (endPage < totalPaginas - 1) {
+        pagDiv.appendChild(crearSpan("..."));
+      }
+    }
+
+    pagDiv.appendChild(crearEnlace(totalPaginas));
+  }
+
+  // Botón siguiente
+  if (paginaActual < totalPaginas) {
+    pagDiv.appendChild(crearEnlace(paginaActual + 1, "Siguiente"));
+  } else {
+    pagDiv.appendChild(crearBotonDeshabilitado("Siguiente"));
   }
 }
 
@@ -356,18 +453,20 @@ function inicializarFiltroLetras(letra) {
     ["#", ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))]
       .forEach(l => {
         const href = `${baseURL}?letra=${encodeURIComponent(l)}`;
-        const classes = letra == l ? 'letter-btn activa' : 'letter-btn'
+        const buttonClasses = 'font-orbitron font-extrabold text-[0.9rem] border-[1.5px] border-[#ff00ff] text-[#5e69fe] rounded-md px-2 py-1 cursor-pointer transition-transform duration-200 ease-in-out hover:bg-[#00ffcc] hover:text-[#090039] hover:scale-110';
+        const classes = letra == l ? `${buttonClasses} bg-[#ff00ff] text-white border-[#00ffcc] scale-110` : buttonClasses;
         $letters.append(`<a class="${classes}" href="${href}">${l}</a>`);
       });
   }
 }
 
-function completarFichaTecnica(categoria){
-  $("#descripcion-corta").html(categoria.descripcion_corta);
-  $("#anio-lanzamiento").html(`Release year: ${categoria.anio_lanzamiento}`);
-  $("#fabricante").html(`Manufacturer: ${categoria.fabricante}`);
-  $("#region").html(`Origin region: ${categoria.region_origen}`);
-  $("#tipo").html(`Plataform tipe: ${categoria.tipo}`);
-  $("#descripcion-SEO").html(`Description: ${categoria.descripcion}`);
+function completarFichaTecnica(categoria) {
+  $("#descripcion-corta").text(categoria.descripcion_corta);
+  $("#anio-lanzamiento").text(categoria.anio_lanzamiento);
+  $("#fabricante").text(categoria.fabricante);
+  $("#region").text(categoria.region_origen);
+  $("#tipo").text(categoria.tipo);
+  $("#descripcion-SEO").text(categoria.descripcion);
 }
+
 

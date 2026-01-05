@@ -23,6 +23,8 @@
     crossorigin="anonymous">
     </script>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <!-- Google Tag Manager -->
@@ -79,18 +81,62 @@
 
       <section class="games-section oculto-al-inicio" id="games-section">
         <div class="cards-column">
-          <h2 id="titulo"></h2>
-          <div class="ficha-tecnica oculto-al-inicio">
-            <h3 id="descripcion-corta"> </h3>
-            <h3 id="anio-lanzamiento"> </h3>
-            <h3 id="fabricante"> </h3>
-            <h3 id="region"> </h3>
-            <h3 id="tipo"> </h3>
-            <h3 id="descripcion-SEO"> </h3>
+          <div class="mt-6 mb-2 text-center">
+            <h2 id="titulo"></h2>
           </div>
+
+          <div class="max-w-6xl mx-auto w-full">
+            <div class="ficha-tecnica oculto-al-inicio mt-4
+              rounded-xl
+              border
+              border-[#f207fe]
+              bg-purple-100/10
+              p-5
+              text-sm
+              text-purple-900
+              shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]
+              font-mono">
+
+              <!-- Descripción corta -->
+              <h3 id="descripcion-corta" class="mb-4 text-center text-base font-semibold text-purple-950">
+              </h3>
+
+              <!-- Datos técnicos -->
+              <div class="flex flex-col items-center gap-y-2 text-purple-950 text-sm mb-4">
+
+                <div class="flex gap-6">
+                  <div class="flex gap-1 items-center">
+                    <span class="font-medium text-purple-800 text-sm">Release year:</span>
+                    <span id="anio-lanzamiento" class="text-sm text-purple-800 font-normal"></span>
+                  </div>
+                  <div class="flex gap-1 items-center">
+                    <span class="font-medium text-purple-800 text-sm">Manufacturer:</span>
+                    <span id="fabricante" class="text-sm text-purple-800 font-normal"></span>
+                  </div>
+                </div>
+
+                <div class="flex gap-6">
+                  <div class="flex gap-1 items-center">
+                    <span class="font-medium text-purple-800 text-sm">Origin region:</span>
+                    <span id="region" class="text-sm text-purple-800 font-normal"></span>
+                  </div>
+                  <div class="flex gap-1 items-center">
+                    <span class="font-medium text-purple-800 text-sm">Platform type:</span>
+                    <span id="tipo" class="text-sm text-purple-800 font-normal"></span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Descripción larga SEO (ahora dentro del recuadro) -->
+              <h3 id="descripcion-SEO" class="mt-8 leading-relaxed text-purple-800 text-justify"></h3>
+
+            </div>
+          </div>
+
+
           <div id="letters" class="pagination"></div>
-          <div class="cards-container" id="cards-container">
-          </div>
+          <div class="cards-container" id="cards-container"></div>
         </div>
 
         <div class="ads-column">
@@ -174,26 +220,6 @@
       <a class="footer-link" href="/legales/DMCA.html">DMCA</a>
     </div>
   </footer>
-
-  <!-- 🔹 POP-UP ANTI ADBLOCK -->
-  <!--<div id="adblock-popup">
-    <div class="popup-box">
-      <h2>🛑 AdBlock Detected</h2>
-      <p>
-        To continue enjoying RetroVerse, we kindly ask you to disable your ad blocker.<br><br>
-        We promise light and non-intrusive ads 💜
-      </p>
-      <button id="popup-close">Got it</button>
-    </div>
-  </div>
-
-  <!-- Scripts anti-adblock -->
-  <!--<script src="/anti-adblock.js"></script> -->
-  <script>
-    document.getElementById("popup-close").addEventListener("click", () => {
-      document.getElementById("adblock-popup").style.display = "none";
-    });
-  </script>
 </body>
 
 </html>
