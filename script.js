@@ -37,8 +37,8 @@ function initRedirect() {
   splitedPath = path.split('/');
 
   // JUEGOS
-  if(path.includes("/juego/")) {
-    cargarJuegoPorSlug(splitedPath[splitedPath.length-1]);
+  if (path.includes("/juego/")) {
+    cargarJuegoPorSlug(splitedPath[splitedPath.length - 1]);
     $("#main-game-container").removeClass("oculto-al-inicio");
     return;
   }
@@ -56,7 +56,7 @@ function initRedirect() {
     return;
   }
 
-  if(params.get('buscar')){
+  if (params.get('buscar')) {
     $("#games-section").removeClass("oculto-al-inicio");
     let busqueda = params.get('buscar');
     let page = Number(params.get("page")) || 1;
@@ -186,7 +186,9 @@ async function cargarJuegosBase({
     const res = await fetch(url);
     const data = await res.json();
 
-    const juegos = Array.isArray(data) ? data : data.juegos || [];
+    const juegos = Array.isArray(data)
+      ? data
+      : data.content || data.juegos || [];
     renderJuegos(juegos, "No hay juegos en esta categoría.");
 
     if (showPages && data.totalPages) {
@@ -199,8 +201,8 @@ async function cargarJuegosBase({
 }
 
 function cargarCategoriaLetraPagina(categoria, letra, pagina) {
-  const letraFilter = letra?"&letra="+letra : '';
-  const url = `${BASE_URL}/api/juegos/categoria/slug/${categoria}?page=${pagina-1}&size=40${letraFilter}`;
+  const letraFilter = letra ? "&letra=" + letra : '';
+  const url = `${BASE_URL}/api/juegos/categoria/slug/${categoria}?page=${pagina - 1}&size=40${letraFilter}`;
 
   cargarJuegosBase({
     url,
@@ -261,20 +263,19 @@ function redirigirBusqueda(termino) {
   window.location.href = `/?buscar=${termino}`;
 }
 
-function buscarJuegos(termino, pagina) {
+function buscarJuegos(termino, pagina = 1) {
   if (!termino || termino.trim() === "") return;
 
   const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(
     termino.trim()
-  )}&page=${pagina}&size=40`;
+  )}&page=${pagina - 1}&size=40`; // 👈 CLAVE
 
   cargarJuegosBase({
     url,
-    pagina: pagina,
+    pagina,
     titulo: `Resultados para: "${termino}"`,
     showPages: true,
   });
- 
 }
 
 function renderJuegos(juegos, mensajeVacio) {
@@ -330,13 +331,13 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
     a.textContent = i + 1;
     a.classList.add("btn-pagina");
 
-    if (i+1 == paginaActual) {
+    if (i + 1 == paginaActual) {
       a.classList.add("activa");
     }
 
     // Clonamos los params para no pisarlos
     const newParams = new URLSearchParams(params);
-    newParams.set("page", i+1);
+    newParams.set("page", i + 1);
 
     a.href = `${window.location.pathname}?${newParams.toString()}`;
 
