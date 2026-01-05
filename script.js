@@ -136,7 +136,7 @@ async function cargarCategorias() {
     });
 
   } catch (err) {
-    console.error("Error FATAL cargando categorías:", err);
+    console.error("FATAL error loading categories:", err);
   }
 }
 
@@ -146,15 +146,15 @@ async function cargarJuegoPorSlug(slug) {
     const juego = await resp.json();
 
     if (!juego || juego.error) {
-      console.error("Juego no encontrado");
-      $("#game-cards-container").html("<p>Juego no encontrado.</p>");
+      console.error("Game not found");
+      $("#game-cards-container").html("<p>Game not found.</p>");
       return;
     }
 
     const cardHtml = `
       <div class="card-juego">
          <h2 class="titulo-juego">
-      ${juego.nombre} — <span class="plataforma">Plataforma: ${juego.plataforma || "Desconocida"}</span>
+      ${juego.nombre} — <span class="plataforma">Platform: ${juego.plataforma || "Unknown"}</span>
     </h2>
       
         ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
@@ -164,11 +164,11 @@ async function cargarJuegoPorSlug(slug) {
     $("#game-cards-container").html(cardHtml);
     if (juego.iframe) {
       $("#iframe-preview").html(`<span> Embed Code: &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</span> 
-         <span id="source">**Fuente: retrogames.cc. El contenido se muestra mediante iframe y pertenece exclusivamente a sus respectivos propietarios. No almacenamos ni distribuimos dicho contenido y no asumimos responsabilidad por el mismo.**</span>`);
+         <span id="source">**Source: retrogames.cc. All content is embedded via iframe and remains the property of its respective owners. We do not host, store, or distribute this content and are not responsible for it.**</span>`);
     }
 
   } catch (e) {
-    console.error("Error al cargar juego:", e); // Cambié el mensaje de error
+    console.error("Error loading games:", e); // Cambié el mensaje de error
   }
 }
 
@@ -189,14 +189,14 @@ async function cargarJuegosBase({
     const juegos = Array.isArray(data)
       ? data
       : data.content || data.juegos || [];
-    renderJuegos(juegos, "No hay juegos en esta categoría.");
+    renderJuegos(juegos, "No games available in this category.");
 
     if (showPages && data.totalPages) {
       mostrarPaginacion(data.totalPages, pagina);
     }
 
   } catch (err) {
-    console.error("Error cargando juegos:", err);
+    console.error("Error loading games:", err);
   }
 }
 
@@ -219,7 +219,7 @@ function InitSeccionBusqueda() {
   const $inputBusqueda = $campoBusqueda.find("input[type='text']");
 
   if ($btnBuscar.length === 0 || $campoBusqueda.length === 0) {
-    console.warn("Advertencia: No se encontraron los elementos de búsqueda. La inicialización falló.");
+    console.warn("Warning: Search elements not found. Initialization failed.");
     return;
   }
 
@@ -273,7 +273,7 @@ function buscarJuegos(termino, pagina = 1) {
   cargarJuegosBase({
     url,
     pagina,
-    titulo: `Resultados para: "${termino}"`,
+    titulo: `Search results for "${termino}"`,
     showPages: true,
   });
 }
