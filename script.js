@@ -39,7 +39,7 @@ function initRedirect() {
   // JUEGOS
   if (path.includes("/juego/")) {
     cargarJuegoPorSlug(splitedPath[splitedPath.length - 1]);
-    $("#main-game-container").removeClass("oculto-al-inicio");
+    $("#main-game-container").removeClass("hidden");
     return;
   }
 
@@ -107,7 +107,20 @@ async function cargarCategorias() {
         .sort((a, b) => a.orden - b.orden);
 
       if (subs.length) {
-        const ulSub = $('<ul class="submenu"></ul>');
+        const ulSub = $(`
+  <ul class="submenu absolute top-full left-0 mt-1
+             bg-[#090039]
+             border border-[#00d2d9]
+             rounded-md
+             min-w-[180px]
+             max-h-[300px]
+             overflow-hidden
+             z-[100]
+             opacity-0 invisible
+             -translate-y-2
+             transition-all duration-300">
+  </ul>
+`);
 
         subs.forEach(sub => {
           ulSub.append(`
@@ -154,14 +167,54 @@ async function cargarJuegoPorSlug(slug) {
     }
 
     const cardHtml = `
-      <div class="card-juego">
-         <h2 class="titulo-juego">
-      ${juego.nombre} — <span class="plataforma">Platform: ${juego.plataforma || "Unknown"}</span>
+  <div class="card-juego
+              border-2 border-[#0f207f]
+              rounded-lg
+              p-4
+              text-center
+              text-[#00ffcc]
+              font-['Orbitron']
+              shadow-[0_0_10px_#00ffcc,_inset_0_0_20px_#00ffcc]
+              w-full
+              ">
+
+    <h2 class="titulo-juego
+           min-h-[60px]
+           flex
+           flex-col
+           items-center
+           justify-center
+           text-xl
+           mb-3
+           text-center
+           drop-shadow-[0_0_5px_#00ffcc]">
+
+      ${juego.nombre}
+      <<span class="plataforma
+             text-sm
+             text-[#f207fe]
+             mt-1
+             text-center
+             drop-shadow-[0_0_3px_#70f207f]">
+        Platform: ${juego.plataforma || "Unknown"}
+      </span>
     </h2>
-      
-        ${juego.iframe ? `<iframe src="${juego.iframe}" frameborder="0" allowfullscreen></iframe>` : ""}
-      </div>
-    `;
+
+    ${juego.iframe ? `
+      <iframe
+  class="w-full
+         min-h-[500px]
+         lg:min-h-[600px]
+         rounded-md
+         border-2 border-[#00ffcc]
+         shadow-[0_0_10px_#00ffcc]"
+  src="${juego.iframe}"
+  frameborder="0"
+  allowfullscreen>
+</iframe>` : ""}
+  </div>
+`;
+
 
     $("#game-cards-container").html(cardHtml);
     if (juego.iframe) {
@@ -231,13 +284,14 @@ function InitSeccionBusqueda() {
   }
 
   $btnBuscar.on("click", function () {
-    if ($campoBusqueda.is(":visible")) {
-      ejecutarBusqueda();
-    } else {
-      $campoBusqueda.show();
+    if ($campoBusqueda.hasClass("hidden")) {
+      $campoBusqueda.removeClass("hidden");
       $inputBusqueda.focus();
+    } else {
+      ejecutarBusqueda();
     }
   });
+
 
   $("#btn-ejecutar-busqueda").on("click", function (e) {
     e.preventDefault();
@@ -256,7 +310,7 @@ function InitSeccionBusqueda() {
       !$(e.target).is($btnBuscar) &&
       !$(e.target).closest($campoBusqueda).length
     ) {
-      $campoBusqueda.hide();
+      $campoBusqueda.addClass("hidden");
     }
   });
 }
@@ -296,14 +350,43 @@ function renderJuegos(juegos, mensajeVacio) {
     }
 
     const cardHtml = `
-      <div class="card">
-        <a href='/juego/${juego.slug}'>
-          <img src="${imagen}" alt="${juego.nombre}"
-               onerror="this.onerror=null; this.src='imagenes/no-img-available.png';" />
-        </a>
-        <h3>${juego.nombre} - ${juego.plataforma}</h3>
-      </div>
-    `;
+  <div class="bg-[#090039]
+              border-2 border-[#0f207f]
+              rounded-lg
+              p-3
+              text-center
+              text-[#00ffcc]
+              font-['Orbitron']
+              shadow-[0_0_10px_#00ffcc,_inset_0_0_15px_#00ffcc]
+              transition-all duration-300
+              hover:-translate-y-1 hover:scale-105
+              hover:shadow-[0_0_15px_#ff00ff,_inset_0_0_25px_#ff00ff]">
+
+    <a href="/juego/${juego.slug}">
+      <img
+        src="${imagen}"
+        alt="${juego.nombre}"
+        onerror="this.onerror=null; this.src='imagenes/no-img-available.png';"
+        class="w-full
+               h-[180px]
+               object-cover
+               rounded-md
+               mb-2"
+      />
+    </a>
+
+    <h3 class="text-sm
+           text-[#00ffcc]
+           drop-shadow-[0_0_5px_#00ffcc]
+           leading-tight
+           min-h-[40px]
+           flex items-center justify-center
+           text-center">
+      ${juego.nombre} — ${juego.plataforma}
+    </h3>
+  </div>
+`;
+
     $contenedor.append(cardHtml);
   });
 

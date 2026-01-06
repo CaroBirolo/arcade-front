@@ -4,11 +4,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/imagenes/LOGOS/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imagenes/LOGOS/favicon-32x32.png" />
   <link rel="canonical" href="https://www.retroverse.cc/" />
-  <title>RetroVerse – Free Online Retro Games | Play Classic Arcade & Console Games</title>
+  <title>
+    RetroVerse – Free Online Retro Games | Play Classic Arcade & Console Games
+  </title>
   <meta name="description"
-    content="Free retro games online. Classic arcade games, old-school consoles, and 80s & 90s titles — no downloads required. RetroVerse: your gateway to gaming nostalgia.">
+    content="Free retro games online. Classic arcade games, old-school consoles, and 80s & 90s titles — no downloads required. RetroVerse: your gateway to gaming nostalgia." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,65 +22,83 @@
 
   <!-- Goolge Ads -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3325573086861654"
-    crossorigin="anonymous">
-    </script>
+    crossorigin="anonymous"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
 </head>
 
 <!-- Google Tag Manager -->
-<script>(function (w, d, s, l, i) {
-    w[l] = w[l] || []; w[l].push({
-      'gtm.start':
-        new Date().getTime(), event: 'gtm.js'
-    }); var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', 'GTM-MCPW5R2X');</script>
+<script>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+      "gtm.start": new Date().getTime(),
+      event: "gtm.js",
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "GTM-MCPW5R2X");
+</script>
 <!-- End Google Tag Manager -->
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT321LJ280"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
 
-  gtag('config', 'G-ZT321LJ280');
+  gtag("config", "G-ZT321LJ280");
 </script>
 
 <body>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MCPW5R2X" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
+      style="display: none; visibility: hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <header>
-    <h1>
+  <header
+    class="relative z-[100] flex items-center justify-between bg-[#090039] px-[25px] py-[8px] border-b-2 border-[#f207fe] shadow-[0_0_10px_#f207fe]">
+    <h1 class="m-0 flex items-center">
       <a href="/index.html">
-        <img src="/imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse" />
+        <img src="/imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse"
+          class="h-[50px] w-auto ml-[15px] origin-center scale-x-[1.5] transition-transform duration-300 ease-in-out hover:scale-x-[1.45] hover:-rotate-2" />
       </a>
     </h1>
 
     <!-- Botón hamburguesa -->
     <button class="hamburger" id="hamburger">&#9776;</button>
 
-    <nav id="nav-menu">
-      <ul id="menu-principal" class="menu">
-        <li class="buscar">
-          <button id="btn-buscar" type="button">Search</button>
-          <div class="campo-busqueda" style="display:none;">
-            <input type="text" placeholder="Type your search..." />
-            <button id="btn-ejecutar-busqueda" type="button">Search</button>
+    < <nav id="nav-menu" class="relative overflow-visible">
+      <ul id="menu-principal" class="flex items-center gap-[10px] list-none p-0 m-0 min-h-[50px] overflow-visible">
+        <li class="buscar relative flex items-center h-full">
+          <button id="btn-buscar" type="button"
+            class="px-4 py-2 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_8px_#f207fe,_0_0_15px_#00ffcc] active:scale-95">
+            Search
+          </button>
+
+          <div
+            class="campo-busqueda hidden absolute md:fixed top-[110%] md:top-[70px] right-0 md:left-auto md:translate-x-0 flex items-center gap-2 bg-[#090039] border-2 border-[#00ffcc] rounded-md p-2 z-[200] min-w-[260px] w-[320px]">
+            <input type="text" placeholder="Type your search..."
+              class="w-[90%] px-2.5 py-1.5 border-2 border-[#0f207f] rounded outline-none bg-[#090039] text-[#f207fe] font-bold text-sm focus:shadow-[0_0_4px_#f207fe,_inset_0_0_8px_#f207fe]" />
+
+            <button id="btn-ejecutar-busqueda" type="button"
+              class="px-3 py-1.5 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 shadow-[0_0_4px_#00ffcc] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_8px_#f207fe,_0_0_15px_#00ffcc] active:scale-95">
+              Search
+            </button>
           </div>
         </li>
       </ul>
-    </nav>
+      </nav>
   </header>
 
   <main>
     <div class="contenedor-ancho">
-
       <section class="games-section oculto-al-inicio" id="games-section">
         <div class="cards-column">
           <div class="mt-6 mb-2 text-center">
@@ -86,24 +106,13 @@
           </div>
 
           <div class="max-w-6xl mx-auto w-full">
-            <div class="ficha-tecnica oculto-al-inicio mt-4
-              rounded-xl
-              border
-              border-[#f207fe]
-              bg-purple-100/10
-              p-5
-              text-sm
-              text-purple-900
-              shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]
-              font-mono">
-
+            <div
+              class="ficha-tecnica oculto-al-inicio mt-4 rounded-xl border border-[#f207fe] bg-purple-100/10 p-5 text-sm text-purple-900 shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe] font-mono">
               <!-- Descripción corta -->
-              <h3 id="descripcion-corta" class="mb-4 text-center text-base font-semibold text-purple-950">
-              </h3>
+              <h3 id="descripcion-corta" class="mb-4 text-center text-base font-semibold text-purple-950"></h3>
 
               <!-- Datos técnicos -->
               <div class="flex flex-col items-center gap-y-2 text-purple-950 text-sm mb-4">
-
                 <div class="flex gap-6">
                   <div class="flex gap-1 items-center">
                     <span class="font-medium text-purple-800 text-sm">Release year:</span>
@@ -125,15 +134,12 @@
                     <span id="tipo" class="text-sm text-purple-800 font-normal"></span>
                   </div>
                 </div>
-
               </div>
 
               <!-- Descripción larga SEO (ahora dentro del recuadro) -->
               <h3 id="descripcion-SEO" class="mt-8 leading-relaxed text-purple-800 text-justify"></h3>
-
             </div>
           </div>
-
 
           <div id="letters" class="pagination"></div>
           <div class="cards-container" id="cards-container"></div>
@@ -141,7 +147,7 @@
 
         <div class="ads-column">
           <div class="ad-space">
-            <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+            <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
               data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
               data-full-width-responsive="true"></ins>
           </div>
@@ -150,18 +156,22 @@
         <div id="pagination" class="pagination"></div>
       </section>
 
+      <section id="main-game-container" class="grid
+         grid-cols-1
+         lg:grid-cols-[1fr_300px]
+         gap-6
+         w-full
+         px-4
+         hidden">
 
-      <section id="main-game-container"
-        class="games-section games-section-detalle main-game-container oculto-al-inicio">
         <div>
-          <div id="game-cards-container" class="cards-container cards-container-detalle"></div>
-          <div id="iframe-preview" class="iframe-preview">
-          </div>
+          <div id="game-cards-container" class="cards-container cards-container-detalle pt-6"></div>
+          <div id="iframe-preview"></div>
         </div>
 
         <div class="ads-column">
           <div class="ad-space">
-            <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+            <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
               data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
               data-full-width-responsive="true"></ins>
           </div>
@@ -169,57 +179,117 @@
       </section>
 
       <div class="ad-space-bottom">
-        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+        <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
           data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
           data-full-width-responsive="true"></ins>
       </div>
 
-      <section id="seo-text">
-        <h2>Retro Games to Play Online</h2>
+      <section id="seo-text" class="
+    max-w-7xl
+    mx-auto
+    mt-6
+    px-4
+    rounded-xl
+    border border-[#f207fe]
+    bg-[whitesmoke]
+    p-6
+    text-justify
+    font-mono
+    text-[#551a8b]
+    text-sm
+    leading-relaxed
+    shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]
+  ">
+        <h2 class="
+      mb-4
+      text-center
+      text-2xl
+      font-bold
+      tracking-wide
+      text-[#f207fe]
+      [text-shadow:0_0_5px_#fff,0_0_10px_#00ffcc,0_0_20px_#00ffcc,0_0_30px_#00ffcc,0_0_60px_#f207fe,0_0_100px_#f207fe,0_0_140px_#00ffcc]
+      [-webkit-text-stroke:0.6px_black]
+      animate-[titulo-glow_2.2s_ease-in-out_infinite_alternate]
+    ">
+          Retro Games to Play Online
+        </h2>
+
+        <p class="mb-3">
+          RetroVerse is a website dedicated to classic video games, created
+          for players who want to relive iconic titles directly in their
+          browser, with no installations or complicated processes.
+        </p>
+
+        <p class="mb-3">
+          The catalog features a carefully curated selection of arcade games
+          and retro classics from different eras, as well as popular titles
+          from historic consoles such as Sega and Nintendo, presented through
+          third-party content.
+        </p>
+
+        <p class="mb-3">
+          The platform is designed to deliver a simple, fast, and
+          device-friendly experience. Whether you're discovering old games for
+          the first time or replaying the ones that defined a generation,
+          RetroVerse offers clear and direct access.
+        </p>
 
         <p>
-          RetroVerse is a website dedicated to classic video games, created for players who want to
-          relive iconic titles directly in their browser, with no installations or complicated
-          processes.
-        </p>
-        <p>
-          The catalog features a carefully curated selection of arcade games and retro classics from
-          different eras, as well as popular titles from historic consoles such as Sega and Nintendo,
-          presented through third-party content.
-        </p>
-        <p>
-          The platform is designed to deliver a simple, fast, and device-friendly experience. Whether
-          you're discovering old games for the first time or replaying the ones that defined a
-          generation, RetroVerse offers clear and direct access.
-        </p>
-        <p>
-          The content is regularly updated to maintain a varied selection of games across different
-          genres and styles, always prioritizing ease of use and overall user experience.
+          The content is regularly updated to maintain a varied selection of
+          games across different genres and styles, always prioritizing ease
+          of use and overall user experience.
         </p>
       </section>
 
 
       <div class="ad-space-bottom">
-        <ins class="adsbygoogle" style="display:block; width:100%; min-height:200px;"
+        <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
           data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
           data-full-width-responsive="true"></ins>
       </div>
-
     </div>
   </main>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="/script.js"></script>
 
-  <footer>
-    <div class="footer-content">
-      <span>© 2025 — RetroVerse</span>
-      <span>contactoretroverse@gmail.com</span>
-      <a class="footer-link" href="/legales/terms.html">Terms</a>
-      <a class="footer-link" href="/legales/privacy.html">Privacy</a>
-      <a class="footer-link" href="/legales/DMCA.html">DMCA</a>
+  <footer class="bg-[#090039] border-t-2 border-[#f207fe] shadow-[0_-2px_10px_#f207fe]">
+    <div class="max-w-7xl mx-auto
+              px-4 py-1.5
+              flex flex-col gap-3
+              text-sm
+              text-[#f207fe]
+              md:flex-row md:items-center md:justify-between">
+
+      <!-- izquierda -->
+      <span class="font-semibold tracking-wide">
+        © 2025 — RetroVerse
+      </span>
+      <!-- centro -->
+      <span class="text-[#f207fe] break-all">
+        contactoretroverse@gmail.com
+      </span>
+      <!-- derecha -->
+      <div class="flex gap-4 justify-center">
+        <a href="/legales/terms.html" class="footer-link text-[#f207fe] font-bold
+                transition-all duration-200
+                hover:text-[#f207fe] hover:scale-105">
+          Terms
+        </a>
+        <a href="/legales/privacy.html" class="footer-link text-[#f207fe] font-bold
+                transition-all duration-200
+                hover:text-[#f207fe] hover:scale-105">
+          Privacy
+        </a>
+        <a href="/legales/DMCA.html" class="footer-link text-[#f207fe] font-bold
+                transition-all duration-200
+                hover:text-[#f207fe] hover:scale-105">
+          DMCA
+        </a>
+      </div>
     </div>
   </footer>
+
 </body>
 
 </html>
