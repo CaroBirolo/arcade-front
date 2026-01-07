@@ -23,25 +23,35 @@
   <!-- Goolge Ads -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3325573086861654"
     crossorigin="anonymous"></script>
-
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
 </head>
 
 <!-- Google Tag Manager -->
 <script>
-  (function (w, d, s, l, i) {
-    w[l] = w[l] || [];
-    w[l].push({
-      "gtm.start": new Date().getTime(),
-      event: "gtm.js",
-    });
-    var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s),
-      dl = l != "dataLayer" ? "&l=" + l : "";
-    j.async = true;
-    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-    f.parentNode.insertBefore(j, f);
-  })(window, document, "script", "dataLayer", "GTM-MCPW5R2X");
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        "gtm.start": new Date().getTime(),
+        event: "gtm.js",
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-MCPW5R2X");
 </script>
 <!-- End Google Tag Manager -->
 
@@ -63,7 +73,7 @@
       style="display: none; visibility: hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
   <header
-    class="relative z-[100] flex items-center justify-between bg-[#090039] px-[25px] py-[8px] border-b-2 border-[#f207fe] shadow-[0_0_10px_#f207fe]">
+    class="relative z-[100] flex items-center justify-between bg-[#090039] px-[25px] py-[8px] border-b-2 border-[#f207fe] shadow-[0_0_10px_#f207fe] sticky top-0">
     <h1 class="m-0 flex items-center">
       <a href="/index.html">
         <img src="/imagenes/LOGOS/logo-sin-fonfo.png" alt="Logo RetroVerse"
@@ -74,16 +84,15 @@
     <!-- Botón hamburguesa -->
     <button class="hamburger" id="hamburger">&#9776;</button>
 
-    < <nav id="nav-menu" class="relative overflow-visible">
+    <nav id="nav-menu" class="hidden md:flex relative overflow-visible">
       <ul id="menu-principal" class="flex items-center gap-[10px] list-none p-0 m-0 min-h-[50px] overflow-visible">
-        <li class="buscar relative flex items-center h-full">
+        <li class="buscar relative flex items-center h-full group">
           <button id="btn-buscar" type="button"
             class="px-4 py-2 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_8px_#f207fe,_0_0_15px_#00ffcc] active:scale-95">
             Search
           </button>
-
           <div
-            class="campo-busqueda hidden absolute md:fixed top-[110%] md:top-[70px] right-0 md:left-auto md:translate-x-0 flex items-center gap-2 bg-[#090039] border-2 border-[#00ffcc] rounded-md p-2 z-[200] min-w-[260px] w-[320px]">
+            class="campo-busqueda hidden absolute top-[110%] md:top-[70px] right-0 md:left-auto md:translate-x-0 flex items-center gap-2 bg-[#090039] border-2 border-[#00ffcc] rounded-md p-2 z-[200] min-w-[260px] w-[320px]">
             <input type="text" placeholder="Type your search..."
               class="w-[90%] px-2.5 py-1.5 border-2 border-[#0f207f] rounded outline-none bg-[#090039] text-[#f207fe] font-bold text-sm focus:shadow-[0_0_4px_#f207fe,_inset_0_0_8px_#f207fe]" />
 
@@ -94,125 +103,109 @@
           </div>
         </li>
       </ul>
-      </nav>
+    </nav>
   </header>
 
   <main>
-    <div class="contenedor-ancho">
-      <section class="games-section oculto-al-inicio" id="games-section">
-        <div class="cards-column">
+    <!-- CONTENEDOR GENERAL -->
+    <div class="max-w-7xl mx-auto px-4">
+
+      <!-- LISTADO DE JUEGOS -->
+      <section id="games-section" class="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 mt-6 hidden">
+
+        <!-- COLUMNA PRINCIPAL -->
+        <div>
+
           <div class="mt-6 mb-2 text-center">
             <h2 id="titulo"></h2>
           </div>
 
+          <!-- FICHA TÉCNICA -->
           <div class="max-w-6xl mx-auto w-full">
-            <div
-              class="ficha-tecnica oculto-al-inicio mt-4 rounded-xl border border-[#f207fe] bg-purple-100/10 p-5 text-sm text-purple-900 shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe] font-mono">
-              <!-- Descripción corta -->
+            <div id="ficha-tecnica"
+              class="hidden mt-4 rounded-xl border border-[#f207fe] bg-purple-100/10 p-5 text-sm text-purple-900 shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe] font-mono">
+
+
               <h3 id="descripcion-corta" class="mb-4 text-center text-base font-semibold text-purple-950"></h3>
 
-              <!-- Datos técnicos -->
               <div class="flex flex-col items-center gap-y-2 text-purple-950 text-sm mb-4">
-                <div class="flex gap-6">
+
+                <div class="flex flex-wrap justify-center gap-6">
                   <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800 text-sm">Release year:</span>
-                    <span id="anio-lanzamiento" class="text-sm text-purple-800 font-normal"></span>
+                    <span class="font-medium text-purple-800">Release year:</span>
+                    <span id="anio-lanzamiento"></span>
                   </div>
                   <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800 text-sm">Manufacturer:</span>
-                    <span id="fabricante" class="text-sm text-purple-800 font-normal"></span>
+                    <span class="font-medium text-purple-800">Manufacturer:</span>
+                    <span id="fabricante"></span>
                   </div>
                 </div>
 
-                <div class="flex gap-6">
+                <div class="flex flex-wrap justify-center gap-6">
                   <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800 text-sm">Origin region:</span>
-                    <span id="region" class="text-sm text-purple-800 font-normal"></span>
+                    <span class="font-medium text-purple-800">Origin region:</span>
+                    <span id="region"></span>
                   </div>
                   <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800 text-sm">Platform type:</span>
-                    <span id="tipo" class="text-sm text-purple-800 font-normal"></span>
+                    <span class="font-medium text-purple-800">Platform type:</span>
+                    <span id="tipo"></span>
                   </div>
                 </div>
+
               </div>
 
-              <!-- Descripción larga SEO (ahora dentro del recuadro) -->
               <h3 id="descripcion-SEO" class="mt-8 leading-relaxed text-purple-800 text-justify"></h3>
             </div>
           </div>
 
-          <div id="letters" class="pagination"></div>
-          <div class="cards-container" id="cards-container"></div>
+          <!-- LETRAS -->
+          <div id="letters" class="flex flex-wrap justify-center gap-2 my-6"></div>
+
+          <!-- GRID DE CARDS -->
+          <div id="cards-container" class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-5 justify-center">
+          </div>
+
+          <div id="pagination" class="flex justify-center mt-6"></div>
         </div>
 
-        <div class="ads-column">
+        <!-- ADS LATERAL -->
+        <aside class="w-full">
           <div class="ad-space">
-            <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
+            <ins class="adsbygoogle" style="display:block;width:100%;min-height:200px"
               data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
               data-full-width-responsive="true"></ins>
           </div>
-        </div>
+        </aside>
 
-        <div id="pagination" class="pagination"></div>
       </section>
 
-      <section id="main-game-container" class="grid
-         grid-cols-1
-         lg:grid-cols-[1fr_300px]
-         gap-6
-         w-full
-         px-4
-         hidden">
+      <!-- DETALLE DE JUEGO -->
+      <section id="main-game-container" class="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 w-full mt-6 hidden">
 
         <div>
-          <div id="game-cards-container" class="cards-container cards-container-detalle pt-6"></div>
-          <div id="iframe-preview"></div>
+          <div id="game-cards-container" class="pt-6"></div>
+          <div id="iframe-preview" class="hidden mt-4"></div>
         </div>
 
-        <div class="ads-column">
+        <aside>
           <div class="ad-space">
-            <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
+            <ins class="adsbygoogle" style="display:block;width:100%;min-height:200px"
               data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
               data-full-width-responsive="true"></ins>
           </div>
-        </div>
+        </aside>
+
       </section>
 
-      <div class="ad-space-bottom">
-        <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
-          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-      </div>
+      <!-- SEO TEXT -->
+      <section id="seo-text"
+        class="max-w-7xl mx-auto mt-6 mb-4 border border-[#f207fe] bg-[whitesmoke] p-6 text-justify font-mono text-[#551a8b] text-sm leading-relaxed shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]">
 
-      <section id="seo-text" class="
-    max-w-7xl
-    mx-auto
-    mt-6
-    px-4
-    rounded-xl
-    border border-[#f207fe]
-    bg-[whitesmoke]
-    p-6
-    text-justify
-    font-mono
-    text-[#551a8b]
-    text-sm
-    leading-relaxed
-    shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]
-  ">
-        <h2 class="
-      mb-4
-      text-center
-      text-2xl
-      font-bold
-      tracking-wide
-      text-[#f207fe]
-      [text-shadow:0_0_5px_#fff,0_0_10px_#00ffcc,0_0_20px_#00ffcc,0_0_30px_#00ffcc,0_0_60px_#f207fe,0_0_100px_#f207fe,0_0_140px_#00ffcc]
-      [-webkit-text-stroke:0.6px_black]
-      animate-[titulo-glow_2.2s_ease-in-out_infinite_alternate]
-    ">
-          Retro Games to Play Online
-        </h2>
+        <h2 class="mb-4 text-center text-2xl font-bold tracking-wide text-[#f207fe]
+        [text-shadow:0_0_5px_#fff,0_0_10px_#00ffcc,0_0_20px_#00ffcc,0_0_30px_#00ffcc,0_0_60px_#f207fe]
+        [-webkit-text-stroke:0.6px_black]
+        animate-[titulo-glow_2.2s_ease-in-out_infinite_alternate]">
+          Retro Games to Play Online</h2>
 
         <p class="mb-3">
           RetroVerse is a website dedicated to classic video games, created
@@ -239,16 +232,10 @@
           games across different genres and styles, always prioritizing ease
           of use and overall user experience.
         </p>
-      </section>
 
-
-      <div class="ad-space-bottom">
-        <ins class="adsbygoogle" style="display: block; width: 100%; min-height: 200px"
-          data-ad-client="ca-pub-3325573086861654" data-ad-slot="1429517805" data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-      </div>
     </div>
   </main>
+
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="/script.js"></script>

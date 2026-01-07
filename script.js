@@ -5,12 +5,11 @@ const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
 var _categorias = [];
 
 
-
 $(document).ready(function () {
 
   setTimeout(() => {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  }, 50);
+    cargarAdsSeguro('.ad-space');
+  }, 300);
 
   (async () => {
     await cargarCategorias();
@@ -21,12 +20,28 @@ $(document).ready(function () {
 
 });
 
+function cargarAdsSeguro(selector) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+
+  const width = el.offsetWidth;
+  if (width === 0) return; // ⛔ no lo cargues si está oculto
+
+  try {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  } catch (e) {
+    console.warn("Ads no cargado aún");
+  }
+}
+
+
+
 function initHamburguer() {
   const $hamburger = $("#hamburger");
   const $navMenu = $("#nav-menu");
 
   $hamburger.on("click", () => {
-    $navMenu.toggleClass("show");
+    $navMenu.toggleClass("hidden");
   });
 }
 
@@ -45,8 +60,8 @@ function initRedirect() {
 
   // CATEGORIA
   if (path.includes("/categoria/")) {
-    $("#games-section").removeClass("oculto-al-inicio");
-    $(".ficha-tecnica").removeClass("oculto-al-inicio");
+    $("#games-section").removeClass("hidden");
+    $("#ficha-tecnica").removeClass("hidden");
 
     const categoria = splitedPath[splitedPath.length - 1];
     const letra = params.get("letra");     // puede ser null
@@ -59,7 +74,7 @@ function initRedirect() {
   }
 
   if (params.get('buscar')) {
-    $("#games-section").removeClass("oculto-al-inicio");
+    $("#games-section").removeClass("hidden");
     let busqueda = params.get('buscar');
     let page = Number(params.get("page")) || 1;
     buscarJuegos(busqueda, page);
@@ -67,7 +82,7 @@ function initRedirect() {
   }
 
   //INDEX
-  $("#games-section").removeClass("oculto-al-inicio");
+  $("#games-section").removeClass("hidden");
   cargarJuegosRandom();
 
 }
@@ -190,7 +205,7 @@ async function cargarJuegoPorSlug(slug) {
            drop-shadow-[0_0_5px_#00ffcc]">
 
       ${juego.nombre}
-      <<span class="plataforma
+      <span class="plataforma
              text-sm
              text-[#f207fe]
              mt-1
@@ -217,10 +232,44 @@ async function cargarJuegoPorSlug(slug) {
 
 
     $("#game-cards-container").html(cardHtml);
+
     if (juego.iframe) {
-      $("#iframe-preview").html(`<span> Embed Code: &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</span> 
-         <span id="source">**Source: retrogames.cc. All content is embedded via iframe and remains the property of its respective owners. We do not host, store, or distribute this content and are not responsible for it.**</span>`);
+  $("#iframe-preview")
+    .removeClass("hidden")
+    .html(`
+      <div class="
+        mt-4
+        max-w-7xl
+        mx-auto
+        border border-[#f207fe]
+        bg-[whitesmoke]
+        rounded-xl
+        p-4
+        font-mono
+        text-sm
+        text-[#551a8b]
+        leading-relaxed
+        shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]
+        space-y-3
+      ">
+
+        <div class="break-all">
+          <span class="font-bold text-[#f207fe]">Embed code:</span><br />
+          &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+        </div>
+
+        <div id="source" class="text-xs opacity-80">
+          <strong class="text-[#f207fe]">Source:</strong>
+          retrogames.cc. All content is embedded via iframe and remains the property
+          of its respective owners. We do not host, store, or distribute this content
+          and are not responsible for it.
+        </div>
+
+      </div>
+    `);
     }
+
+
 
   } catch (e) {
     console.error("Error loading games:", e); // Cambié el mensaje de error
