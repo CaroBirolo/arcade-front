@@ -135,7 +135,7 @@ async function cargarCategorias() {
         subs.forEach((sub) => {
           ulSub.append(`
             <li class="border-b border-[#00d2d9]/30 last:border-b-0">
-              <a href="/categoria/${sub.slug}" class="block px-4 py-2.5 md:py-2 text-sm text-[#00d2d9] hover:text-[#f207fe] hover:bg-[#f207fe]/10 transition-colors">${sub.nombre}</a>
+              <a href="/categoria/${sub.slug}" class="block px-4 py-2.5 md:py-2 text-[#00d2d9] hover:text-[#f207fe] hover:bg-[#f207fe]/10 transition-colors">${sub.nombre}</a>
             </li>
           `);
         });
@@ -159,13 +159,13 @@ async function cargarCategorias() {
 
       if (esMovil && $submenu.length) {
         e.preventDefault();
-        
+
         // Cerrar otros submenús abiertos
         $menu.find(".submenu").not($submenu).stop(true, true).slideUp(200);
-        
+
         // Toggle el actual
         $submenu.stop(true, true).slideToggle(200);
-        
+
         $link.toggleClass("active");
       }
     });
@@ -173,19 +173,19 @@ async function cargarCategorias() {
     // Eventos para desktop (hover)
     const handleHover = () => {
       const esMovil = window.matchMedia("(max-width: 767px)").matches;
-      
+
       // Limpiar eventos previos
       $menu.off("mouseenter mouseleave", "> li");
-      
+
       if (!esMovil) {
         $menu.on({
-          mouseenter: function() {
+          mouseenter: function () {
             const $submenu = $(this).find(".submenu");
             if ($submenu.length) {
               $submenu.stop(true, true).fadeIn(200);
             }
           },
-          mouseleave: function() {
+          mouseleave: function () {
             const $submenu = $(this).find(".submenu");
             if ($submenu.length) {
               $submenu.stop(true, true).fadeOut(200);
@@ -194,7 +194,7 @@ async function cargarCategorias() {
         }, "> li");
       }
     };
-    
+
     handleHover();
     $(window).on("resize", handleHover);
 
