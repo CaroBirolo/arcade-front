@@ -82,23 +82,30 @@
     </h1>
 
     <!-- Botón hamburguesa -->
-    <button class="hamburger" id="hamburger">&#9776;</button>
+    <button
+      class="block md:hidden text-[#f207fe] text-3xl p-2 hover:text-[#00ffcc] hover:scale-110 transition-all duration-300 z-[110]"
+      id="hamburger">
+      &#9776;
+    </button>
 
-    <nav id="nav-menu" class="hidden md:flex relative overflow-visible">
-      <ul id="menu-principal" class="flex items-center gap-[10px] list-none p-0 m-0 min-h-[50px] overflow-visible">
-        <li class="buscar relative flex items-center h-full group">
+    <!-- Nav menu -->
+    <nav id="nav-menu"
+      class="hidden md:flex absolute md:relative top-full md:top-auto left-0 right-0 bg-[#090039] md:bg-transparent border-t-2 md:border-0 border-[#f207fe] py-5 md:py-0 px-[25px] md:px-0 max-h-[calc(100vh-70px)] md:max-h-none overflow-y-auto md:overflow-visible">
+      <ul id="menu-principal"
+        class="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-[10px] list-none p-0 m-0 w-full md:w-auto md:min-h-[50px]">
+        <li class="relative w-full md:w-auto md:static">
           <button id="btn-buscar" type="button"
-            class="px-4 py-2 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_8px_#f207fe,_0_0_15px_#00ffcc] active:scale-95">
+            class="w-full md:w-auto px-4 py-2 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_8px_#f207fe,_0_0_15px_#00ffcc] active:scale-95">
             Search
           </button>
           <div
-            class="campo-busqueda hidden absolute top-[110%] md:top-[70px] right-0 md:left-auto md:translate-x-0 flex items-center gap-2 bg-[#090039] border-2 border-[#00ffcc] rounded-md p-2 z-[200] min-w-[260px] w-[320px]">
+            class="campo-busqueda hidden absolute top-full left-0 md:left-auto md:right-0 flex items-center gap-2 bg-[#090039] border-2 border-[#00ffcc] rounded-md p-2 z-[200] w-full md:w-[320px] mt-2 shadow-lg">
             <input type="text" placeholder="Type your search..."
-              class="w-[90%] px-2.5 py-1.5 border-2 border-[#0f207f] rounded outline-none bg-[#090039] text-[#f207fe] font-bold text-sm focus:shadow-[0_0_4px_#f207fe,_inset_0_0_8px_#f207fe]" />
+              class="flex-1 px-2.5 py-1.5 border-2 border-[#0f207f] rounded outline-none bg-[#090039] text-[#f207fe] font-bold text-sm focus:shadow-[0_0_4px_#f207fe,_inset_0_0_8px_#f207fe]" />
 
             <button id="btn-ejecutar-busqueda" type="button"
-              class="px-3 py-1.5 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 shadow-[0_0_4px_#00ffcc] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_8px_#f207fe,_0_0_15px_#00ffcc] active:scale-95">
-              Search
+              class="px-3 py-1.5 rounded-md bg-gradient-to-r from-[#00ffcc] to-[#f207fe] text-[#0f207f] font-bold tracking-wide border border-[#f207fe]/60 transition-all duration-300 hover:scale-110 active:scale-95 whitespace-nowrap text-sm">
+              Go
             </button>
           </div>
         </li>
@@ -122,66 +129,76 @@
 
           <!-- FICHA TÉCNICA -->
           <div class="max-w-6xl mx-auto w-full">
-            <div id="ficha-tecnica"
-              class="hidden mt-4 rounded-xl border border-[#f207fe] bg-purple-100/10 p-5 text-sm text-purple-900 shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe] font-mono">
+            <div id="ficha-tecnica" class="hidden mt-6 w-full rounded-xl border border-[#f207fe] bg-purple-100/10 p-5
+         text-sm text-purple-900 font-mono
+         shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]">
 
+              <!-- TÍTULO -->
+              <h3 id="descripcion-corta" class="mb-6 text-center font-semibold text-purple-950 tracking-widest">
+              </h3>
 
-              <h3 id="descripcion-corta" class="mb-4 text-center text-base font-semibold text-purple-950"></h3>
+              <!-- DATOS (FORMATO CHIPS COMO ficha-juego-detalle) -->
+              <div class="flex flex-wrap gap-x-4 gap-y-3 justify-center mb-6 text-purple-950">
 
-              <div class="flex flex-col items-center gap-y-2 text-purple-950 text-sm mb-4">
-
-                <div class="flex flex-wrap justify-center gap-6">
-                  <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800">Release year:</span>
-                    <span id="anio-lanzamiento"></span>
-                  </div>
-                  <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800">Manufacturer:</span>
-                    <span id="fabricante"></span>
-                  </div>
+                <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+                  <span class="text-purple-800 text-xs font-medium">Release year:</span>
+                  <span id="anio-lanzamiento"></span>
                 </div>
 
-                <div class="flex flex-wrap justify-center gap-6">
-                  <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800">Origin region:</span>
-                    <span id="region"></span>
-                  </div>
-                  <div class="flex gap-1 items-center">
-                    <span class="font-medium text-purple-800">Platform type:</span>
-                    <span id="tipo"></span>
-                  </div>
+                <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+                  <span class="text-purple-800 text-xs font-medium">Manufacturer:</span>
+                  <span id="fabricante"></span>
+                </div>
+
+                <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+                  <span class="text-purple-800 text-xs font-medium">Origin region:</span>
+                  <span id="region"></span>
+                </div>
+
+                <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+                  <span class="text-purple-800 text-xs font-medium">Platform type:</span>
+                  <span id="tipo"></span>
                 </div>
 
               </div>
 
-              <h3 id="descripcion-SEO" class="mt-8 leading-relaxed text-purple-800 text-justify"></h3>
+              <!-- DESCRIPCIÓN / SEO -->
+              <div class="w-full pt-4 border-t border-purple-500/30">
+                <strong class="block mb-2 text-purple-800 text-xs uppercase tracking-widest">
+                  Description:
+                </strong>
+
+                <div id="descripcion-SEO" class="text-purple-800 text-sm leading-relaxed text-justify
+             whitespace-pre-wrap break-words">
+                </div>
+              </div>
+
             </div>
+
+
+            <!-- LETRAS -->
+            <div id="letters" class="flex flex-wrap justify-center gap-2 my-6"></div>
+
+            <!-- GRID DE CARDS -->
+            <div id="cards-container" class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-5 justify-center">
+            </div>
+
+            <div id="pagination" class="flex justify-center mt-6"></div>
           </div>
 
-          <!-- LETRAS -->
-          <div id="letters" class="flex flex-wrap justify-center gap-2 my-6"></div>
-
-          <!-- GRID DE CARDS -->
-          <div id="cards-container" class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-5 justify-center">
-          </div>
-
-          <div id="pagination" class="flex justify-center mt-6"></div>
-        </div>
-
-        <!-- ADS LATERAL -->
-        <aside class="w-full">
-          <div class="ad-space">
-            <ins class="adsbygoogle" style="display:block;width:100%;min-height:200px"
-              data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-          </div>
-        </aside>
+          <!-- ADS LATERAL -->
+          <aside class="w-full">
+            <div class="ad-space">
+              <ins class="adsbygoogle" style="display:block;width:100%;min-height:200px"
+                data-ad-client="ca-pub-3325573086861654" data-ad-slot="6681844485" data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            </div>
+          </aside>
 
       </section>
 
       <!-- DETALLE DE JUEGO -->
       <section id="main-game-container" class="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 w-full mt-6 hidden">
-
         <div>
           <div id="game-cards-container" class="pt-6"></div>
           <div id="iframe-preview" class="hidden mt-4"></div>

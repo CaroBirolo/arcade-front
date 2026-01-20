@@ -4,11 +4,9 @@ const API_JUEGOS_RANDOM = `${BASE_URL}/api/juegos/random`;
 const API_CATEGORIAS = `${BASE_URL}/api/categorias`;
 var _categorias = [];
 
-
 $(document).ready(function () {
-
   setTimeout(() => {
-    cargarAdsSeguro('.ad-space');
+    cargarAdsSeguro(".ad-space");
   }, 300);
 
   (async () => {
@@ -17,7 +15,6 @@ $(document).ready(function () {
     initHamburguer();
     InitSeccionBusqueda();
   })();
-
 });
 
 function cargarAdsSeguro(selector) {
@@ -34,22 +31,18 @@ function cargarAdsSeguro(selector) {
   }
 }
 
-
-
 function initHamburguer() {
   const $hamburger = $("#hamburger");
   const $navMenu = $("#nav-menu");
 
   $hamburger.on("click", () => {
-    $navMenu.toggleClass("hidden");
+    $navMenu.toggleClass("hidden flex");
   });
 }
-
 function initRedirect() {
-
   const path = window.location.pathname;
   const params = new URLSearchParams(window.location.search);
-  splitedPath = path.split('/');
+  splitedPath = path.split("/");
 
   // JUEGOS
   if (path.includes("/juego/")) {
@@ -64,18 +57,18 @@ function initRedirect() {
     $("#ficha-tecnica").removeClass("hidden");
 
     const categoria = splitedPath[splitedPath.length - 1];
-    const letra = params.get("letra");     // puede ser null
+    const letra = params.get("letra"); // puede ser null
     let page = Number(params.get("page")) || 1;
 
     cargarCategoriaLetraPagina(categoria, letra, page);
     inicializarFiltroLetras(letra);
-    completarFichaTecnica(_categorias.find(c => c.slug == categoria));
+    completarFichaTecnica(_categorias.find((c) => c.slug == categoria));
     return;
   }
 
-  if (params.get('buscar')) {
+  if (params.get("buscar")) {
     $("#games-section").removeClass("hidden");
-    let busqueda = params.get('buscar');
+    let busqueda = params.get("buscar");
     let page = Number(params.get("page")) || 1;
     buscarJuegos(busqueda, page);
     return;
@@ -84,7 +77,6 @@ function initRedirect() {
   //INDEX
   $("#games-section").removeClass("hidden");
   cargarJuegosRandom();
-
 }
 
 async function cargarCategorias() {
@@ -96,51 +88,54 @@ async function cargarCategorias() {
     _categorias = categorias;
 
     const principales = categorias
-      .filter(cat => cat.padre_id == null)
+      .filter((cat) => cat.padre_id == null)
       .sort((a, b) => a.orden - b.orden);
 
-    const secundarias = categorias.filter(cat => cat.padre_id != null);
+    const secundarias = categorias.filter((cat) => cat.padre_id != null);
 
     const $menu = $("#menu-principal");
-    const $botonBuscar = $menu.find(".buscar");
+    // Buscar el <li> que contiene el botón de búsqueda
+    const $botonBuscarLi = $menu.find("li:has(#btn-buscar)");
 
-    $menu.find("li").not(".buscar").remove();
+    // Remover solo los items de categorías (no el de búsqueda)
+    $menu.find("li").not($botonBuscarLi).remove();
 
-    principales.forEach(cat => {
-      const li = $("<li></li>");
+    principales.forEach((cat) => {
+      const li = $("<li></li>").addClass("relative w-full md:w-auto mb-2 md:mb-0");
 
-      const tieneSubmenu = secundarias.some(sec => sec.padre_id == cat.id);
+      const tieneSubmenu = secundarias.some((sec) => sec.padre_id == cat.id);
 
       const a = tieneSubmenu
-        ? $(`<a href="javascript:void(0)">${cat.nombre} ▾</a>`)
-        : $(`<a href="/categoria/${cat.slug}">${cat.nombre}</a>`);
+        ? $(`<a href="javascript:void(0)" class="block w-full md:w-auto px-4 py-2 text-[#00d2d9] hover:text-[#f207fe] transition-colors font-bold">${cat.nombre} ▾</a>`)
+        : $(`<a href="/categoria/${cat.slug}" class="block w-full md:w-auto px-4 py-2 text-[#00d2d9] hover:text-[#f207fe] transition-colors font-bold">${cat.nombre}</a>`);
 
       li.append(a);
 
       const subs = secundarias
-        .filter(sub => sub.padre_id == cat.id)
+        .filter((sub) => sub.padre_id == cat.id)
         .sort((a, b) => a.orden - b.orden);
 
       if (subs.length) {
         const ulSub = $(`
-  <ul class="submenu absolute top-full left-0 mt-1
-             bg-[#090039]
-             border border-[#00d2d9]
-             rounded-md
-             min-w-[180px]
-             max-h-[300px]
-             overflow-hidden
-             z-[100]
-             opacity-0 invisible
-             -translate-y-2
-             transition-all duration-300">
-  </ul>
-`);
+          <ul class="submenu
+                     hidden
+                     md:absolute md:top-full md:left-0 md:mt-1
+                     bg-[#090039]
+                     border border-[#00d2d9]
+                     rounded-md
+                     shadow-lg
+                     w-full md:min-w-[200px] md:w-auto
+                     z-[100]
+                     transition-all duration-300
+                     pl-0 md:pl-0
+                     mt-2 md:mt-1">
+          </ul>
+        `);
 
-        subs.forEach(sub => {
+        subs.forEach((sub) => {
           ulSub.append(`
-            <li>
-              <a href="/categoria/${sub.slug}">${sub.nombre}</a>
+            <li class="border-b border-[#00d2d9]/30 last:border-b-0">
+              <a href="/categoria/${sub.slug}" class="block px-4 py-2.5 md:py-2 text-sm text-[#00d2d9] hover:text-[#f207fe] hover:bg-[#f207fe]/10 transition-colors">${sub.nombre}</a>
             </li>
           `);
         });
@@ -148,22 +143,60 @@ async function cargarCategorias() {
         li.append(ulSub);
       }
 
-      $botonBuscar.length ? $botonBuscar.before(li) : $menu.append(li);
+      // Insertar ANTES del botón de búsqueda
+      if ($botonBuscarLi.length) {
+        $botonBuscarLi.before(li);
+      } else {
+        $menu.append(li);
+      }
     });
 
-    // eventos (igual que antes)
+    // Eventos para mobile (click toggle con slideToggle)
     $menu.off("click", "a").on("click", "a", function (e) {
       const $link = $(this);
       const $submenu = $link.siblings(".submenu");
-      const esMovil = window.matchMedia("(max-width: 900px)").matches;
+      const esMovil = window.matchMedia("(max-width: 767px)").matches;
 
       if (esMovil && $submenu.length) {
         e.preventDefault();
-        $menu.find(".submenu").not($submenu).slideUp(300);
-        $submenu.slideToggle(300);
+        
+        // Cerrar otros submenús abiertos
+        $menu.find(".submenu").not($submenu).stop(true, true).slideUp(200);
+        
+        // Toggle el actual
+        $submenu.stop(true, true).slideToggle(200);
+        
         $link.toggleClass("active");
       }
     });
+
+    // Eventos para desktop (hover)
+    const handleHover = () => {
+      const esMovil = window.matchMedia("(max-width: 767px)").matches;
+      
+      // Limpiar eventos previos
+      $menu.off("mouseenter mouseleave", "> li");
+      
+      if (!esMovil) {
+        $menu.on({
+          mouseenter: function() {
+            const $submenu = $(this).find(".submenu");
+            if ($submenu.length) {
+              $submenu.stop(true, true).fadeIn(200);
+            }
+          },
+          mouseleave: function() {
+            const $submenu = $(this).find(".submenu");
+            if ($submenu.length) {
+              $submenu.stop(true, true).fadeOut(200);
+            }
+          }
+        }, "> li");
+      }
+    };
+    
+    handleHover();
+    $(window).on("resize", handleHover);
 
   } catch (err) {
     console.error("FATAL error loading categories:", err);
@@ -175,104 +208,159 @@ async function cargarJuegoPorSlug(slug) {
     const resp = await fetch(`${BASE_URL}/api/juegos/slug/${slug}`);
     const juego = await resp.json();
 
+    // Validar si el juego existe
     if (!juego || juego.error) {
       console.error("Game not found");
-      $("#game-cards-container").html("<p>Game not found.</p>");
+      $("#game-cards-container").html(
+        "<p class='text-white text-center'>Game not found.</p>",
+      );
       return;
     }
 
+    // 1. Construir el HTML de la Card
     const cardHtml = `
-  <div class="card-juego
-              border-2 border-[#0f207f]
-              rounded-lg
-              p-4
-              text-center
-              text-[#00ffcc]
-              font-['Orbitron']
-              shadow-[0_0_10px_#00ffcc,_inset_0_0_20px_#00ffcc]
-              w-full
-              ">
+      <div class="card-juego 
+                  border-2 border-[#0f207f] 
+                  rounded-lg 
+                  p-4 
+                  text-center 
+                  text-[#00ffcc] 
+                  font-['Orbitron'] 
+                  shadow-[0_0_10px_#00ffcc,_inset_0_0_20px_#00ffcc] 
+                  w-full">
 
-    <h2 class="titulo-juego
-           min-h-[60px]
-           flex
-           flex-col
-           items-center
-           justify-center
-           text-xl
-           mb-3
-           text-center
-           drop-shadow-[0_0_5px_#00ffcc]">
+        <h2 class="titulo-juego 
+                   min-h-[60px] 
+                   flex 
+                   flex-col 
+                   items-center 
+                   justify-center 
+                   text-xl 
+                   mb-3 
+                   text-center 
+                   drop-shadow-[0_0_5px_#00ffcc]">
+          ${juego.nombre}
+          <span class="plataforma text-sm text-[#f207fe] mt-1">
+            Platform: ${juego.plataforma || "Unknown"}
+          </span>
+        </h2>
 
-      ${juego.nombre}
-      <span class="plataforma
-             text-sm
-             text-[#f207fe]
-             mt-1
-             text-center
-             drop-shadow-[0_0_3px_#70f207f]">
-        Platform: ${juego.plataforma || "Unknown"}
-      </span>
-    </h2>
+      <div id="ficha-juego-detalle" class="text-sm text-purple-900 font-mono">
 
-    ${juego.iframe ? `
-      <iframe
-  class="w-full
-         min-h-[500px]
-         lg:min-h-[600px]
-         rounded-md
-         border-2 border-[#00ffcc]
-         shadow-[0_0_10px_#00ffcc]"
-  src="${juego.iframe}"
-  frameborder="0"
-  allowfullscreen>
-</iframe>` : ""}
+        <h3 id="jd-descripcion-corta"
+        class="mb-6 text-center font-semibold text-purple-950 tracking-widest">
+        </h3>
+
+       <div class="flex flex-wrap gap-x-4 gap-y-3 justify-center mb-6 text-purple-950">
+       <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+          <span class="text-purple-800 text-xs font-medium">Platform:</span>
+          <span id="jd-plataforma"></span>
+        </div>
+
+        <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+          <span class="text-purple-800 text-xs font-medium">Year:</span>
+          <span id="jd-anio"></span>
+        </div>
+
+    <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+      <span class="text-purple-800 text-xs font-medium">Genre:</span>
+      <span id="jd-genero"></span>
+    </div>
+
+    <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+      <span class="text-purple-800 text-xs font-medium">Developer:</span>
+      <span id="jd-desarrollador"></span>
+    </div>
+
+    <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+      <span class="text-purple-800 text-xs font-medium">Players:</span>
+      <span id="jd-jugadores"></span>
+    </div>
+
+    <div class="bg-purple-900/20 px-3 py-1 rounded border border-purple-500/30">
+      <span class="text-purple-800 text-xs font-medium">Style:</span>
+      <span id="jd-estilo"></span>
+    </div>
+
   </div>
-`;
+  <div class="w-full pt-4 border-t border-purple-500/30">
+    <strong
+      class="block mb-2 text-purple-800 text-xs uppercase tracking-widest text-center">
+      Gameplay:
+    </strong>
 
+    <div id="jd-gameplay"
+      class="text-purple-800 text-sm leading-relaxed text-center
+             whitespace-pre-wrap break-words">
+    </div>
+  </div>
 
+  <div class="w-full pt-4 border-t border-purple-500/30">
+    <strong
+      class="block mb-2 text-purple-800 text-xs uppercase tracking-widest text-center">
+      Objective:
+    </strong>
+
+    <div id="jd-objetivo"
+      class="text-purple-800 text-sm leading-relaxed text-center
+             whitespace-pre-wrap break-words">
+    </div>
+  </div>
+
+  <div class="w-full pt-4 border-t border-purple-500/30">
+    <strong
+      class="block mb-2 text-purple-800 text-xs uppercase tracking-widest text-center">
+      About this game:
+    </strong>
+
+    <div id="jd-descripcion-larga"
+      class="text-purple-800 text-sm leading-relaxed text-center
+             whitespace-pre-wrap break-words">
+    </div>
+  </div>
+
+</div>
+
+        ${juego.iframe
+        ? `
+          <iframe 
+            class="w-full min-h-[500px] lg:min-h-[600px] 
+                   mt-4 rounded-md border-2 border-[#00ffcc] 
+                   shadow-[0_0_10px_#00ffcc]" 
+            src="${juego.iframe}" 
+            frameborder="0" 
+            allowfullscreen>
+          </iframe>
+        `
+        : ""
+      }
+      </div>
+    `;
+
+    // 2. Inyectar el HTML en el contenedor
     $("#game-cards-container").html(cardHtml);
 
+    // 3. Rellenar los datos en los IDs recién creados
+    // Nota: Pasamos 'juego' completo. Si tu API anida los datos en 'detalle', cambia a completarFichaJuegoDetalle(juego.detalle)
+    completarFichaJuegoDetalle(juego);
+
+    // 4. Mostrar el bloque de "Embed Code" si hay iframe
     if (juego.iframe) {
-  $("#iframe-preview")
-    .removeClass("hidden")
-    .html(`
-      <div class="
-        mt-4
-        max-w-7xl
-        mx-auto
-        border border-[#f207fe]
-        bg-[whitesmoke]
-        rounded-xl
-        p-4
-        font-mono
-        text-sm
-        text-[#551a8b]
-        leading-relaxed
-        shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe]
-        space-y-3
-      ">
-
-        <div class="break-all">
-          <span class="font-bold text-[#f207fe]">Embed code:</span><br />
-          &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
-        </div>
-
-        <div id="source" class="text-xs opacity-80">
-          <strong class="text-[#f207fe]">Source:</strong>
-          retrogames.cc. All content is embedded via iframe and remains the property
-          of its respective owners. We do not host, store, or distribute this content
-          and are not responsible for it.
-        </div>
-
-      </div>
-    `);
+      $("#iframe-preview").removeClass("hidden").html(`
+          <div class="mt-4 max-w-7xl mx-auto border border-[#f207fe] bg-[whitesmoke] rounded-xl p-4 font-mono text-sm text-[#551a8b] leading-relaxed shadow-[0_0_4px_#00ffcc,_inset_0_0_3px_#f207fe] space-y-3">
+            <div class="break-all text-xs opacity-80">
+  <span class="font-bold text-[#f207fe]">Embed code:</span>
+  &lt;iframe src="${juego.iframe}" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+</div>
+            <div id="source" class="text-xs opacity-80"> <strong class="text-[#f207fe]">Source:</strong> retrogames.cc. All content is embedded via iframe and remains the property of its respective owners. We do not host, store, or distribute this content and are not responsible for it. </div>
+          </div>
+        `);
     }
-
-
-
   } catch (e) {
-    console.error("Error loading games:", e); // Cambié el mensaje de error
+    console.error("Error loading game:", e);
+    $("#game-cards-container").html(
+      "<p class='text-white text-center'>Error connecting to server.</p>",
+    );
   }
 }
 
@@ -280,7 +368,7 @@ async function cargarJuegosBase({
   url,
   pagina = 0,
   titulo = "",
-  showPages = true
+  showPages = true,
 }) {
   try {
     if (titulo) {
@@ -298,28 +386,26 @@ async function cargarJuegosBase({
     if (showPages && data.totalPages) {
       mostrarPaginacion(data.totalPages, pagina);
     }
-
   } catch (err) {
     console.error("Error loading games:", err);
   }
 }
 
 function cargarCategoriaLetraPagina(categoria, letra, pagina) {
-  const letraFilter = letra ? "&letra=" + letra : '';
+  const letraFilter = letra ? "&letra=" + letra : "";
   const url = `${BASE_URL}/api/juegos/categoria/slug/${categoria}?page=${pagina - 1}&size=40${letraFilter}`;
 
   cargarJuegosBase({
     url,
     pagina: pagina,
-    titulo: _categorias.find(_cat => _cat.slug == categoria).nombre,
+    titulo: _categorias.find((_cat) => _cat.slug == categoria).nombre,
     showPages: true,
   });
 }
 
 function InitSeccionBusqueda() {
-
   const $btnBuscar = $("#btn-buscar");
-  const $campoBusqueda = $btnBuscar.closest('li').find(".campo-busqueda");
+  const $campoBusqueda = $btnBuscar.closest("li").find(".campo-busqueda");
   const $inputBusqueda = $campoBusqueda.find("input[type='text']");
 
   if ($btnBuscar.length === 0 || $campoBusqueda.length === 0) {
@@ -340,7 +426,6 @@ function InitSeccionBusqueda() {
       ejecutarBusqueda();
     }
   });
-
 
   $("#btn-ejecutar-busqueda").on("click", function (e) {
     e.preventDefault();
@@ -372,7 +457,7 @@ function buscarJuegos(termino, pagina = 1) {
   if (!termino || termino.trim() === "") return;
 
   const url = `${API_JUEGOS}/buscar?nombre=${encodeURIComponent(
-    termino.trim()
+    termino.trim(),
   )}&page=${pagina - 1}&size=40`; // 👈 CLAVE
 
   cargarJuegosBase({
@@ -438,7 +523,6 @@ function renderJuegos(juegos, mensajeVacio) {
 
     $contenedor.append(cardHtml);
   });
-
 }
 
 function cargarJuegosRandom(paginaSeleccionada = 0) {
@@ -475,14 +559,16 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
       transition-transform duration-200 ease-in-out
       hover:bg-[#00ffcc] hover:text-[#090039] hover:scale-110
       ${extraClasses}
-    `.trim().replace(/\s+/g, " ");
+    `
+      .trim()
+      .replace(/\s+/g, " ");
 
     if (num === paginaActual) {
       a.classList.add(
         "bg-[#ff00ff]",
         "text-white",
         "border-[#00ffcc]",
-        "scale-110"
+        "scale-110",
       );
       a.style.pointerEvents = "none";
     }
@@ -512,15 +598,17 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
       px-2 py-1 
       cursor-not-allowed 
       opacity-50 select-none
-    `.trim().replace(/\s+/g, " ");
+    `
+      .trim()
+      .replace(/\s+/g, " ");
     return span;
   }
 
   // Botón anterior
   if (paginaActual > 1) {
-    pagDiv.appendChild(crearEnlace(paginaActual - 1, "Anterior"));
+    pagDiv.appendChild(crearEnlace(paginaActual - 1, "Previous"));
   } else {
-    pagDiv.appendChild(crearBotonDeshabilitado("Anterior"));
+    pagDiv.appendChild(crearBotonDeshabilitado("Previous"));
   }
 
   // Páginas
@@ -570,9 +658,9 @@ function mostrarPaginacion(totalPaginas, paginaActual) {
 
   // Botón siguiente
   if (paginaActual < totalPaginas) {
-    pagDiv.appendChild(crearEnlace(paginaActual + 1, "Siguiente"));
+    pagDiv.appendChild(crearEnlace(paginaActual + 1, "Next"));
   } else {
-    pagDiv.appendChild(crearBotonDeshabilitado("Siguiente"));
+    pagDiv.appendChild(crearBotonDeshabilitado("Next"));
   }
 }
 
@@ -582,13 +670,19 @@ function inicializarFiltroLetras(letra) {
   if ($letters.children().length === 0) {
     const baseURL = window.location.pathname;
 
-    ["#", ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))]
-      .forEach(l => {
-        const href = `${baseURL}?letra=${encodeURIComponent(l)}`;
-        const buttonClasses = 'font-orbitron font-extrabold text-[0.9rem] border-[1.5px] border-[#ff00ff] text-[#5e69fe] rounded-md px-2 py-1 cursor-pointer transition-transform duration-200 ease-in-out hover:bg-[#00ffcc] hover:text-[#090039] hover:scale-110';
-        const classes = letra == l ? `${buttonClasses} bg-[#ff00ff] text-white border-[#00ffcc] scale-110` : buttonClasses;
-        $letters.append(`<a class="${classes}" href="${href}">${l}</a>`);
-      });
+    [
+      "#",
+      ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)),
+    ].forEach((l) => {
+      const href = `${baseURL}?letra=${encodeURIComponent(l)}`;
+      const buttonClasses =
+        "font-orbitron font-extrabold text-[0.9rem] border-[1.5px] border-[#ff00ff] text-[#5e69fe] rounded-md px-2 py-1 cursor-pointer transition-transform duration-200 ease-in-out hover:bg-[#00ffcc] hover:text-[#090039] hover:scale-110";
+      const classes =
+        letra == l
+          ? `${buttonClasses} bg-[#ff00ff] text-white border-[#00ffcc] scale-110`
+          : buttonClasses;
+      $letters.append(`<a class="${classes}" href="${href}">${l}</a>`);
+    });
   }
 }
 
@@ -601,4 +695,25 @@ function completarFichaTecnica(categoria) {
   $("#descripcion-SEO").text(categoria.descripcion);
 }
 
+function completarFichaJuegoDetalle(datos) {
+  if (!datos) {
+    console.warn("No se recibieron datos para completar la ficha");
+    return;
+  }
 
+  console.log("Llenando ficha con:", datos);
+
+  $("#jd-descripcion-corta").text(datos.descripcion_corta || "");
+  $("#jd-plataforma").text(datos.plataforma || "");
+  $("#jd-anio").text(datos.anio || "");
+  $("#jd-genero").text(datos.genero || "");
+  $("#jd-desarrollador").text(datos.desarrollador || "");
+  $("#jd-jugadores").text(datos.jugadores || "");
+  $("#jd-estilo").text(datos.estilo || "");
+  $("#jd-gameplay").text(datos.gameplay || "");
+  $("#jd-objetivo").text(datos.objetivo || "");
+  $("#jd-descripcion-larga").text(datos.descripcion_larga || "");
+
+  // Esto es clave si el div empieza oculto
+  $("#ficha-juego-detalle").show();
+}

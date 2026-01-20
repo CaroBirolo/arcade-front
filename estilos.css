@@ -33,7 +33,6 @@ object {
   height: auto;
 }
 
-/* 🔹 HEADER & NAV  */
 header {
   display: flex;
   justify-content: space-between;
@@ -61,55 +60,6 @@ header h1 img {
 
 header h1 img:hover {
   transform: scaleX(1.45) rotate(-2deg);
-}
-
-nav a {
-  color: var(--neon-blue);
-  font-weight: 700;
-  font-size: .85rem;
-  letter-spacing: 1.5px;
-  text-decoration: none;
-  transition: .2s;
-}
-
-nav a:hover {
-  color: #ff00ff;
-  transform: scale(1.1);
-}
-
-#menu-principal {
-  display: flex;
-  gap: 25px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-#menu-principal>li {
-  position: relative;
-}
-
-ul.submenu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--bg-dark);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: .3s;
-}
-
-#menu-principal>li:hover>ul.submenu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-ul.submenu a {
-  display: block;
-  padding: 6px 10px;
-  color: #00d2d9;
 }
 
 #titulo,
