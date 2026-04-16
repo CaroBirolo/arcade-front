@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <url>
-    <loc>https://retroverse.cc/</loc>
-    <lastmod>2025-11-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  
-  
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-static.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-1.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-2.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-3.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-4.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-5.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-6.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://freeclassicgamesonline.cc/sitemap-games-7.xml</loc>
+    <lastmod>2026-04-13</lastmod>
+  </sitemap>
+</sitemapindex>

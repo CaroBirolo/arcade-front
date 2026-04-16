@@ -1,0 +1,280 @@
+/* .🔹 VARIABLES GLOBALES. */
+:root {
+  --color-blue: #1e3a8a;      /* azul sobrio */
+  --color-blue-soft: #2563eb; /* azul acento */
+  --color-red: #dc2626;       /* rojo elegante */
+  --color-black: #111111;
+  --color-gray: #6b7280;
+  --font-main: "Orbitron", system-ui, sans-serif;
+}
+
+/* 🔹 RESET & BASE */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  color: var(--color-black);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 🔹 HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 25px;
+  background: #ffffff;
+  border-bottom: 2px solid var(--color-blue);
+  position: relative;
+  z-index: 100;
+}
+
+header h1 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+header h1 img {
+  height: 50px;
+  margin-left: 15px;
+  transition: transform 0.2s ease;
+}
+
+header h1 img:hover {
+  transform: scale(1.05);
+}
+
+/* 🔹 TÍTULOS */
+#title,
+#title2,
+#title3,
+.title-juego {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--color-blue);
+}
+
+/* Tamaños */
+#title {
+  font-size: 2rem;
+  margin: 40px 0 6px;
+}
+
+#title2 {
+  font-size: 1.6rem;
+}
+
+#title3 {
+  font-size: 1.3rem;
+}
+
+/* 🔹 SUBTÍTULOS */
+#subtitulo {
+  color: #dc2626;
+  text-align: center;
+}
+
+/* 🔹 RESPONSIVE */
+@media (max-width: 900px) {
+
+  .gamesDiv {
+    grid-template-columns: 1fr;
+  }
+
+  .card-juego iframe {
+    height: 350px;
+  }
+
+  #main-menu {
+    flex-direction: column;
+  }
+}
+
+/* 🔹 SISTEMA DE COMENTARIOS */
+
+/* Tarjeta de comentario individual */
+.comentario-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.comentario-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Header del comentario (autor y fecha) */
+.comentario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.comentario-autor {
+  font-weight: 600;
+  color: var(--color-blue);
+  font-size: 14px;
+  word-break: break-word;
+  max-width: 80%;
+}
+
+.comentario-fecha {
+  color: var(--color-gray);
+  font-size: 12px;
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+/* Rating de estrellas */
+.comentario-rating {
+  color: #f59e0b;
+  font-size: 14px;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+/* Contenido del comentario */
+.comentario-texto {
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Mensajes de estado del formulario */
+.form-message {
+  animation: slideDown 0.3s ease-out;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-message.success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.form-message.success::before {
+  content: "✓";
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.form-message.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.form-message.error::before {
+  content: "✕";
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.form-message.warning {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #fcd34d;
+}
+
+.form-message.warning::before {
+  content: "⚠";
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.form-message.info {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
+}
+
+.form-message.info::before {
+  content: "ℹ";
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Animación de entrada de mensajes */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Spinner de carga */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid var(--color-blue-soft);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive para comentarios */
+@media (max-width: 640px) {
+  .comentario-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .comentario-autor {
+    max-width: 100%;
+  }
+
+  .comentario-fecha {
+    margin-left: 0;
+  }
+
+  .form-message {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .comentario-card {
+    padding: 12px;
+  }
+}
+
+
+

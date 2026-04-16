@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://retroverse.cc/sitemap.xml
+Sitemap: https://freeclassicgamesonline.cc/sitemap.xml
