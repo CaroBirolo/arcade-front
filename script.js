@@ -738,7 +738,6 @@ function CompleteDataSheet(categoria) {
   `);
 }
 
-// ─── ÚNICA definición de CompleteGameDetails ───────────────────────────────
 function CompleteGameDetails(datos) {
   if (!datos) return;
 
@@ -764,7 +763,6 @@ function CompleteGameDetails(datos) {
   }
 }
 
-// ─── ÚNICA definición de loadGameBySlug ────────────────────────────────────
 async function loadGameBySlug(slug) {
   try {
     const resp = await fetch(`${BASE_URL}/api/juegos/slug/${slug}`);
@@ -807,46 +805,46 @@ async function loadGameBySlug(slug) {
           </iframe>
         ` : ""}
 
-        <div class="mt-8 max-w-3xl mx-auto space-y-6 text-gray-700 text-sm leading-relaxed">
+        <div class="text-xs text-gray-400 border-t border-gray-100 pt-4 text-justify">
+            <strong>Source:</strong> This game is embedded from retrogames.cc.
+            All rights and content belong to their respective owners.
+            We do not host or modify the original files.
+          </div>
 
-          <p id="jd-descripcion-corta" class="text-base text-gray-800 font-medium"></p>
+        <div class="mt-8 max-w-7xl mx-auto space-y-6 text-gray-700 text-sm leading-relaxed">
 
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs border border-gray-100 rounded-lg p-4 bg-gray-50">
-            <div><span class="text-blue-700 font-semibold">Platform:</span> <span id="jd-plataforma" class="text-gray-600"></span></div>
-            <div><span class="text-blue-700 font-semibold">Released:</span> <span id="jd-anio" class="text-gray-600"></span></div>
-            <div><span class="text-blue-700 font-semibold">Category:</span> <span id="jd-genero" class="text-gray-600"></span></div>
-            <div><span class="text-blue-700 font-semibold">Made by:</span> <span id="jd-desarrollador" class="text-gray-600"></span></div>
-            <div><span class="text-blue-700 font-semibold">Players supported:</span> <span id="jd-jugadores" class="text-gray-600"></span></div>
-            <div><span class="text-blue-700 font-semibold">Playstyle:</span> <span id="jd-estilo" class="text-gray-600"></span></div>
+          <p id="jd-descripcion-corta" class="text-base text-red-600 font-medium text-justify"></p>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs border border-gray-100 rounded-lg p-4 bg-red-50">
+            <div><span class="text-blue-700 font-semibold">Platform:</span> <span id="jd-plataforma" class="text-red-600"></span></div>
+            <div><span class="text-blue-700 font-semibold">Released:</span> <span id="jd-anio" class="text-red-600"></span></div>
+            <div><span class="text-blue-700 font-semibold">Category:</span> <span id="jd-genero" class="text-red-600"></span></div>
+            <div><span class="text-blue-700 font-semibold">Made by:</span> <span id="jd-desarrollador" class="text-red-600"></span></div>
+            <div><span class="text-blue-700 font-semibold">Players supported:</span> <span id="jd-jugadores" class="text-red-600"></span></div>
+            <div><span class="text-blue-700 font-semibold">Playstyle:</span> <span id="jd-estilo" class="text-red-600"></span></div>
             <div id="jd-also-known-as-wrap" class="hidden col-span-2 md:col-span-3">
               <span class="text-blue-700 font-semibold">Also known as:</span>
-              <span id="jd-also-known-as" class="text-gray-600"></span>
+              <span id="jd-also-known-as" class="text-red-600"></span>
             </div>
             <div id="jd-region-wrap" class="hidden">
               <span class="text-blue-700 font-semibold">Region:</span>
-              <span id="jd-region" class="text-gray-600"></span>
+              <span id="jd-region" class="text-red-600"></span>
             </div>
           </div>
 
           <div>
             <h3 class="text-blue-700 font-semibold mb-1">Gameplay breakdown</h3>
-            <p id="jd-gameplay" class="text-gray-600"></p>
+            <p id="jd-gameplay" class="text-red-600 text-justify"></p>
           </div>
 
           <div>
             <h3 class="text-blue-700 font-semibold mb-1">Win condition</h3>
-            <p id="jd-objetivo" class="text-gray-600"></p>
+            <p id="jd-objetivo" class="text-red-600 text-justify"></p>
           </div>
 
           <div>
             <h3 class="text-blue-700 font-semibold mb-1">About</h3>
-            <p id="jd-descripcion-larga" class="text-gray-600"></p>
-          </div>
-
-          <div class="text-xs text-gray-400 border-t border-gray-100 pt-4">
-            <strong>Source:</strong> This game is embedded from retrogames.cc.
-            All rights and content belong to their respective owners.
-            We do not host or modify the original files.
+            <p id="jd-descripcion-larga" class="text-red-600 text-justify"></p>
           </div>
 
         </div>
@@ -856,7 +854,6 @@ async function loadGameBySlug(slug) {
     $("#game-cards-holder").html(cardHtml);
     CompleteGameDetails(juego);
 
-    // ── Inicializar sección de comentarios ──────────────────────────────
     const seccionComentarios = document.getElementById("comentarios-section");
     if (seccionComentarios) {
       seccionComentarios.dataset.juegoId   = juego.id;
@@ -864,16 +861,11 @@ async function loadGameBySlug(slug) {
       seccionComentarios.classList.remove("hidden");
     }
 
-    // Si sistemaComentarios ya fue instanciado por comentarios.js,
-    // actualizamos el slug y cargamos. Si no, lo dejamos: el constructor
-    // leerá el dataset que acabamos de setear.
     if (window.sistemaComentarios) {
       window.sistemaComentarios.juegoId   = juego.id;
       window.sistemaComentarios.juegoSlug = juego.slug;
       window.sistemaComentarios.cargarComentarios();
     }
-    // Si aún no existe, comentarios.js lo instanciará después y
-    // leerá el dataset del DOM correctamente.
 
     setTimeout(() => { loadSafeAds(); }, 1500);
     setTimeout(() => { loadSafeAds(); }, 3000);
@@ -886,7 +878,6 @@ async function loadGameBySlug(slug) {
   }
 }
 
-// ─── Ads ───────────────────────────────────────────────────────────────────
 function loadSafeAds() {
   if (typeof adsbygoogle === "undefined") {
     console.warn("AdSense aún no está disponible");

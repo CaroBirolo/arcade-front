@@ -155,30 +155,30 @@
           </div>
 
           <!-- FICHA TÉCNICA -->
-          <div id="datasheet" class="hidden mb-6 rounded-lg bg-white p-5 text-sm">
+          <div id="datasheet" class="hidden mb-6 rounded-lg bg-white p-5 text-sm max-w-5xl mx-auto">
 
             <div class="flex flex-wrap justify-center gap-3 mb-4">
               <div class="px-3 py-1 bg-blue-50 border border-blue-200 rounded">
-                <span class="text-xs text-blue-600">Release year:</span>
+                <span class="text-xs text-red-500">Release year:</span>
                 <span id="anio-lanzamiento" class="text-red-500"></span>
               </div>
               <div class="px-3 py-1 bg-blue-50 border border-blue-200 rounded">
-                <span class="text-xs text-blue-600">Manufacturer:</span>
+                <span class="text-xs text-red-500">Manufacturer:</span>
                 <span id="fabricante" class="text-red-500"></span>
               </div>
               <div class="px-3 py-1 bg-blue-50 border border-blue-200 rounded">
-                <span class="text-xs text-blue-600">Region:</span>
+                <span class="text-xs text-red-500">Region:</span>
                 <span id="region" class="text-red-500"></span>
               </div>
               <div class="px-3 py-1 bg-blue-50 border border-blue-200 rounded">
-                <span class="text-xs text-blue-600">Platform:</span>
+                <span class="text-xs text-red-500">Platform:</span>
                 <span id="tipo" class="text-red-500"></span>
               </div>
               <div id="platform-chips" class="contents"></div>
             </div>
 
             <div class="pt-3 border-t border-blue-200">
-              <strong class="block mb-2 text-xs uppercase tracking-widest text-blue-600">
+              <strong class="block mb-2 text-xs uppercase tracking-widest text-red-500">
                 Description
               </strong>
               <div id="descripcion-SEO" class="text-sm text-red-500 leading-relaxed text-justify"></div>
@@ -211,62 +211,7 @@
 
   </main>
 
-  <section id="about-classic-games" class="bg-white
-             text-sm leading-relaxed rounded-xl p-6 max-w-7xl mx-auto my-12">
-
-    <h2 class="mb-4 text-center text-2xl font-semibold text-blue-700">
-      The Best Classic Arcade Games — Free & Online
-    </h2>
-
-    <p class="mb-3 text-red-500">
-      FreeClassicGamesOnline.cc brings together some of the most beloved
-      titles in gaming history. From fast-paced arcade shooters to
-      side-scrolling platformers and puzzle games, our library covers
-      the golden age of gaming — all playable instantly in your browser.
-    </p>
-
-    <p class="mb-3 text-red-500">
-      Whether you grew up dropping quarters at the arcade or you're
-      discovering these gems for the first time, you'll find something
-      worth playing here. No emulator setup, no ROMs to hunt down —
-      just click and play.
-    </p>
-
-    <h3 class="mb-2 text-lg font-semibold text-blue-700">
-      Why Classic Games Still Matter
-    </h3>
-
-    <p class="mb-3 text-red-500">
-      Retro games defined entire generations of players. Titles from the
-      80s and 90s introduced mechanics, storytelling styles, and design
-      philosophies that still influence modern games today. Playing them
-      isn't just nostalgia — it's understanding where gaming came from.
-    </p>
-
-    <h3 class="mb-2 text-lg font-semibold text-blue-700">
-      What You'll Find Here
-    </h3>
-
-    <ul class="mb-3 text-red-500 list-disc list-inside space-y-1">
-      <li>Classic arcade titles from the golden era</li>
-      <li>Console favorites from iconic 8-bit and 16-bit platforms</li>
-      <li>Games organized by genre, platform, and era</li>
-      <li>A growing catalog updated regularly</li>
-    </ul>
-
-    <p class="text-red-500">
-      No account needed. No paywalls. Just free, fast access to the
-      games that shaped a generation — right from your browser, on any
-      device.
-    </p>
-
-  </section>
-
-  <!-- SECCIÓN COMENTARIOS — siempre hidden hasta que loadGameBySlug la muestre -->
-  <section id="comentarios-section" class="hidden w-full max-w-4xl mx-auto px-4 py-8 mt-12 border-t border-gray-300">
-    <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-6">
-      Comentarios
-    </h2>
+  <section id="comentarios-section" class="w-full max-w-5xl ml-4 mt-4">
 
     <div id="comentarios-form-container" class="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-200">
 
@@ -323,6 +268,14 @@
               <input type="radio" name="rating" value="3" class="w-4 h-4">
               <span class="text-lg">⭐⭐⭐</span>
             </label>
+            <label class="flex items-center gap-1 cursor-pointer">
+              <input type="radio" name="rating" value="2" class="w-4 h-4">
+              <span class="text-lg">⭐⭐</span>
+            </label>
+            <label class="flex items-center gap-1 cursor-pointer">
+              <input type="radio" name="rating" value="1" class="w-4 h-4">
+              <span class="text-lg">⭐</span>
+            </label>
           </div>
         </div>
 
@@ -366,6 +319,57 @@
     <div id="sin-comentarios" class="hidden text-center py-8 text-gray-500">
       Todavía no hay comentarios para este juego. ¡Sé el primero!
     </div>
+
+  </section>
+
+  <section id="about-classic-games" class="bg-white
+             text-sm leading-relaxed rounded-xl p-6 max-w-7xl mx-auto my-12">
+
+    <h2 class="mb-4 text-center text-2xl font-semibold text-blue-700">
+      The Best Classic Arcade Games — Free & Online
+    </h2>
+
+    <p class="mb-3 text-red-500">
+      FreeClassicGamesOnline.cc brings together some of the most beloved
+      titles in gaming history. From fast-paced arcade shooters to
+      side-scrolling platformers and puzzle games, our library covers
+      the golden age of gaming — all playable instantly in your browser.
+    </p>
+
+    <p class="mb-3 text-red-500">
+      Whether you grew up dropping quarters at the arcade or you're
+      discovering these gems for the first time, you'll find something
+      worth playing here. No emulator setup, no ROMs to hunt down —
+      just click and play.
+    </p>
+
+    <h3 class="mb-2 text-lg font-semibold text-blue-700">
+      Why Classic Games Still Matter
+    </h3>
+
+    <p class="mb-3 text-red-500">
+      Retro games defined entire generations of players. Titles from the
+      80s and 90s introduced mechanics, storytelling styles, and design
+      philosophies that still influence modern games today. Playing them
+      isn't just nostalgia — it's understanding where gaming came from.
+    </p>
+
+    <h3 class="mb-2 text-lg font-semibold text-blue-700">
+      What You'll Find Here
+    </h3>
+
+    <ul class="mb-3 text-red-500 list-disc list-inside space-y-1">
+      <li>Classic arcade titles from the golden era</li>
+      <li>Console favorites from iconic 8-bit and 16-bit platforms</li>
+      <li>Games organized by genre, platform, and era</li>
+      <li>A growing catalog updated regularly</li>
+    </ul>
+
+    <p class="text-red-500">
+      No account needed. No paywalls. Just free, fast access to the
+      games that shaped a generation — right from your browser, on any
+      device.
+    </p>
 
   </section>
 
