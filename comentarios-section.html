@@ -1,0 +1,133 @@
+<!-- COMENTARIOS SECTION - Agregar después del iframe del juego -->
+
+<section id="comentarios-section" class="w-full max-w-4xl mx-auto px-4 py-8 mt-12 border-t border-gray-300">
+
+  <!-- Título -->
+  <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-6">
+    Comentarios
+  </h2>
+
+  <!-- Formulario de comentarios -->
+  <div id="comentarios-form-container" class="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-200">
+
+    <!-- Botón de Login (si no está autenticado) -->
+    <div id="login-prompt" class="mb-4">
+      <button id="btn-login-google"
+              class="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium text-sm">
+        📱 Inicia sesión con Google (opcional)
+      </button>
+      <p class="text-xs text-gray-600 mt-2">O deja un comentario como anónimo completando los datos abajo</p>
+    </div>
+
+    <!-- Datos del usuario autenticado / formulario anónimo -->
+    <form id="form-comentario" class="space-y-4">
+
+      <!-- Nombre -->
+      <div>
+        <label for="comentario-nombre" class="block text-sm font-medium text-gray-700 mb-1">
+          Nombre <span class="text-red-500">*</span>
+        </label>
+        <input type="text"
+               id="comentario-nombre"
+               name="nombre"
+               placeholder="Tu nombre"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+               maxlength="100"
+               required>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="comentario-email" class="block text-sm font-medium text-gray-700 mb-1">
+          Email <span class="text-red-500">*</span>
+        </label>
+        <input type="email"
+               id="comentario-email"
+               name="email"
+               placeholder="tu@email.com"
+               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+               required>
+        <p class="text-xs text-gray-500 mt-1">No será publicado públicamente</p>
+      </div>
+
+      <!-- Rating -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-3">
+          ¿Qué te pareció el juego?
+        </label>
+        <div class="flex flex-wrap gap-3">
+          <label class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
+            <input type="radio" name="rating" value="5" checked class="w-4 h-4 cursor-pointer">
+            <span class="text-base">⭐⭐⭐⭐⭐</span>
+            <span class="text-xs text-gray-600">Excelente</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
+            <input type="radio" name="rating" value="4" class="w-4 h-4 cursor-pointer">
+            <span class="text-base">⭐⭐⭐⭐</span>
+            <span class="text-xs text-gray-600">Muy bueno</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
+            <input type="radio" name="rating" value="3" class="w-4 h-4 cursor-pointer">
+            <span class="text-base">⭐⭐⭐</span>
+            <span class="text-xs text-gray-600">Bueno</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
+            <input type="radio" name="rating" value="2" class="w-4 h-4 cursor-pointer">
+            <span class="text-base">⭐⭐</span>
+            <span class="text-xs text-gray-600">Regular</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
+            <input type="radio" name="rating" value="1" class="w-4 h-4 cursor-pointer">
+            <span class="text-base">⭐</span>
+            <span class="text-xs text-gray-600">Malo</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Comentario -->
+      <div>
+        <label for="comentario-texto" class="block text-sm font-medium text-gray-700 mb-1">
+          Tu comentario <span class="text-red-500">*</span>
+        </label>
+        <textarea id="comentario-texto"
+                  name="contenido"
+                  placeholder="Comparte tu opinión sobre este juego..."
+                  rows="4"
+                  maxlength="500"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                  required></textarea>
+        <p class="text-xs text-gray-500 mt-1">Máximo 500 caracteres</p>
+      </div>
+
+      <!-- Botón enviar -->
+      <div class="flex gap-3">
+        <button type="submit"
+                id="btn-enviar-comentario"
+                class="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium text-sm">
+          Publicar comentario
+        </button>
+        <button type="reset"
+                class="px-5 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition font-medium text-sm">
+          Limpiar
+        </button>
+      </div>
+
+      <!-- Mensaje de estado -->
+      <div id="form-message" class="hidden p-3 rounded-md text-sm"></div>
+    </form>
+  </div>
+
+  <!-- Lista de comentarios -->
+  <div id="comentarios-lista" class="space-y-4">
+    <!-- Los comentarios se cargarán aquí con JavaScript -->
+    <div id="comentarios-loading" class="text-center py-8 text-gray-500">
+      Cargando comentarios...
+    </div>
+  </div>
+
+  <!-- Sin comentarios -->
+  <div id="sin-comentarios" class="hidden text-center py-8 text-gray-500">
+    <p>Sé el primero en comentar este juego</p>
+  </div>
+
+</section>
